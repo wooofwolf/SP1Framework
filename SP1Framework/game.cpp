@@ -10,12 +10,14 @@
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 int lastMove;
+int doneShoot = 0;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 SGameChar   g_sChar;
 SGameChar   g_sPjtl;
+SGameChar   NPC_1;
 SGameChar   g_sChar2;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
@@ -46,6 +48,10 @@ void init( void )
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar2.m_bActive = true;
+    NPC_1.m_cLocation.X = 10;
+    NPC_1.m_cLocation.Y = 10;
+    NPC_1.m_bActive = true;
+
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -241,94 +247,121 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
+    moveNPC();
 }
 
 void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_W].keyReleased && g_sChar.m_cLocation.Y > 0)
+    if (doneShoot == 0)
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y--;
-        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-        g_sChar2.m_cLocation.Y--;
-        lastMove = 1;
-    }
-    if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0)
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X--;
-        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-        g_sChar2.m_cLocation.X--;
-        lastMove = 2;
-    }
-    if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y++;
-        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-        g_sChar2.m_cLocation.Y++;
-        lastMove = 3;
-    }
-    if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X++;
-        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-        g_sChar2.m_cLocation.X++;
-        lastMove = 4;
-    }
-    if (g_skKeyEvent[K_E].keyReleased)
-    {
-        //Beep(1440, 30);
-        if (lastMove == 1)
-            g_sPjtl.m_cLocation.Y -= 10;
-        else if (lastMove == 2)
-            g_sPjtl.m_cLocation.X -= 10;
-        else if (lastMove == 3)
-            g_sPjtl.m_cLocation.Y += 10;
-        else if (lastMove == 4)
-            g_sPjtl.m_cLocation.X += 10;
-        else
+        if (g_skKeyEvent[K_W].keyReleased && g_sChar.m_cLocation.Y > 0)
         {
+            //Beep(1440, 30);
+            g_sChar.m_cLocation.Y--;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            g_sChar2.m_cLocation.Y--;
+            lastMove = 1;
         }
+        if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0)
+        {
+            //Beep(1440, 30);
+            g_sChar.m_cLocation.X--;
+            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            g_sChar2.m_cLocation.X--;
+            lastMove = 2;
+        }
+        if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+        {
+            //Beep(1440, 30);
+            g_sChar.m_cLocation.Y++;
+            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            g_sChar2.m_cLocation.Y++;
+            lastMove = 3;
+        }
+        if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+        {
+            //Beep(1440, 30);
+            g_sChar.m_cLocation.X++;
+            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            g_sChar2.m_cLocation.X++;
+            lastMove = 4;
+        }
+        if (g_skKeyEvent[K_E].keyReleased)
+        {
+            if (lastMove == 1)
+                g_sPjtl.m_cLocation.Y -= 1;
+            else if (lastMove == 2)
+                g_sPjtl.m_cLocation.X -= 1;
+            else if (lastMove == 3)
+                g_sPjtl.m_cLocation.Y += 1;
+            else if (lastMove == 4)
+                g_sPjtl.m_cLocation.X += 1;
+            doneShoot++;
+        }
+        if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
+        {
+            //Beep(1440, 30);
+            g_sChar2.m_cLocation.Y--;
+        }
+        if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0)
+        {
+            //Beep(1440, 30);
+            g_sChar2.m_cLocation.X--;
+        }
+        if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+        {
+            //Beep(1440, 30);
+            g_sChar2.m_cLocation.Y++;
+        }
+        if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+        {
+            //Beep(1440, 30);
+            g_sChar2.m_cLocation.X++;
+        }
+        if (g_skKeyEvent[K_SPACE].keyReleased)
+        {
+            // g_sChar.m_bActive = !g_sChar.m_bActive;
+            // g_sChar2.m_bActive = !g_sChar2.m_bActive;
+        }
+    }
+    else if (doneShoot > 0 && doneShoot <= 10)
+    {
+        if (lastMove == 1)
+            g_sPjtl.m_cLocation.Y -= 1;
+        else if (lastMove == 2)
+            g_sPjtl.m_cLocation.X -= 1;
+        else if (lastMove == 3)
+            g_sPjtl.m_cLocation.Y += 1;
+        else if (lastMove == 4)
+            g_sPjtl.m_cLocation.X += 1;
+        doneShoot++;
+    }
+    else if (doneShoot == 11)
+    {
+        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
         lastMove = 0;
+        doneShoot = 0;
     }
-    if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
-    {
-        //Beep(1440, 30);
-        g_sChar2.m_cLocation.Y--;       
-    }
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0)
-    {
-        //Beep(1440, 30);
-        g_sChar2.m_cLocation.X--;        
-    }
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
-    {
-        //Beep(1440, 30);
-        g_sChar2.m_cLocation.Y++;        
-    }
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1)
-    {
-        //Beep(1440, 30);
-        g_sChar2.m_cLocation.X++;        
-    }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
-    {
-        g_sChar.m_bActive = !g_sChar.m_bActive;
-        g_sChar2.m_bActive = !g_sChar2.m_bActive;
-    }
-
-   
 }
+
+}
+
+void moveNPC()
+{
+    // check if player is in range of NPC
+    if ((pow(g_sChar.m_cLocation.X - NPC_1.m_cLocation.X, 2) + pow(g_sChar.m_cLocation.Y - NPC_1.m_cLocation.Y, 2)) <= 25)
+    {
+        // add AI
+    }
+}
+
 void processUserInput()
 {
     // quits the game if player hits the escape key
@@ -389,6 +422,7 @@ void renderGame()
 {
     renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
+    renderNPC();
 }
 
 void renderMap()
@@ -412,19 +446,20 @@ void renderMap()
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0x0C;
-    WORD charColor2 = 0x0A;
-    if (g_sChar.m_bActive)
-    {
-        charColor = 0x0A;
-    }
+    WORD charColor = 0xC7;
+    WORD charColor2 = 0xB0;
+    //if (g_sChar.m_bActive)
+        //charColor = 0x0A;
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
     g_Console.writeToBuffer(g_sPjtl.m_cLocation, (char)1, charColor);
-    if (g_sChar2.m_bActive)
-    {
-        charColor2 = 0x0C;
-    }
     g_Console.writeToBuffer(g_sChar2.m_cLocation, (char)1, charColor2);
+
+    g_Console.writeToBuffer(NPC_1.m_cLocation, 'N', charColor);
+}
+
+void renderNPC()
+{
+    g_Console.writeToBuffer(NPC_1.m_cLocation, 'N', 0x0C);
 }
 
 void renderFramerate()
