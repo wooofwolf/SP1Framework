@@ -156,6 +156,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case VK_DOWN: key = K_DOWN; break;
     case VK_LEFT: key = K_LEFT; break; 
     case VK_RIGHT: key = K_RIGHT; break;
+    case VK_NUMPAD0: key = K_0; break;
     case 48: key = K_0; break;
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
