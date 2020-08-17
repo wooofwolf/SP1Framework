@@ -324,7 +324,7 @@ void moveCharacter()
             // g_sChar2.m_bActive = !g_sChar2.m_bActive;
         }
     }
-    else if (doneShoot > 0 && doneShoot <= 10)
+    else if (doneShoot > 0 && doneShoot < 10)
     {
         if (lastMove == 1)
             g_sPjtl.m_cLocation.Y -= 1;
@@ -336,7 +336,7 @@ void moveCharacter()
             g_sPjtl.m_cLocation.X += 1;
         doneShoot++;
     }
-    else if (doneShoot == 11)
+    else if (doneShoot == 10)
     {
         g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
         g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
@@ -344,6 +344,7 @@ void moveCharacter()
         doneShoot = 0;
     }
 }
+
 void processUserInput()
 {
     // quits the game if player hits the escape key
