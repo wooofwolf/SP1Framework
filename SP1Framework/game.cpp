@@ -323,8 +323,8 @@ void moveCharacter()
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
-        g_sChar.m_bActive = !g_sChar.m_bActive;
-        g_sChar2.m_bActive = !g_sChar2.m_bActive;
+        // g_sChar.m_bActive = !g_sChar.m_bActive;
+        // g_sChar2.m_bActive = !g_sChar2.m_bActive;
     }
 
    
@@ -412,18 +412,12 @@ void renderMap()
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0x0C;
-    WORD charColor2 = 0x0A;
-    if (g_sChar.m_bActive)
-    {
-        charColor = 0x0A;
-    }
+    WORD charColor = 0xC7;
+    WORD charColor2 = 0xB0;
+    //if (g_sChar.m_bActive)
+        //charColor = 0x0A;
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
     g_Console.writeToBuffer(g_sPjtl.m_cLocation, (char)1, charColor);
-    if (g_sChar2.m_bActive)
-    {
-        charColor2 = 0x0C;
-    }
     g_Console.writeToBuffer(g_sChar2.m_cLocation, (char)1, charColor2);
 }
 
