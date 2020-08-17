@@ -40,8 +40,8 @@ void init( void )
     g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
-    g_sPjtl.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sPjtl.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+    g_sPjtl.m_cLocation.X = g_Console.getConsoleSize().X / 1;
+    g_sPjtl.m_cLocation.Y = g_Console.getConsoleSize().Y / 1;
     g_sPjtl.m_bActive = true;
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
@@ -287,15 +287,20 @@ void moveCharacter()
     {
         //Beep(1440, 30);
         if (lastMove == 1)
-            g_sPjtl.m_cLocation.Y -= 3;
+            g_sPjtl.m_cLocation.Y -= 10;
         else if (lastMove == 2)
-            g_sPjtl.m_cLocation.X -= 3;
+            g_sPjtl.m_cLocation.X -= 10;
         else if (lastMove == 3)
-            g_sPjtl.m_cLocation.Y += 3;
+            g_sPjtl.m_cLocation.Y += 10;
         else if (lastMove == 4)
-            g_sPjtl.m_cLocation.X += 3;
+            g_sPjtl.m_cLocation.X += 10;
+        else
+        {
+            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+        }
+        lastMove = 0;
     }
-
     if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
     {
         //Beep(1440, 30);
@@ -318,7 +323,6 @@ void moveCharacter()
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
-        g_sChar.m_bActive = !g_sChar.m_bActive;
         g_sChar.m_bActive = !g_sChar.m_bActive;
         g_sChar2.m_bActive = !g_sChar2.m_bActive;
     }
@@ -415,10 +419,6 @@ void renderCharacter()
         charColor = 0x0A;
     }
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
-    if (g_sPjtl.m_bActive)
-    {
-        charColor = 0x0A;
-    }
     g_Console.writeToBuffer(g_sPjtl.m_cLocation, (char)1, charColor);
     if (g_sChar2.m_bActive)
     {
