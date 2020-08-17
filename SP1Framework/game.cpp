@@ -9,11 +9,13 @@
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
+int lastMove;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 SGameChar   g_sChar;
+SGameChar   g_sPjtl;
 SGameChar   g_sChar2;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
@@ -38,6 +40,9 @@ void init( void )
     g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
+    g_sPjtl.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+    g_sPjtl.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+    g_sPjtl.m_bActive = true;
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar2.m_bActive = true;
@@ -246,21 +251,49 @@ void moveCharacter()
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.Y--;
+        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+        g_sChar2.m_cLocation.Y--;
+        lastMove = 1;
     }
     if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.X--;
+        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+        g_sChar2.m_cLocation.X--;
+        lastMove = 2;
     }
     if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.Y++;
+        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+        g_sChar2.m_cLocation.Y++;
+        lastMove = 3;
     }
     if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.X++;
+        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+        g_sChar2.m_cLocation.X++;
+        lastMove = 4;
+    }
+    if (g_skKeyEvent[K_E].keyReleased)
+    {
+        //Beep(1440, 30);
+        if (lastMove == 1)
+            g_sPjtl.m_cLocation.Y -= 3;
+        else if (lastMove == 2)
+            g_sPjtl.m_cLocation.X -= 3;
+        else if (lastMove == 3)
+            g_sPjtl.m_cLocation.Y += 3;
+        else if (lastMove == 4)
+            g_sPjtl.m_cLocation.X += 3;
     }
     if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
     {
@@ -284,6 +317,7 @@ void moveCharacter()
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
+        g_sChar.m_bActive = !g_sChar.m_bActive;
         g_sChar.m_bActive = !g_sChar.m_bActive;
         g_sChar2.m_bActive = !g_sChar2.m_bActive;
     }
@@ -380,6 +414,11 @@ void renderCharacter()
         charColor = 0x0A;
     }
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
+    if (g_sPjtl.m_bActive)
+    {
+        charColor = 0x0A;
+    }
+    g_Console.writeToBuffer(g_sPjtl.m_cLocation, (char)1, charColor);
     if (g_sChar2.m_bActive)
     {
         charColor2 = 0x0C;
