@@ -295,6 +295,7 @@ void moveCharacter()
         else if (lastMove == 4)
             g_sPjtl.m_cLocation.X += 3;
     }
+
     if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
     {
         //Beep(1440, 30);
