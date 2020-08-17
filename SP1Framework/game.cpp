@@ -10,6 +10,7 @@
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 int lastMove;
+int doneShoot = 0;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
@@ -247,87 +248,101 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_W].keyReleased && g_sChar.m_cLocation.Y > 0)
+    if (doneShoot == 0)
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y--;
-        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-        g_sChar2.m_cLocation.Y--;
-        lastMove = 1;
-    }
-    if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0)
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X--;
-        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-        g_sChar2.m_cLocation.X--;
-        lastMove = 2;
-    }
-    if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y++;
-        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-        g_sChar2.m_cLocation.Y++;
-        lastMove = 3;
-    }
-    if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X++;
-        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-        g_sChar2.m_cLocation.X++;
-        lastMove = 4;
-    }
-    if (g_skKeyEvent[K_E].keyReleased)
-    {
-        //Beep(1440, 30);
-        if (lastMove == 1)
-            g_sPjtl.m_cLocation.Y -= 10;
-        else if (lastMove == 2)
-            g_sPjtl.m_cLocation.X -= 10;
-        else if (lastMove == 3)
-            g_sPjtl.m_cLocation.Y += 10;
-        else if (lastMove == 4)
-            g_sPjtl.m_cLocation.X += 10;
-        else
+        if (g_skKeyEvent[K_W].keyReleased && g_sChar.m_cLocation.Y > 0)
         {
+            //Beep(1440, 30);
+            g_sChar.m_cLocation.Y--;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            g_sChar2.m_cLocation.Y--;
+            lastMove = 1;
         }
+        if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0)
+        {
+            //Beep(1440, 30);
+            g_sChar.m_cLocation.X--;
+            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            g_sChar2.m_cLocation.X--;
+            lastMove = 2;
+        }
+        if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+        {
+            //Beep(1440, 30);
+            g_sChar.m_cLocation.Y++;
+            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            g_sChar2.m_cLocation.Y++;
+            lastMove = 3;
+        }
+        if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+        {
+            //Beep(1440, 30);
+            g_sChar.m_cLocation.X++;
+            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            g_sChar2.m_cLocation.X++;
+            lastMove = 4;
+        }
+        if (g_skKeyEvent[K_E].keyReleased)
+        {
+            if (lastMove == 1)
+                g_sPjtl.m_cLocation.Y -= 1;
+            else if (lastMove == 2)
+                g_sPjtl.m_cLocation.X -= 1;
+            else if (lastMove == 3)
+                g_sPjtl.m_cLocation.Y += 1;
+            else if (lastMove == 4)
+                g_sPjtl.m_cLocation.X += 1;
+            doneShoot++;
+        }
+        if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
+        {
+            //Beep(1440, 30);
+            g_sChar2.m_cLocation.Y--;
+        }
+        if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0)
+        {
+            //Beep(1440, 30);
+            g_sChar2.m_cLocation.X--;
+        }
+        if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+        {
+            //Beep(1440, 30);
+            g_sChar2.m_cLocation.Y++;
+        }
+        if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+        {
+            //Beep(1440, 30);
+            g_sChar2.m_cLocation.X++;
+        }
+        if (g_skKeyEvent[K_SPACE].keyReleased)
+        {
+            // g_sChar.m_bActive = !g_sChar.m_bActive;
+            // g_sChar2.m_bActive = !g_sChar2.m_bActive;
+        }
+    }
+    else if (doneShoot > 0 && doneShoot <= 10)
+    {
+        if (lastMove == 1)
+            g_sPjtl.m_cLocation.Y -= 1;
+        else if (lastMove == 2)
+            g_sPjtl.m_cLocation.X -= 1;
+        else if (lastMove == 3)
+            g_sPjtl.m_cLocation.Y += 1;
+        else if (lastMove == 4)
+            g_sPjtl.m_cLocation.X += 1;
+        doneShoot++;
+    }
+    else if (doneShoot == 11)
+    {
+        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
         lastMove = 0;
+        doneShoot = 0;
     }
-    if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
-    {
-        //Beep(1440, 30);
-        g_sChar2.m_cLocation.Y--;       
-    }
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0)
-    {
-        //Beep(1440, 30);
-        g_sChar2.m_cLocation.X--;        
-    }
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
-    {
-        //Beep(1440, 30);
-        g_sChar2.m_cLocation.Y++;        
-    }
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1)
-    {
-        //Beep(1440, 30);
-        g_sChar2.m_cLocation.X++;        
-    }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
-    {
-        // g_sChar.m_bActive = !g_sChar.m_bActive;
-        // g_sChar2.m_bActive = !g_sChar2.m_bActive;
-    }
-
-   
 }
 void processUserInput()
 {
