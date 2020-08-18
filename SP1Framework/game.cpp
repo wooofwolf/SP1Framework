@@ -15,6 +15,7 @@ int lastMove;
 int doneShoot = 0;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
+WORD npcCol = 0xB0;
 
 // Game specific variables here
 SGameChar   g_sChar;
@@ -392,6 +393,15 @@ void processUserInput()
         g_bQuitGame = true;    
 }
 
+void updateNPC()
+{
+    if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y)
+    {
+        npc1.setTurnsOnFire(5);
+        npcCol = 0x0C;
+    }
+}
+
 //--------------------------------------------------------------
 // Purpose  : Render function is to update the console screen
 //            At this point, you should know exactly what to draw onto the screen.
@@ -480,7 +490,8 @@ void renderCharacter()
 
 void renderNPC()
 {
-    g_Console.writeToBuffer(npc1.getCoords(), 'N', 0x0C);
+    updateNPC();
+    g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
 }
 
 void renderFramerate()
