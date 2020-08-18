@@ -14,7 +14,9 @@
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 int lastMove;
+int lastMove2;
 int doneShoot = 0;
+int eOr0;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
@@ -24,6 +26,7 @@ WORD npcCol = 0xB0;
 SGameChar   g_sChar;
 SGameChar   g_sPjtl;
 SGameChar   g_sChar2;
+SGameChar   g_sPjtl2;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 npc         npc1(10, 10);
 
@@ -298,27 +301,53 @@ void moveCharacter()
                 g_sPjtl.m_cLocation.Y += 1;
             else if (lastMove == 4)
                 g_sPjtl.m_cLocation.X += 1;
+            eOr0 = 1;
             doneShoot++;
         }
         if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.Y--;
+            g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
+            g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+            lastMove2 = 1;
         }
         if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0)
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.X--;
+            g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
+            g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+            lastMove2 = 2;
         }
         if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.Y++;
+            g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
+            g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+            lastMove2 = 3;
         }
         if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1)
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.X++;
+            g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
+            g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+            lastMove2 = 4;
+        }
+        if (g_skKeyEvent[K_0].keyReleased)
+        {
+            if (lastMove2 == 1)
+                g_sPjtl2.m_cLocation.Y -= 1;
+            else if (lastMove2 == 2)
+                g_sPjtl2.m_cLocation.X -= 1;
+            else if (lastMove2 == 3)
+                g_sPjtl2.m_cLocation.Y += 1;
+            else if (lastMove2 == 4)
+                g_sPjtl2.m_cLocation.X += 1;
+            eOr0 = 0;
+            doneShoot++;
         }
         if (g_skKeyEvent[K_SPACE].keyReleased)
         {
@@ -328,20 +357,36 @@ void moveCharacter()
     }
     else if (doneShoot > 0 && doneShoot < 10)
     {
-        if (lastMove == 1)
-            g_sPjtl.m_cLocation.Y -= 1;
-        else if (lastMove == 2)
-            g_sPjtl.m_cLocation.X -= 1;
-        else if (lastMove == 3)
-            g_sPjtl.m_cLocation.Y += 1;
-        else if (lastMove == 4)
-            g_sPjtl.m_cLocation.X += 1;
+        if (eOr0 == 1)
+        {
+            if (lastMove == 1)
+                g_sPjtl.m_cLocation.Y -= 1;
+            else if (lastMove == 2)
+                g_sPjtl.m_cLocation.X -= 1;
+            else if (lastMove == 3)
+                g_sPjtl.m_cLocation.Y += 1;
+            else if (lastMove == 4)
+                g_sPjtl.m_cLocation.X += 1;
+        }
+        else if (eOr0 == 0)
+        {
+            if (lastMove2 == 1)
+                g_sPjtl2.m_cLocation.Y -= 1;
+            else if (lastMove2 == 2)
+                g_sPjtl2.m_cLocation.X -= 1;
+            else if (lastMove2 == 3)
+                g_sPjtl2.m_cLocation.Y += 1;
+            else if (lastMove2 == 4)
+                g_sPjtl2.m_cLocation.X += 1;
+        }
         doneShoot++;
     }
     else if (doneShoot == 10)
     {
         g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
         g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+        g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
+        g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
         doneShoot = 0;
     }
 }
@@ -498,6 +543,7 @@ void renderGame()
 
 void renderMap()
 {
+   
     // Set up sample colours, and output shadings
     const WORD colors[] = {
         0x1B, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
@@ -524,6 +570,7 @@ void renderCharacter()
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
     g_Console.writeToBuffer(g_sPjtl.m_cLocation, (char)1, charColor);
     g_Console.writeToBuffer(g_sChar2.m_cLocation, (char)1, charColor2);
+    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, (char)1, charColor2);
 }
 
 void renderNPC()

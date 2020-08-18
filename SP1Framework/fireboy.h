@@ -5,6 +5,6 @@ class fireboy: public entity
 private:
 
 public:
-
+	
 };
 
