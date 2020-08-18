@@ -8,6 +8,8 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <stdlib.h>
+#include <time.h>
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -16,6 +18,7 @@ int doneShoot = 0;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
+
 
 // Game specific variables here
 SGameChar   g_sChar;
@@ -345,35 +348,78 @@ void moveCharacter()
 
 void moveNPC()
 {
-    // check if player is in range of NPC
-    if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2)) <= 25)
+    if (npc1.getSecsOnFire() > 0)
     {
-        int npc1L, npc1R, npc1U, npc1D;
-        npc1L = npc1.getCoords().X - 1;
-        npc1R = npc1.getCoords().X + 1;
-        npc1U = npc1.getCoords().Y - 1;
-        npc1D = npc1.getCoords().Y + 1;
+        // Randomly runs
+        int randomInt = rand() % 4 + 1;
+        if (randomInt == 1) // Up
+        {
+            if (npc1.getCoords().Y - 1 >= 0)
+            {
+                npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
+            }
+        }
+        else if (randomInt == 2) // Down
+        {
+            if (npc1.getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1)
+            {
+                npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
+            }
+        }
+        else if (randomInt == 3) // Left
+        {
+            if (npc1.getCoords().X - 1 >= 0)
+            {
+                npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
+            }
+        }
+        else // Right
+        {
+            if (npc1.getCoords().X + 1 >= 0)
+            {
+                npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
+            }
+        }
+        npc1.setSecsOnFire(npc1.getSecsOnFire() - 1);
+        Sleep(100);
+        if (npc1.getSecsOnFire() == 0)
+        {
+            npc1.setAlive(false);
+        }
+    }
 
-        npc1L = (pow(g_sChar.m_cLocation.X - npc1L, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2));
-        npc1R = (pow(g_sChar.m_cLocation.X - npc1R, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2));
-        npc1U = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
-        npc1D = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
+    else if (npc1.getAlive() == true)
+    {
+        // check if player is in range of NPC
+        if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2)) <= 100)
+        {
+            int npc1L, npc1R, npc1U, npc1D;
+            npc1L = npc1.getCoords().X - 1;
+            npc1R = npc1.getCoords().X + 1;
+            npc1U = npc1.getCoords().Y - 1;
+            npc1D = npc1.getCoords().Y + 1;
 
-        if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && npc1.getCoords().X + 1 <= g_Console.getConsoleSize().X - 1)
-        {
-            npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
-        }
-        else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && npc1.getCoords().X - 1 >= 0)
-        {
-            npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
-        }
-        else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && npc1.getCoords().Y + 1 <= g_Console.getConsoleSize().Y - 1)
-        {
-            npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
-        }
-        else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && npc1.getCoords().Y - 1 >= 0)
-        {
-            npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
+            npc1L = (pow(g_sChar.m_cLocation.X - npc1L, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2));
+            npc1R = (pow(g_sChar.m_cLocation.X - npc1R, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2));
+            npc1U = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
+            npc1D = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
+
+            if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && npc1.getCoords().X + 1 <= g_Console.getConsoleSize().X - 1)
+            {
+                npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
+            }
+            else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && npc1.getCoords().X - 1 >= 0)
+            {
+                npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
+            }
+            else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && npc1.getCoords().Y + 1 <= g_Console.getConsoleSize().Y - 1)
+            {
+                npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
+            }
+            else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && npc1.getCoords().Y - 1 >= 0)
+            {
+                npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
+            }
         }
     }
 }
@@ -387,9 +433,9 @@ void processUserInput()
 
 void updateNPC()
 {
-    if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y)
+    if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y && npc1.getAlive() == true)
     {
-        npc1.setTurnsOnFire(5);
+        npc1.setSecsOnFire(15);
         npcCol = 0x0C;
     }
 }
@@ -483,7 +529,14 @@ void renderCharacter()
 void renderNPC()
 {
     updateNPC();
-    g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+    if (npc1.getAlive() == true)
+    {
+        g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+    }
+    else
+    {
+        g_Console.writeToBuffer(npc1.getCoords(), ' ', npcCol);
+    }
 }
 
 void renderFramerate()
