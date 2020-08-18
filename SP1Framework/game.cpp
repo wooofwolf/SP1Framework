@@ -266,7 +266,6 @@ void moveCharacter()
             g_sChar.m_cLocation.X--;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-
             lastMove = 2;
         }
         if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
@@ -275,7 +274,6 @@ void moveCharacter()
             g_sChar.m_cLocation.Y++;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-            g_sChar.m_cLocation.Y++;
             lastMove = 3;
         }
         if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
@@ -284,7 +282,6 @@ void moveCharacter()
             g_sChar.m_cLocation.X++;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-            g_sChar.m_cLocation.X++;
             lastMove = 4;
         }
         if (g_skKeyEvent[K_E].keyReleased)
