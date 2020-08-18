@@ -524,6 +524,7 @@ void renderToScreen()
 
 void renderSplashScreen()  // renders the splash screen
 {
+    // Main Menu
     COORD c = g_Console.getConsoleSize();
     c.Y /= 5;
     c.X = c.X / 2 - 9;
