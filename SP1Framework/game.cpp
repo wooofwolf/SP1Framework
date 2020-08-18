@@ -351,8 +351,6 @@ void moveCharacter()
     }
 }
 
-}
-
 void moveNPC()
 {
     // check if player is in range of NPC
