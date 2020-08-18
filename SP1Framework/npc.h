@@ -4,7 +4,7 @@ class npc: public entity
 {
 private:
 	static int noOfNPCs;
-	int SecondsOnFire;
+	int secsOnFire;
 
 public:
 	// Constructors
@@ -17,11 +17,11 @@ public:
 
 	// Accessors
 	int getNoOfNPCs(void);
-	int getSecondsOnFire(void);
+	int getSecsOnFire(void);
 
 	// Mutators
 	void setNoOfNPCs(int number);
-	void setSecondsOnFire(int number);
+	void setSecsOnFire(int number);
 	void move(void);
 };
 
