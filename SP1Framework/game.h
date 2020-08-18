@@ -65,8 +65,9 @@ void shutdown    ( void );      // do clean up, free memory
 void splashScreenWait();    // waits for time to pass in splash screen
 void updateGame();          // gameplay logic
 void moveCharacter();       // moves the character, collision detection, physics, etc
-void moveNPC();        // checks how far the player is from npc, npc moves if player is close.
+void moveNPC();             // checks how far the player is from npc, npc moves if player is close.
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
+void updateNPC();           // checks if the NPC gets caught on fire
 void clearScreen();         // clears the current screen and draw from scratch 
 void renderSplashScreen();  // renders the splash screen
 void renderGame();          // renders the game stuff
