@@ -482,14 +482,14 @@ void renderToScreen()
 void renderSplashScreen()  // renders the splash screen
 {
     COORD c = g_Console.getConsoleSize();
-    c.Y /= 3;
+    c.Y /= 5;
     c.X = c.X / 2 - 9;
     g_Console.writeToBuffer(c, "Start", 0x03);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 20;
+    c.Y += 5;
+    c.X = g_Console.getConsoleSize().X / 2 - 10;
     g_Console.writeToBuffer(c, "Setting", 0x09);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 9;
+    c.Y += 5;
+    c.X = g_Console.getConsoleSize().X / 2 - 12;
     g_Console.writeToBuffer(c, "Instructions", 0x09);
 }
 
