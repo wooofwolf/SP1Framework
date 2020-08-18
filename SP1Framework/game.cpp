@@ -481,19 +481,10 @@ void updateNPC()
 {
     if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y && npc1.getAlive() == true)
     {
-        npc1.setSecondsOnFire(5);
+        npc1.setSecsOnFire(5);
         npcCol = 0x4C;
-        const WORD colors[] = {
-        0x1B, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
-        };
-        COORD c;
-        for (int i = 0; i < 5; i++) {
-            c.X = 20 * i;
-            c.Y = i + 0;
-            colour(colors[i]);
-            g_Console.writeToBuffer(c, " °±²Û", colors[i]);
-        }
+        
+        
     }
 }
 
