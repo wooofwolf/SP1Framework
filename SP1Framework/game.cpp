@@ -8,7 +8,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include "Map.h"
+
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -32,7 +32,7 @@ npc         npc1(10, 10);
 Console g_Console(80, 25, "SP1 Framework");
 
 //map
-Map map;
+
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -438,7 +438,18 @@ void updateNPC()
     if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y)
     {
         npc1.setSecondsOnFire(5);
-        npcCol = 0x0C;
+        npcCol = 0x4C;
+        const WORD colors[] = {
+        0x1B, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
+        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
+        };
+        COORD c;
+        for (int i = 0; i < 5; i++) {
+            c.X = 20 * i;
+            c.Y = i + 0;
+            colour(colors[i]);
+            g_Console.writeToBuffer(c, " °±²Û", colors[i]);
+        }
     }
 }
 
@@ -508,7 +519,7 @@ void renderMap()
     };
 
     COORD c;
-    for (int i = 0; i < 200; ++i)
+    for (int i = 0; i < 12; ++i)
     {
         c.X = 20 * i;
         c.Y = i + 0;
