@@ -3,6 +3,8 @@
 //
 #include "game.h"
 #include "Framework\console.h"
+#include "entity.h"
+#include "npc.h"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -17,9 +19,9 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 SGameChar   g_sPjtl;
-SGameChar   NPC_1;
 SGameChar   g_sChar2;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
+npc         npc1(10, 10);
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
@@ -48,9 +50,6 @@ void init( void )
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar2.m_bActive = true;
-    NPC_1.m_cLocation.X = 10;
-    NPC_1.m_cLocation.Y = 10;
-    NPC_1.m_bActive = true;
 
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -354,9 +353,35 @@ void moveCharacter()
 void moveNPC()
 {
     // check if player is in range of NPC
-    if ((pow(g_sChar.m_cLocation.X - NPC_1.m_cLocation.X, 2) + pow(g_sChar.m_cLocation.Y - NPC_1.m_cLocation.Y, 2)) <= 25)
+    if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2)) <= 25)
     {
-        // add AI
+        int npc1L, npc1R, npc1U, npc1D;
+        npc1L = npc1.getCoords().X - 1;
+        npc1R = npc1.getCoords().X + 1;
+        npc1U = npc1.getCoords().Y - 1;
+        npc1D = npc1.getCoords().Y + 1;
+
+        npc1L = (pow(g_sChar.m_cLocation.X - npc1L, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2));
+        npc1R = (pow(g_sChar.m_cLocation.X - npc1R, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2));
+        npc1U = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
+        npc1D = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
+
+        if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && npc1.getCoords().X + 1 <= g_Console.getConsoleSize().X - 1)
+        {
+            npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
+        }
+        else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && npc1.getCoords().X - 1 >= 0)
+        {
+            npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
+        }
+        else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && npc1.getCoords().Y + 1 <= g_Console.getConsoleSize().Y - 1)
+        {
+            npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
+        }
+        else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && npc1.getCoords().Y - 1 >= 0)
+        {
+            npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
+        }
     }
 }
 
@@ -451,13 +476,11 @@ void renderCharacter()
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
     g_Console.writeToBuffer(g_sPjtl.m_cLocation, (char)1, charColor);
     g_Console.writeToBuffer(g_sChar2.m_cLocation, (char)1, charColor2);
-
-    g_Console.writeToBuffer(NPC_1.m_cLocation, 'N', charColor);
 }
 
 void renderNPC()
 {
-    g_Console.writeToBuffer(NPC_1.m_cLocation, 'N', 0x0C);
+    g_Console.writeToBuffer(npc1.getCoords(), 'N', 0x0C);
 }
 
 void renderFramerate()

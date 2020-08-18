@@ -20,6 +20,7 @@ entity::entity(int x, int y)
 entity::entity(COORD location)
 {
 	this->location = location;
+	alive = true;
 }
 
 entity::~entity()
