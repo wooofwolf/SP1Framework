@@ -9,7 +9,7 @@ npc::npc()
 	setCoords(0, 0);
 	setAlive(true);
 
-	SecondsOnFire = 0;
+	secsOnFire = 0;
 	noOfNPCs++;
 }
 
@@ -18,7 +18,7 @@ npc::npc(int x, int y)
 	setCoords(x, y);
 	setAlive(true);
 
-	SecondsOnFire = 0;
+	secsOnFire = 0;
 	noOfNPCs++;
 }
 
@@ -27,7 +27,7 @@ npc::npc(COORD location)
 	setCoords(location);
 	setAlive(true);
 
-	SecondsOnFire = 0;
+	secsOnFire = 0;
 	noOfNPCs++;
 }
 
@@ -41,9 +41,9 @@ int npc::getNoOfNPCs(void)
 	return noOfNPCs;
 }
 
-int npc::getSecondsOnFire(void)
+int npc::getSecsOnFire(void)
 {
-	return SecondsOnFire;
+	return secsOnFire;
 }
 
 void npc::setNoOfNPCs(int number)
@@ -51,9 +51,9 @@ void npc::setNoOfNPCs(int number)
 	noOfNPCs = number;
 }
 
-void npc::setSecondsOnFire(int number)
+void npc::setSecsOnFire(int number)
 {
-	SecondsOnFire = number;
+	secsOnFire = number;
 }
 
 void npc::move(void)
