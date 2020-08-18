@@ -481,13 +481,13 @@ void renderSplashScreen()  // renders the splash screen
     COORD c = g_Console.getConsoleSize();
     c.Y /= 3;
     c.X = c.X / 2 - 9;
-    g_Console.writeToBuffer(c, "A game in 3 seconds", 0x03);
+    g_Console.writeToBuffer(c, "Start", 0x03);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 20;
-    g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
+    g_Console.writeToBuffer(c, "Setting", 0x09);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 9;
-    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+    g_Console.writeToBuffer(c, "Instructions", 0x09);
 }
 
 void renderGame()
@@ -518,8 +518,8 @@ void renderMap()
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0xC7;
-    WORD charColor2 = 0xB0;
+    WORD charColor = 0x4F;
+    WORD charColor2 = 0x90;
     //if (g_sChar.m_bActive)
         //charColor = 0x0A;
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
