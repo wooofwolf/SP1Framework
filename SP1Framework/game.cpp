@@ -41,12 +41,9 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 3;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
-    g_sPjtl.m_cLocation.X = g_Console.getConsoleSize().X / 1;
-    g_sPjtl.m_cLocation.Y = g_Console.getConsoleSize().Y / 1;
-    g_sPjtl.m_bActive = true;
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar2.m_bActive = true;
@@ -269,7 +266,7 @@ void moveCharacter()
             g_sChar.m_cLocation.X--;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-     
+
             lastMove = 2;
         }
         if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
@@ -278,7 +275,7 @@ void moveCharacter()
             g_sChar.m_cLocation.Y++;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
- 
+            g_sChar.m_cLocation.Y++;
             lastMove = 3;
         }
         if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
@@ -287,7 +284,7 @@ void moveCharacter()
             g_sChar.m_cLocation.X++;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-
+            g_sChar.m_cLocation.X++;
             lastMove = 4;
         }
         if (g_skKeyEvent[K_E].keyReleased)
@@ -328,7 +325,7 @@ void moveCharacter()
             // g_sChar2.m_bActive = !g_sChar2.m_bActive;
         }
     }
-    else if (doneShoot > 0 && doneShoot <= 10)
+    else if (doneShoot > 0 && doneShoot < 10)
     {
         if (lastMove == 1)
             g_sPjtl.m_cLocation.Y -= 1;
@@ -340,11 +337,10 @@ void moveCharacter()
             g_sPjtl.m_cLocation.X += 1;
         doneShoot++;
     }
-    else if (doneShoot == 11)
+    else if (doneShoot == 10)
     {
         g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
         g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-        lastMove = 0;
         doneShoot = 0;
     }
 }
