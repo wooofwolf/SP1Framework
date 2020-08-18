@@ -39,12 +39,9 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 3;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
-    g_sPjtl.m_cLocation.X = g_Console.getConsoleSize().X / 1;
-    g_sPjtl.m_cLocation.Y = g_Console.getConsoleSize().Y / 1;
-    g_sPjtl.m_bActive = true;
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar2.m_bActive = true;
@@ -346,7 +343,6 @@ void moveCharacter()
     {
         g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
         g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-        lastMove = 0;
         doneShoot = 0;
     }
 }
