@@ -10,6 +10,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <time.h>
+#include <fstream>
 
 
 double  g_dElapsedTime;
@@ -358,6 +359,7 @@ void moveCharacter()
     }
     else if (doneShoot > 0 && doneShoot < 10)
     {
+        // Fire boy Shooting
         if (eOr0 == 1)
         {
             if (lastMove == 1)
@@ -369,6 +371,7 @@ void moveCharacter()
             else if (lastMove == 4)
                 g_sPjtl.m_cLocation.X += 1;
         }
+        // Water boy Shooting
         else if (eOr0 == 0)
         {
             if (lastMove2 == 1)
@@ -525,16 +528,17 @@ void renderToScreen()
 
 void renderSplashScreen()  // renders the splash screen
 {
+    // Main Menu
     COORD c = g_Console.getConsoleSize();
-    c.Y /= 3;
+    c.Y /= 5;
     c.X = c.X / 2 - 9;
-    g_Console.writeToBuffer(c, "A game in 3 seconds", 0x03);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 20;
-    g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 9;
-    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+    g_Console.writeToBuffer(c, "Start", 0x03);
+    c.Y += 5;
+    c.X = g_Console.getConsoleSize().X / 2 - 10;
+    g_Console.writeToBuffer(c, "Setting", 0x09);
+    c.Y += 5;
+    c.X = g_Console.getConsoleSize().X / 2 - 12;
+    g_Console.writeToBuffer(c, "Instructions", 0x09);
 }
 
 void renderGame()
@@ -546,7 +550,27 @@ void renderGame()
 
 void renderMap()
 {
-   
+    std::ifstream mapFile;
+    mapFile.open("Map.txt", std::ifstream::in);
+
+    for (int y = 0; y < 80; y++)
+    {
+        for (int x = 0; x < 81; x++)
+        {
+            char c = mapFile.get();
+            if (c == '1')
+            {
+                g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+            }
+            else if (c == '0')
+            {
+                g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+            }
+        }
+    }
+    mapFile.close();
+
+   /*
     // Set up sample colours, and output shadings
     const WORD colors[] = {
         0x1B, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
@@ -561,13 +585,14 @@ void renderMap()
         colour(colors[i]);
         g_Console.writeToBuffer(c, " °±²Û", colors[i]);
     }
+    */
 }
 
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0xC7;
-    WORD charColor2 = 0xB0;
+    WORD charColor = 0x4F;
+    WORD charColor2 = 0x90;
     //if (g_sChar.m_bActive)
         //charColor = 0x0A;
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
