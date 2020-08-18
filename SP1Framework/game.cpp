@@ -10,6 +10,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <time.h>
+#include <fstream>
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -543,7 +544,27 @@ void renderGame()
 
 void renderMap()
 {
-   
+    std::ifstream mapFile;
+    mapFile.open("Map.txt", std::ifstream::in);
+
+    for (int y = 0; y < 80; y++)
+    {
+        for (int x = 0; x < 81; x++)
+        {
+            char c = mapFile.get();
+            if (c == '1')
+            {
+                g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+            }
+            else if (c == '0')
+            {
+                g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+            }
+        }
+    }
+    mapFile.close();
+
+   /*
     // Set up sample colours, and output shadings
     const WORD colors[] = {
         0x1B, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
@@ -558,6 +579,7 @@ void renderMap()
         colour(colors[i]);
         g_Console.writeToBuffer(c, " °±²Û", colors[i]);
     }
+    */
 }
 
 void renderCharacter()
