@@ -84,6 +84,7 @@
     <ClCompile Include="Framework\timer.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="npc.cpp" />
     <ClCompile Include="waterboy.cpp" />
   </ItemGroup>
@@ -93,6 +94,7 @@
     <ClInclude Include="Framework\console.h" />
     <ClInclude Include="Framework\timer.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="npc.h" />
     <ClInclude Include="waterboy.h" />
   </ItemGroup>
