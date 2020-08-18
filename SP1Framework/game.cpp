@@ -354,6 +354,7 @@ void moveCharacter()
     }
     else if (doneShoot > 0 && doneShoot < 10)
     {
+        // Fire boy Shooting
         if (eOr0 == 1)
         {
             if (lastMove == 1)
@@ -365,6 +366,7 @@ void moveCharacter()
             else if (lastMove == 4)
                 g_sPjtl.m_cLocation.X += 1;
         }
+        // Water boy Shooting
         else if (eOr0 == 0)
         {
             if (lastMove2 == 1)
