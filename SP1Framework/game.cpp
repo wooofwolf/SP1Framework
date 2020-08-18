@@ -17,6 +17,7 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 SGameChar   g_sPjtl;
+SGameChar   NPC_1;
 SGameChar   g_sChar2;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
@@ -47,6 +48,10 @@ void init( void )
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar2.m_bActive = true;
+    NPC_1.m_cLocation.X = 10;
+    NPC_1.m_cLocation.Y = 10;
+    NPC_1.m_bActive = true;
+
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -242,6 +247,7 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
+    moveNPC();
 }
 
 void moveCharacter()
@@ -345,6 +351,17 @@ void moveCharacter()
     }
 }
 
+}
+
+void moveNPC()
+{
+    // check if player is in range of NPC
+    if ((pow(g_sChar.m_cLocation.X - NPC_1.m_cLocation.X, 2) + pow(g_sChar.m_cLocation.Y - NPC_1.m_cLocation.Y, 2)) <= 25)
+    {
+        // add AI
+    }
+}
+
 void processUserInput()
 {
     // quits the game if player hits the escape key
@@ -405,21 +422,22 @@ void renderGame()
 {
     renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
+    renderNPC();
 }
 
 void renderMap()
 {
     // Set up sample colours, and output shadings
     const WORD colors[] = {
-        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
+        0x1B, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
         0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
     };
 
     COORD c;
-    for (int i = 0; i < 12; ++i)
+    for (int i = 0; i < 200; ++i)
     {
-        c.X = 5 * i;
-        c.Y = i + 1;
+        c.X = 20 * i;
+        c.Y = i + 0;
         colour(colors[i]);
         g_Console.writeToBuffer(c, " °±²Û", colors[i]);
     }
@@ -435,6 +453,13 @@ void renderCharacter()
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
     g_Console.writeToBuffer(g_sPjtl.m_cLocation, (char)1, charColor);
     g_Console.writeToBuffer(g_sChar2.m_cLocation, (char)1, charColor2);
+
+    g_Console.writeToBuffer(NPC_1.m_cLocation, 'N', charColor);
+}
+
+void renderNPC()
+{
+    g_Console.writeToBuffer(NPC_1.m_cLocation, 'N', 0x0C);
 }
 
 void renderFramerate()
