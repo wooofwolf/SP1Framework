@@ -558,6 +558,7 @@ void renderMap()
         for (int x = 0; x < 81; x++)
         {
             char c = mapFile.get();
+          
             if (c == '1')
             {
                 g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
@@ -641,7 +642,7 @@ void renderInputEvents()
     std::ostringstream ss;
     std::string key;
     for (int i = 0; i < K_COUNT; ++i)
-    {
+    {/*
         ss.str("");
         switch (i)
         {
@@ -674,7 +675,7 @@ void renderInputEvents()
         else if (g_skKeyEvent[i].keyReleased)
             ss << key << " released";
         else
-            ss << key << " not pressed";
+            ss << key << " not pressed";*/
 
         COORD c = { startPos.X, startPos.Y + i };
         g_Console.writeToBuffer(c, ss.str(), 0x17);
@@ -682,10 +683,10 @@ void renderInputEvents()
 
     // mouse events    
     ss.str("");
-    ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
+    /*ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";*/
     g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
     ss.str("");
-    switch (g_mouseEvent.eventFlags)
+   /* switch (g_mouseEvent.eventFlags)
     {
     case 0:
         if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
@@ -714,10 +715,10 @@ void renderInputEvents()
         else
             ss.str("Mouse wheeled up");
         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
+        break;*/
+   /* default:        
         break;
-    default:        
-        break;
-    }
+    }*/
     
 }
 
