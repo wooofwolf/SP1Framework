@@ -41,7 +41,7 @@ int npc::getNoOfNPCs(void)
 	return noOfNPCs;
 }
 
-int npc::getSecsOnFire(void)
+double npc::getSecsOnFire(void)
 {
 	return secsOnFire;
 }
@@ -51,7 +51,7 @@ void npc::setNoOfNPCs(int number)
 	noOfNPCs = number;
 }
 
-void npc::setSecsOnFire(int number)
+void npc::setSecsOnFire(double number)
 {
 	secsOnFire = number;
 }

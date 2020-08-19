@@ -23,6 +23,9 @@ SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
 
+// NPC related stopwatch
+CStopWatch fireWatch;
+double secsPassed = 0;
 
 // Game specific variables here
 SGameChar   g_sChar;
@@ -399,41 +402,46 @@ void moveNPC()
 {
     if (npc1.getSecsOnFire() > 0)
     {
-        // Randomly runs
-        int randomInt = rand() % 4 + 1;
-        if (randomInt == 1) // Up
+        secsPassed += fireWatch.getElapsedTime();
+
+        if (secsPassed > 0.33)
         {
-            if (npc1.getCoords().Y - 1 >= 0)
+            // Randomly runs
+            int randomInt = rand() % 4 + 1;
+            if (randomInt == 1) // Up
             {
-                npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
+                if (npc1.getCoords().Y - 1 >= 0)
+                {
+                    npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
+                }
             }
-        }
-        else if (randomInt == 2) // Down
-        {
-            if (npc1.getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1)
+            else if (randomInt == 2) // Down
             {
-                npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
+                if (npc1.getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1)
+                {
+                    npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
+                }
             }
-        }
-        else if (randomInt == 3) // Left
-        {
-            if (npc1.getCoords().X - 1 >= 0)
+            else if (randomInt == 3) // Left
             {
-                npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
+                if (npc1.getCoords().X - 1 >= 0)
+                {
+                    npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
+                }
             }
-        }
-        else // Right
-        {
-            if (npc1.getCoords().X + 1 >= 0)
+            else // Right
             {
-                npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
+                if (npc1.getCoords().X + 1 >= 0)
+                {
+                    npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
+                }
             }
-        }
-        npc1.setSecsOnFire(npc1.getSecsOnFire() - 1);
-        Sleep(100);
-        if (npc1.getSecsOnFire() == 0)
-        {
-            npc1.setAlive(false);
+            npc1.setSecsOnFire(npc1.getSecsOnFire() - 0.33);
+            if (npc1.getSecsOnFire() <= 0)
+            {
+                npc1.setAlive(false);
+            }
+            secsPassed = 0;
         }
     }
 
@@ -484,10 +492,10 @@ void updateNPC()
 {
     if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y && npc1.getAlive() == true)
     {
-        npc1.setSecsOnFire(5);
+        npc1.setSecsOnFire(15);
         npcCol = 0x4C;
         
-        
+        fireWatch.startTimer();
     }
 }
 
