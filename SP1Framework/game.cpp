@@ -57,7 +57,7 @@ void init( void )
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.05;
     g_sChar.m_bActive = true;
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
-    g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
+    g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 10;
     g_sChar2.m_bActive = true;
 
     // sets the width, height and the font name to use in the console
@@ -559,7 +559,7 @@ void renderGame()
 void renderMap()
 {
     std::ifstream mapFile;
-    mapFile.open("Map.txt", std::ifstream::in);
+    mapFile.open("Zav Map.txt", std::ifstream::in);
 
     for (int y = 0; y < 80; y++)
     {
