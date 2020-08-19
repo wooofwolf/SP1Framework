@@ -457,7 +457,7 @@ void moveNPC()
     else if (npc1.getAlive() == true)
     {
         // check if player is in range of NPC
-        if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2)) <= 100)
+        if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2) * 2) <= 25)
         {
             int npc1L, npc1R, npc1U, npc1D;
             npc1L = npc1.getCoords().X - 1;
@@ -501,7 +501,7 @@ void updateNPC()
 {
     if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y && npc1.getAlive() == true && npc1.getSecsOnFire() <= 0)
     {
-        npc1.setSecsOnFire(3);
+        npc1.setSecsOnFire(5);
         npcCol = 0x4C;
         
         fireWatch.startTimer();
