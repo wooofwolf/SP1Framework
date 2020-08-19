@@ -246,8 +246,8 @@ void update(double dt)
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-    if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
-        g_eGameState = S_GAME;
+    //if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
+    //    g_eGameState = S_GAME;
 }
 
 void updateGame()       // gameplay logic
@@ -538,14 +538,11 @@ void renderSplashScreen()  // renders the splash screen
 {
     // Main Menu
     COORD c = g_Console.getConsoleSize();
-    c.Y /= 5;
-    c.X = c.X / 2 - 9;
+    c.Y /= 3;
+    c.X = c.X / 2 - 3;
     g_Console.writeToBuffer(c, "Start", 0x03);
-    c.Y += 5;
-    c.X = g_Console.getConsoleSize().X / 2 - 10;
-    g_Console.writeToBuffer(c, "Setting", 0x09);
-    c.Y += 5;
-    c.X = g_Console.getConsoleSize().X / 2 - 12;
+    c.Y += 7;
+    c.X = g_Console.getConsoleSize().X / 2 - 6;
     g_Console.writeToBuffer(c, "Instructions", 0x09);
 }
 
