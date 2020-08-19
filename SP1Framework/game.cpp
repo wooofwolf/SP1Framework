@@ -53,6 +53,14 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
+    // Zavier's
+    /*
+    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 44;
+    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.05;
+    g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
+    g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
+    */
+    // Tutorial Level
     g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.25;
     g_sChar.m_bActive = true;
@@ -538,14 +546,11 @@ void renderSplashScreen()  // renders the splash screen
 {
     // Main Menu
     COORD c = g_Console.getConsoleSize();
-    c.Y /= 5;
-    c.X = c.X / 2 - 9;
+    c.Y /= 3;
+    c.X = c.X / 2 - 3;
     g_Console.writeToBuffer(c, "Start", 0x03);
-    c.Y += 5;
-    c.X = g_Console.getConsoleSize().X / 2 - 10;
-    g_Console.writeToBuffer(c, "Setting", 0x09);
-    c.Y += 5;
-    c.X = g_Console.getConsoleSize().X / 2 - 12;
+    c.Y += 7;
+    c.X = g_Console.getConsoleSize().X / 2 - 6;
     g_Console.writeToBuffer(c, "Instructions", 0x09);
 }
 
@@ -566,6 +571,7 @@ void renderMap()
         for (int x = 0; x < 81; x++)
         {
             char c = mapFile.get();
+          
             if (c == '1')
             {
                 g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
@@ -649,7 +655,7 @@ void renderInputEvents()
     std::ostringstream ss;
     std::string key;
     for (int i = 0; i < K_COUNT; ++i)
-    {
+    {/*
         ss.str("");
         switch (i)
         {
@@ -682,7 +688,7 @@ void renderInputEvents()
         else if (g_skKeyEvent[i].keyReleased)
             ss << key << " released";
         else
-            ss << key << " not pressed";
+            ss << key << " not pressed";*/
 
         COORD c = { startPos.X, startPos.Y + i };
         g_Console.writeToBuffer(c, ss.str(), 0x17);
@@ -690,10 +696,10 @@ void renderInputEvents()
 
     // mouse events    
     ss.str("");
-    ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
+    /*ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";*/
     g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
     ss.str("");
-    switch (g_mouseEvent.eventFlags)
+   /* switch (g_mouseEvent.eventFlags)
     {
     case 0:
         if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
@@ -722,10 +728,10 @@ void renderInputEvents()
         else
             ss.str("Mouse wheeled up");
         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
+        break;*/
+   /* default:        
         break;
-    default:        
-        break;
-    }
+    }*/
     
 }
 
