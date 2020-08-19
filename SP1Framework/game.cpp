@@ -1,4 +1,4 @@
-// This is the main file for the game logic and function
+ï»¿// This is the main file for the game logic and function
 //
 //
 #include "game.h"
@@ -572,14 +572,22 @@ void renderMap()
         for (int x = 0; x < 81; x++)
         {
             char c = mapFile.get();
-          
-            if (c == '1')
+            
+            if ((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2)) <= 144)
             {
-                g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                if (c == '1')
+                {
+                    g_Console.writeToBuffer(x, y, " Â°Â±Â²Ã›", 0xF6);
+                }
+                else if (c == '0')
+                {
+                    g_Console.writeToBuffer(x, y, " Â°Â±Â²Ã›", 0x1B);
+                }
             }
-            else if (c == '0')
+
+            else
             {
-                g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                g_Console.writeToBuffer(x, y, " Â°Â±Â²Ã›", 0x00);
             }
         }
     }
@@ -598,7 +606,7 @@ void renderMap()
         c.X = 20 * i;
         c.Y = i + 0;
         colour(colors[i]);
-        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
+        g_Console.writeToBuffer(c, " Â°Â±Â²Ã›", colors[i]);
     }
     */
 }
