@@ -1,4 +1,4 @@
-// This is the main file for the game logic and function
+ï»¿// This is the main file for the game logic and function
 //
 //
 #include "game.h"
@@ -18,7 +18,7 @@ double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
 int doneShoot = 0;
-int eOr0;
+int rOrS;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
@@ -53,11 +53,19 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
+    // Zavier's
+    /*
     g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 44;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.05;
-    g_sChar.m_bActive = true;
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
-    g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 10;
+    g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
+    */
+    // Tutorial Level
+    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
+    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.25;
+    g_sChar.m_bActive = true;
+    g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.2;
+    g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.2;
     g_sChar2.m_bActive = true;
 
     // sets the width, height and the font name to use in the console
@@ -174,13 +182,14 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case 65: key = K_A; break;
     case 83: key = K_S; break;
     case 68: key = K_D; break;
-    case 69: key = K_E; break;
+    case 0x52: key = K_R; break;
+    case 0x54: key = K_T; break;
     case VK_UP: key = K_UP; break;
     case VK_DOWN: key = K_DOWN; break;
     case VK_LEFT: key = K_LEFT; break; 
     case VK_RIGHT: key = K_RIGHT; break;
-    case VK_NUMPAD0: key = K_0; break;
-    case 48: key = K_0; break;
+    case VK_OEM_COMMA: key = K_COMMA; break;
+    case VK_OEM_PERIOD: key = K_PERIOD; break;
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     }
@@ -296,7 +305,7 @@ void moveCharacter()
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
             lastMove = 4;
         }
-        if (g_skKeyEvent[K_E].keyReleased)
+        if (g_skKeyEvent[K_R].keyReleased)
         {
             if (lastMove == 1)
                 g_sPjtl.m_cLocation.Y -= 1;
@@ -306,7 +315,7 @@ void moveCharacter()
                 g_sPjtl.m_cLocation.Y += 1;
             else if (lastMove == 4)
                 g_sPjtl.m_cLocation.X += 1;
-            eOr0 = 1;
+            rOrS = 1;
             doneShoot++;
         }
         if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
@@ -341,7 +350,7 @@ void moveCharacter()
             g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
             lastMove2 = 4;
         }
-        if (g_skKeyEvent[K_0].keyReleased)
+        if (g_skKeyEvent[K_COMMA].keyReleased)
         {
             if (lastMove2 == 1)
                 g_sPjtl2.m_cLocation.Y -= 1;
@@ -351,7 +360,7 @@ void moveCharacter()
                 g_sPjtl2.m_cLocation.Y += 1;
             else if (lastMove2 == 4)
                 g_sPjtl2.m_cLocation.X += 1;
-            eOr0 = 0;
+            rOrS = 0;
             doneShoot++;
         }
         if (g_skKeyEvent[K_SPACE].keyReleased)
@@ -363,7 +372,7 @@ void moveCharacter()
     else if (doneShoot > 0 && doneShoot < 10)
     {
         // Fire boy Shooting
-        if (eOr0 == 1)
+        if (rOrS == 1)
         {
             if (lastMove == 1)
                 g_sPjtl.m_cLocation.Y -= 1;
@@ -375,7 +384,7 @@ void moveCharacter()
                 g_sPjtl.m_cLocation.X += 1;
         }
         // Water boy Shooting
-        else if (eOr0 == 0)
+        else if (rOrS == 0)
         {
             if (lastMove2 == 1)
                 g_sPjtl2.m_cLocation.Y -= 1;
@@ -448,7 +457,7 @@ void moveNPC()
     else if (npc1.getAlive() == true)
     {
         // check if player is in range of NPC
-        if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2)) <= 100)
+        if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2) * 2) <= 25)
         {
             int npc1L, npc1R, npc1U, npc1D;
             npc1L = npc1.getCoords().X - 1;
@@ -492,7 +501,7 @@ void updateNPC()
 {
     if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y && npc1.getAlive() == true && npc1.getSecsOnFire() <= 0)
     {
-        npc1.setSecsOnFire(10);
+        npc1.setSecsOnFire(5);
         npcCol = 0x4C;
         
         fireWatch.startTimer();
@@ -538,14 +547,11 @@ void renderSplashScreen()  // renders the splash screen
 {
     // Main Menu
     COORD c = g_Console.getConsoleSize();
-    c.Y /= 5;
-    c.X = c.X / 2 - 9;
+    c.Y /= 3;
+    c.X = c.X / 2 - 3;
     g_Console.writeToBuffer(c, "Start", 0x03);
-    c.Y += 5;
-    c.X = g_Console.getConsoleSize().X / 2 - 10;
-    g_Console.writeToBuffer(c, "Setting", 0x09);
-    c.Y += 5;
-    c.X = g_Console.getConsoleSize().X / 2 - 12;
+    c.Y += 7;
+    c.X = g_Console.getConsoleSize().X / 2 - 6;
     g_Console.writeToBuffer(c, "Instructions", 0x09);
 }
 
@@ -559,21 +565,30 @@ void renderGame()
 void renderMap()
 {
     std::ifstream mapFile;
-    mapFile.open("Zav Map.txt", std::ifstream::in);
+  /*  mapFile.open("Zav Map.txt", std::ifstream::in);*/
+    mapFile.open("TutorialMap.txt", std::ifstream::in);
 
     for (int y = 0; y < 80; y++)
     {
         for (int x = 0; x < 81; x++)
         {
             char c = mapFile.get();
-          
-            if (c == '1')
+            
+            if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
             {
-                g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                if (c == '1')
+                {
+                    g_Console.writeToBuffer(x, y, " Â°Â±Â²Ã›", 0xF6);
+                }
+                else if (c == '0')
+                {
+                    g_Console.writeToBuffer(x, y, " Â°Â±Â²Ã›", 0x1B);
+                }
             }
-            else if (c == '0')
+
+            else
             {
-                g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                g_Console.writeToBuffer(x, y, " Â°Â±Â²Ã›", 0x00);
             }
         }
     }
@@ -592,7 +607,7 @@ void renderMap()
         c.X = 20 * i;
         c.Y = i + 0;
         colour(colors[i]);
-        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
+        g_Console.writeToBuffer(c, " Â°Â±Â²Ã›", colors[i]);
     }
     */
 }
@@ -649,8 +664,8 @@ void renderInputEvents()
     COORD startPos = {50, 2};
     std::ostringstream ss;
     std::string key;
-    for (int i = 0; i < K_COUNT; ++i)
-    {/*
+    /*for (int i = 0; i < K_COUNT; ++i)
+    {
         ss.str("");
         switch (i)
         {
@@ -662,7 +677,9 @@ void renderInputEvents()
             break;
         case K_D: key = "D";
             break;
-        case K_E: key = "E";
+        case K_R: key = "R";
+            break;
+        case K_T: key = "T";
             break;
         case K_UP: key = "UP";
             break;
@@ -672,7 +689,9 @@ void renderInputEvents()
             break;
         case K_RIGHT: key = "RIGHT";
             break;
-        case K_0: key = "0";
+        case K_COMMA: key = ",";
+            break;
+        case K_PERIOD: key = ".";
             break;
         case K_SPACE: key = "SPACE";
             break;
@@ -683,11 +702,11 @@ void renderInputEvents()
         else if (g_skKeyEvent[i].keyReleased)
             ss << key << " released";
         else
-            ss << key << " not pressed";*/
+            ss << key << " not pressed";
 
         COORD c = { startPos.X, startPos.Y + i };
         g_Console.writeToBuffer(c, ss.str(), 0x17);
-    }
+    }*/
 
     // mouse events    
     ss.str("");
