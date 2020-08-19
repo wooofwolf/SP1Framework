@@ -492,7 +492,7 @@ void updateNPC()
 {
     if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y && npc1.getAlive() == true && npc1.getSecsOnFire() <= 0)
     {
-        npc1.setSecsOnFire(10);
+        npc1.setSecsOnFire(3);
         npcCol = 0x4C;
         
         fireWatch.startTimer();
