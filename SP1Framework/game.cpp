@@ -115,7 +115,7 @@ void getInput( void )
 // Output   : void
 //--------------------------------------------------------------
 void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
-{    
+{
     switch (g_eGameState)
     {
     case S_SPLASHSCREEN: // don't handle anything for the splash screen
@@ -484,7 +484,7 @@ void updateNPC()
 {
     if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y && npc1.getAlive() == true)
     {
-        npc1.setSecsOnFire(5);
+        npc1.setSecsOnFire(10);
         npcCol = 0x4C;
         
         
