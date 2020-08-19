@@ -18,7 +18,7 @@ double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
 int doneShoot = 0;
-int rOrK;
+int rOrS;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
@@ -178,18 +178,18 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     EKEYS key = K_COUNT;
     switch (keyboardEvent.wVirtualKeyCode)
     {
-    case 0x87: key = K_W; break;
-    case 0x65: key = K_A; break;
-    case 0x83: key = K_S; break;
-    case 0x68: key = K_D; break;
-    case 0x69: key = K_R; break;
+    case 87: key = K_W; break;
+    case 65: key = K_A; break;
+    case 83: key = K_S; break;
+    case 68: key = K_D; break;
+    case 0x52: key = K_R; break;
     case 0x54: key = K_T; break;
     case VK_UP: key = K_UP; break;
     case VK_DOWN: key = K_DOWN; break;
     case VK_LEFT: key = K_LEFT; break; 
     case VK_RIGHT: key = K_RIGHT; break;
-    case 0x4B: key = K_K; break;
-    case 0x4C: key = K_L; break;
+    case VK_OEM_COMMA: key = K_COMMA; break;
+    case VK_OEM_PERIOD: key = K_PERIOD; break;
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     }
@@ -315,7 +315,7 @@ void moveCharacter()
                 g_sPjtl.m_cLocation.Y += 1;
             else if (lastMove == 4)
                 g_sPjtl.m_cLocation.X += 1;
-            rOrK = 1;
+            rOrS = 1;
             doneShoot++;
         }
         if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
@@ -350,7 +350,7 @@ void moveCharacter()
             g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
             lastMove2 = 4;
         }
-        if (g_skKeyEvent[K_K].keyReleased)
+        if (g_skKeyEvent[K_COMMA].keyReleased)
         {
             if (lastMove2 == 1)
                 g_sPjtl2.m_cLocation.Y -= 1;
@@ -360,7 +360,7 @@ void moveCharacter()
                 g_sPjtl2.m_cLocation.Y += 1;
             else if (lastMove2 == 4)
                 g_sPjtl2.m_cLocation.X += 1;
-            rOrK = 0;
+            rOrS = 0;
             doneShoot++;
         }
         if (g_skKeyEvent[K_SPACE].keyReleased)
@@ -372,7 +372,7 @@ void moveCharacter()
     else if (doneShoot > 0 && doneShoot < 10)
     {
         // Fire boy Shooting
-        if (rOrK == 1)
+        if (rOrS == 1)
         {
             if (lastMove == 1)
                 g_sPjtl.m_cLocation.Y -= 1;
@@ -384,7 +384,7 @@ void moveCharacter()
                 g_sPjtl.m_cLocation.X += 1;
         }
         // Water boy Shooting
-        else if (rOrK == 0)
+        else if (rOrS == 0)
         {
             if (lastMove2 == 1)
                 g_sPjtl2.m_cLocation.Y -= 1;
@@ -655,8 +655,8 @@ void renderInputEvents()
     COORD startPos = {50, 2};
     std::ostringstream ss;
     std::string key;
-    for (int i = 0; i < K_COUNT; ++i)
-    {/*
+    /*for (int i = 0; i < K_COUNT; ++i)
+    {
         ss.str("");
         switch (i)
         {
@@ -668,7 +668,9 @@ void renderInputEvents()
             break;
         case K_D: key = "D";
             break;
-        case K_E: key = "E";
+        case K_R: key = "R";
+            break;
+        case K_T: key = "T";
             break;
         case K_UP: key = "UP";
             break;
@@ -678,7 +680,9 @@ void renderInputEvents()
             break;
         case K_RIGHT: key = "RIGHT";
             break;
-        case K_0: key = "0";
+        case K_COMMA: key = ",";
+            break;
+        case K_PERIOD: key = ".";
             break;
         case K_SPACE: key = "SPACE";
             break;
@@ -689,11 +693,11 @@ void renderInputEvents()
         else if (g_skKeyEvent[i].keyReleased)
             ss << key << " released";
         else
-            ss << key << " not pressed";*/
+            ss << key << " not pressed";
 
         COORD c = { startPos.X, startPos.Y + i };
         g_Console.writeToBuffer(c, ss.str(), 0x17);
-    }
+    }*/
 
     // mouse events    
     ss.str("");
