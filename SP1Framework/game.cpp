@@ -18,7 +18,7 @@ double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
 int doneShoot = 0;
-int eOr0;
+int rOrK;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
@@ -178,17 +178,18 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     EKEYS key = K_COUNT;
     switch (keyboardEvent.wVirtualKeyCode)
     {
-    case 87: key = K_W; break;
-    case 65: key = K_A; break;
-    case 83: key = K_S; break;
-    case 68: key = K_D; break;
-    case 69: key = K_E; break;
+    case 0x87: key = K_W; break;
+    case 0x65: key = K_A; break;
+    case 0x83: key = K_S; break;
+    case 0x68: key = K_D; break;
+    case 0x69: key = K_R; break;
+    case 0x54: key = K_T; break;
     case VK_UP: key = K_UP; break;
     case VK_DOWN: key = K_DOWN; break;
     case VK_LEFT: key = K_LEFT; break; 
     case VK_RIGHT: key = K_RIGHT; break;
-    case VK_NUMPAD0: key = K_0; break;
-    case 48: key = K_0; break;
+    case 0x4B: key = K_K; break;
+    case 0x4C: key = K_L; break;
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     }
@@ -304,7 +305,7 @@ void moveCharacter()
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
             lastMove = 4;
         }
-        if (g_skKeyEvent[K_E].keyReleased)
+        if (g_skKeyEvent[K_R].keyReleased)
         {
             if (lastMove == 1)
                 g_sPjtl.m_cLocation.Y -= 1;
@@ -314,7 +315,7 @@ void moveCharacter()
                 g_sPjtl.m_cLocation.Y += 1;
             else if (lastMove == 4)
                 g_sPjtl.m_cLocation.X += 1;
-            eOr0 = 1;
+            rOrK = 1;
             doneShoot++;
         }
         if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
@@ -349,7 +350,7 @@ void moveCharacter()
             g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
             lastMove2 = 4;
         }
-        if (g_skKeyEvent[K_0].keyReleased)
+        if (g_skKeyEvent[K_K].keyReleased)
         {
             if (lastMove2 == 1)
                 g_sPjtl2.m_cLocation.Y -= 1;
@@ -359,7 +360,7 @@ void moveCharacter()
                 g_sPjtl2.m_cLocation.Y += 1;
             else if (lastMove2 == 4)
                 g_sPjtl2.m_cLocation.X += 1;
-            eOr0 = 0;
+            rOrK = 0;
             doneShoot++;
         }
         if (g_skKeyEvent[K_SPACE].keyReleased)
@@ -371,7 +372,7 @@ void moveCharacter()
     else if (doneShoot > 0 && doneShoot < 10)
     {
         // Fire boy Shooting
-        if (eOr0 == 1)
+        if (rOrK == 1)
         {
             if (lastMove == 1)
                 g_sPjtl.m_cLocation.Y -= 1;
@@ -383,7 +384,7 @@ void moveCharacter()
                 g_sPjtl.m_cLocation.X += 1;
         }
         // Water boy Shooting
-        else if (eOr0 == 0)
+        else if (rOrK == 0)
         {
             if (lastMove2 == 1)
                 g_sPjtl2.m_cLocation.Y -= 1;
