@@ -630,7 +630,7 @@ void renderNPC()
     updateNPC();
     if (npc1.getAlive() == true)
     {
-        g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+        g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol); 
     }
     else
     {
