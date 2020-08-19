@@ -564,7 +564,7 @@ void renderGame()
 void renderMap()
 {
     std::ifstream mapFile;
-    mapFile.open("Map.txt", std::ifstream::in);
+    mapFile.open("TutorialMap.txt", std::ifstream::in);
 
     for (int y = 0; y < 80; y++)
     {
