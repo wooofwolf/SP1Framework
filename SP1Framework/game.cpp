@@ -378,6 +378,7 @@ void moveCharacter()
             else if (lastMove2 == 4)
                 g_sPjtl2.m_cLocation.X += 1;
         }
+        doneShoot++;
     }
     else if (doneShoot == 11)
     {
