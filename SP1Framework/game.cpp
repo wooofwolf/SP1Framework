@@ -187,6 +187,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case VK_OEM_PERIOD: key = K_PERIOD; break;
     case 0x31: key = K_1; break;
     case 0x32: key = K_2; break;
+    case 0x33: key = K_3; break;
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     }
@@ -273,11 +274,13 @@ void moveCharacter()
         if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
         {
             //Beep(1440, 30);
+
             g_sChar.m_cLocation.Y--;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
             lastMove = 1;
         }
+          
         if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0)
         {
             //Beep(1440, 30);
@@ -386,6 +389,7 @@ void moveCharacter()
         g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
         doneShoot = 0;
     }
+
 }
 
 void moveNPC()
@@ -558,9 +562,15 @@ void renderMap()
         mapSel = true;
         // Set their spawn below
     }
-    else if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
+    if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
     {
         mapNum = 2;
+        mapSel = true;
+        // Set their spawn below
+    }
+    else if (g_skKeyEvent[K_3].keyReleased && mapSel == false)
+    {
+        mapNum = 3;
         mapSel = true;
         // Their spawnpoint
         g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
@@ -580,6 +590,10 @@ void renderMap()
     }
     else if (mapNum == 2 && mapSel == true)
     {
+        // Settings
+    }
+    else if (mapNum == 3 && mapSel == true)
+    {
         // Tutorial
         std::ifstream mapFile;
         mapFile.open("TutorialMap.txt", std::ifstream::in);
@@ -591,7 +605,7 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
-                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36 || (npc1.getSecsOnFire() > 0 && (pow(x - npc1.getCoords().X, 2) + pow(y - npc1.getCoords().Y, 2) * 2 <= 16)))
                 {
                     if (c == '1')
                     {

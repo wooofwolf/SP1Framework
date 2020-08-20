@@ -41,6 +41,7 @@ enum EKEYS
     K_ESCAPE,
     K_1,
     K_2,
+    K_3,
     K_SPACE,
     K_COUNT
 };
