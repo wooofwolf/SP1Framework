@@ -18,11 +18,10 @@ double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
 int doneShoot = 0;
-int rOrS;
+int rOrC;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
-
 // NPC related stopwatch
 CStopWatch fireWatch;
 double secsPassed = 0;
@@ -268,7 +267,7 @@ void updateGame()       // gameplay logic
 }
 
 void moveCharacter()
-{    
+{
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
     if (doneShoot == 0)
@@ -307,15 +306,7 @@ void moveCharacter()
         }
         if (g_skKeyEvent[K_R].keyReleased)
         {
-            if (lastMove == 1)
-                g_sPjtl.m_cLocation.Y -= 1;
-            else if (lastMove == 2)
-                g_sPjtl.m_cLocation.X -= 1;
-            else if (lastMove == 3)
-                g_sPjtl.m_cLocation.Y += 1;
-            else if (lastMove == 4)
-                g_sPjtl.m_cLocation.X += 1;
-            rOrS = 1;
+            rOrC = 1;
             doneShoot++;
         }
         if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
@@ -352,15 +343,7 @@ void moveCharacter()
         }
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
-            if (lastMove2 == 1)
-                g_sPjtl2.m_cLocation.Y -= 1;
-            else if (lastMove2 == 2)
-                g_sPjtl2.m_cLocation.X -= 1;
-            else if (lastMove2 == 3)
-                g_sPjtl2.m_cLocation.Y += 1;
-            else if (lastMove2 == 4)
-                g_sPjtl2.m_cLocation.X += 1;
-            rOrS = 0;
+            rOrC = 0;
             doneShoot++;
         }
         if (g_skKeyEvent[K_SPACE].keyReleased)
@@ -369,10 +352,10 @@ void moveCharacter()
             // g_sChar2.m_bActive = !g_sChar2.m_bActive;
         }
     }
-    else if (doneShoot > 0 && doneShoot < 10)
+    else if (doneShoot > 0 && doneShoot < 11)
     {
         // Fire boy Shooting
-        if (rOrS == 1)
+        if (rOrC == 1)
         {
             if (lastMove == 1)
                 g_sPjtl.m_cLocation.Y -= 1;
@@ -384,7 +367,7 @@ void moveCharacter()
                 g_sPjtl.m_cLocation.X += 1;
         }
         // Water boy Shooting
-        else if (rOrS == 0)
+        else if (rOrC == 0)
         {
             if (lastMove2 == 1)
                 g_sPjtl2.m_cLocation.Y -= 1;
@@ -397,7 +380,7 @@ void moveCharacter()
         }
         doneShoot++;
     }
-    else if (doneShoot == 10)
+    else if (doneShoot == 11)
     {
         g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
         g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
@@ -494,7 +477,7 @@ void processUserInput()
 {
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
-        g_bQuitGame = true;    
+        g_bQuitGame = true;
 }
 
 void updateNPC()
