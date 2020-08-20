@@ -20,6 +20,7 @@ int lastMove2;
 int doneShoot = 0;
 int rOrC;
 int mapNum = 0;
+
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
@@ -60,12 +61,11 @@ void init( void )
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
     */
-    // Tutorial Level
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.25;
+    g_sChar.m_cLocation.X = 0;
+    g_sChar.m_cLocation.Y = 0;
     g_sChar.m_bActive = true;
-    g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.2;
-    g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.2;
+    g_sChar2.m_cLocation.X = 0;
+    g_sChar2.m_cLocation.Y = 0;
     g_sChar2.m_bActive = true;
 
     // sets the width, height and the font name to use in the console
@@ -190,6 +190,8 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case VK_RIGHT: key = K_RIGHT; break;
     case VK_OEM_COMMA: key = K_COMMA; break;
     case VK_OEM_PERIOD: key = K_PERIOD; break;
+    case 0x31: key = K_1; break;
+    case 0x32: key = K_2; break;
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     }
@@ -548,12 +550,28 @@ void renderGame()
 
 void renderMap()
 {
-    if (g_skKeyEvent[K_SPACE].keyReleased)
+    if (g_skKeyEvent[K_1].keyReleased)
     {
         mapNum = 1;
     }
+    else if (g_skKeyEvent[K_2].keyReleased)
+    {
+        mapNum = 2;
+        g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
+        g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.25;
+        g_sChar.m_bActive = true;
+        g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.2;
+        g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.2;
+        g_sChar2.m_bActive = true;
+    }
     if (mapNum == 1)
     {
+        // Actual Map
+    }
+    else if (mapNum == 2)
+    {
+        // Tutorial
+
         std::ifstream mapFile;
         mapFile.open("TutorialMap.txt", std::ifstream::in);
 
