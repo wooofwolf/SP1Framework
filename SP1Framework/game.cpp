@@ -446,6 +446,7 @@ void moveNPC()
         // check if player is in range of NPC
         if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2) * 2) <= 25)
         {
+
             int npc1L, npc1R, npc1U, npc1D;
 
             npc1L = npc1.getCoords().X - 1;
@@ -458,19 +459,19 @@ void moveNPC()
             npc1U = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
             npc1D = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
 
-            if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && npc1.getCoords().X + 1 <= g_Console.getConsoleSize().X - 1)
+            if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && Collision(npc1.getCoords(), 'R') == false)
             {
                 npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
             }
-            else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && npc1.getCoords().X - 1 >= 0)
+            else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && Collision(npc1.getCoords(), 'L') == false)
             {
                 npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
             }
-            else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && npc1.getCoords().Y + 1 <= g_Console.getConsoleSize().Y - 1)
+            else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && Collision(npc1.getCoords(), 'D') == false)
             {
                 npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
             }
-            else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && npc1.getCoords().Y - 1 >= 0)
+            else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && Collision(npc1.getCoords(), 'U') == false)
             {
                 npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
             }
