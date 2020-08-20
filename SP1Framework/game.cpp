@@ -56,12 +56,12 @@ void init( void )
     g_eGameState = S_SPLASHSCREEN;
 
     // Zavier's
-    /*
+    
     g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 44;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.05;
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
-    */
+    
 
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -593,7 +593,34 @@ void renderMap()
     }
     else if (mapNum == 1 && mapSel == true)
     {
-        // Actual Map
+        std::ifstream mapFile;
+        mapFile.open("Zav Map.txt", std::ifstream::in);
+
+        for (int y = 0; y < 26; y++)
+        {
+            for (int x = 0; x < 81; x++)
+            {
+                char c = mapFile.get();
+                mapArray[x][y] = c;
+
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36 || (npc1.getSecsOnFire() > 0 && (pow(x - npc1.getCoords().X, 2) + pow(y - npc1.getCoords().Y, 2) * 2 <= 16)))
+                {
+                    if (c == '1')
+                    {
+                        g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                    }
+                    else if (c == '0')
+                    {
+                        g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                    }
+                }
+
+                else
+                {
+                    g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
+                }
+            }
+        }
     }
     else if (mapNum == 2 && mapSel == true)
     {
