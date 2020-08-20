@@ -186,6 +186,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case VK_OEM_PERIOD: key = K_PERIOD; break;
     case 0x31: key = K_1; break;
     case 0x32: key = K_2; break;
+    case 0x33: key = K_3; break;
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     }
@@ -565,9 +566,15 @@ void renderMap()
         mapSel = true;
         // Set their spawn below
     }
-    else if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
+    if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
     {
         mapNum = 2;
+        mapSel = true;
+        // Set their spawn below
+    }
+    else if (g_skKeyEvent[K_3].keyReleased && mapSel == false)
+    {
+        mapNum = 3;
         mapSel = true;
         // Their spawnpoint
         g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
@@ -586,6 +593,10 @@ void renderMap()
         // Actual Map
     }
     else if (mapNum == 2 && mapSel == true)
+    {
+        // Settings
+    }
+    else if (mapNum == 3 && mapSel == true)
     {
         // Tutorial
         std::ifstream mapFile;
