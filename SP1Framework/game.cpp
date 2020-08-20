@@ -24,6 +24,7 @@ bool mapSel = false;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
+char mapArray[81][26];
 // NPC related stopwatch
 CStopWatch fireWatch;
 double secsPassed = 0;
@@ -269,18 +270,14 @@ void moveCharacter()
     // providing a beep sound whenver we shift the character
     if (doneShoot == 0)
     {
-        if (g_skKeyEvent[K_W].keyReleased && g_sChar.m_cLocation.Y > 0)
+        if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
         {
             //Beep(1440, 30);
-
             g_sChar.m_cLocation.Y--;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
             lastMove = 1;
         }
-        else if (g_sChar.m_cLocation.Y - 1 == 1) {
-                g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
-           }
         if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0)
         {
             //Beep(1440, 30);
@@ -403,23 +400,23 @@ void moveNPC()
             int randomInt = rand() % 4 + 1;
             if (randomInt == 1) // Up
             {
-                if (npc1.getCoords().Y - 1 >= 0 && Collision(npc1.getCoords()) == false)
+                if (npc1.getCoords().Y - 1 >= 0)
                 {
                     npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
                 }
-                else if (npc1.getCoords().Y - 1 >= 0 && Collision(npc1.getCoords()) == true)
+                else if (npc1.getCoords().Y - 1 >= 0)
                 {
                     npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y);
                 }
             }
             else if (randomInt == 2 ) // Down
             {
-                if (npc1.getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1 && Collision(npc1.getCoords())== false)
+                if (npc1.getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1)
                 {
                     npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
                 }
             }
-            else if (randomInt == 3 && Collision(npc1.getCoords())==false) // Left
+            else if (randomInt == 3) // Left
             {
                 if (npc1.getCoords().X - 1 >= 0)
                 {
@@ -428,7 +425,7 @@ void moveNPC()
             }
             else // Right
             {
-                if (npc1.getCoords().X + 1 >= 0 && Collision(npc1.getCoords()) == false)
+                if (npc1.getCoords().X + 1 >= 0)
                 {   
                     npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
                 }
@@ -587,11 +584,12 @@ void renderMap()
         std::ifstream mapFile;
         mapFile.open("TutorialMap.txt", std::ifstream::in);
 
-        for (int y = 0; y < 80; y++)
+        for (int y = 0; y < 26; y++)
         {
             for (int x = 0; x < 81; x++)
             {
                 char c = mapFile.get();
+                mapArray[x][y] = c;
 
                 if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
@@ -774,32 +772,14 @@ void renderInputEvents()
     
 }
 
-bool Collision(COORD position)
+bool Collision(COORD position, char direction)
 {
-    if (position.Y - 1 == 0xF6) {
-        return true;
-    }
-    else if (position.Y - 1 != 0xF6)
+    if (direction == 'U')
     {
-        return false;
-    }
-    if (position.Y + 1 == 0xF6) {
-        return true;
-    }
-    else if (position.Y + 1 != 0xF6) {
-        return false;
-    }
-    if (position.X + 1 == 0xF6) {
-        return true;
-    }
-    else if (position.X + 1 != 0xF6) {
-        return false;
-    }
-    if (position.X - 1 == 0xF6) {
-        return true;
-    }
-    else if (position.X - 1 != 0xF6) 
-    {
+        if (mapArray[position.X][position.Y - 1] == '1')
+        {
+            return true;
+        }
         return false;
     }
 }
