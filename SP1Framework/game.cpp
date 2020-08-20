@@ -547,15 +547,17 @@ void renderGame()
 
 void renderMap()
 {
-    if (g_skKeyEvent[K_1].keyReleased)
+    if (g_skKeyEvent[K_1].keyReleased && mapSel == false)
     {
         mapNum = 1;
         mapSel = true;
+        // Set their spawn below
     }
-    else if (g_skKeyEvent[K_2].keyReleased)
+    else if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
     {
         mapNum = 2;
         mapSel = true;
+        // Their spawnpoint
         g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
         g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.25;
         g_sChar.m_bActive = true;
@@ -574,7 +576,6 @@ void renderMap()
     else if (mapNum == 2 && mapSel == true)
     {
         // Tutorial
-
         std::ifstream mapFile;
         mapFile.open("TutorialMap.txt", std::ifstream::in);
 
