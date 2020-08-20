@@ -18,7 +18,7 @@ double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
 int doneShoot = 0;
-int rOrS;
+int rOrC;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
@@ -306,7 +306,7 @@ void moveCharacter()
         }
         if (g_skKeyEvent[K_R].keyReleased)
         {
-            rOrS = 1;
+            rOrC = 1;
             doneShoot++;
         }
         if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
@@ -343,7 +343,7 @@ void moveCharacter()
         }
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
-            rOrS = 0;
+            rOrC = 0;
             doneShoot++;
         }
         if (g_skKeyEvent[K_SPACE].keyReleased)
@@ -355,7 +355,7 @@ void moveCharacter()
     else if (doneShoot > 0 && doneShoot < 11)
     {
         // Fire boy Shooting
-        if (rOrS == 1)
+        if (rOrC == 1)
         {
             if (lastMove == 1)
                 g_sPjtl.m_cLocation.Y -= 1;
@@ -367,7 +367,7 @@ void moveCharacter()
                 g_sPjtl.m_cLocation.X += 1;
         }
         // Water boy Shooting
-        else if (rOrS == 0)
+        else if (rOrC == 0)
         {
             if (lastMove2 == 1)
                 g_sPjtl2.m_cLocation.Y -= 1;
