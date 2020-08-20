@@ -20,7 +20,7 @@ int lastMove2;
 int doneShoot = 0;
 int rOrC;
 int mapNum = 0;
-
+bool mapSel = false;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
@@ -61,12 +61,6 @@ void init( void )
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
     */
-    g_sChar.m_cLocation.X = 0;
-    g_sChar.m_cLocation.Y = 0;
-    g_sChar.m_bActive = true;
-    g_sChar2.m_cLocation.X = 0;
-    g_sChar2.m_cLocation.Y = 0;
-    g_sChar2.m_bActive = true;
 
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -544,8 +538,11 @@ void renderSplashScreen()  // renders the splash screen
 void renderGame()
 {
     renderMap();        // renders the map to the buffer first
-    renderCharacter();  // renders the character into the buffer
-    renderNPC();
+    if (mapNum != 0)
+    {
+        renderCharacter(); // renders the character into the buffer
+        renderNPC();
+    }
 }
 
 void renderMap()
@@ -553,10 +550,12 @@ void renderMap()
     if (g_skKeyEvent[K_1].keyReleased)
     {
         mapNum = 1;
+        mapSel = true;
     }
     else if (g_skKeyEvent[K_2].keyReleased)
     {
         mapNum = 2;
+        mapSel = true;
         g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
         g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.25;
         g_sChar.m_bActive = true;
@@ -564,11 +563,15 @@ void renderMap()
         g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.2;
         g_sChar2.m_bActive = true;
     }
-    if (mapNum == 1)
+    if (mapNum == 0 && mapSel == false)
+    {
+
+    }
+    else if (mapNum == 1 && mapSel == true)
     {
         // Actual Map
     }
-    else if (mapNum == 2)
+    else if (mapNum == 2 && mapSel == true)
     {
         // Tutorial
 
