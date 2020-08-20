@@ -272,13 +272,13 @@ void moveCharacter()
         if (g_skKeyEvent[K_W].keyReleased && g_sChar.m_cLocation.Y > 0)
         {
             //Beep(1440, 30);
-            if (Collision(g_sChar.m_cLocation) == false) {
+            if (Collision(g_sChar.m_cLocation) == true) {
                 g_sChar.m_cLocation.Y--;
                 g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
                 g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
                 lastMove = 1;
             }
-            else if (Collision(g_sChar.m_cLocation) == true) {
+            else if (Collision(g_sChar.m_cLocation) == false) {
                 g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
                 g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
                 lastMove = 0;
@@ -407,11 +407,11 @@ void moveNPC()
             int randomInt = rand() % 4 + 1;
             if (randomInt == 1) // Up
             {
-                if (npc1.getCoords().Y - 1 >= 0 && Collision(npc1.getCoords())-1 == false)
+                if ((npc1.getCoords().Y - 1 >= 0) &&( Collision(npc1.getCoords())-1 == false))
                 {
                     npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
                 }
-                else if (npc1.getCoords().Y - 1 >= 0 && Collision(npc1.getCoords()) == true)
+                else if ((npc1.getCoords().Y - 1 >= 0) && (Collision(npc1.getCoords()) == true))
                 {
                     npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y);
                 }
@@ -784,30 +784,30 @@ bool Collision(COORD position)
     // displays the framerate
     std::ostringstream ss;
     if (position.Y - 1 == 0xF6) {
-        return true;
+        return false;
     }
     else if (position.Y - 1 != 0xF6)
     {
-        return false;
+        return true;
     }
     else if (position.Y + 1 == 0xF6) {
-        return true;
+        return false;
     }
     else if (position.Y + 1 != 0xF6) {
-        return false;
+        return true;
     }
     else if (position.X + 1 == 0xF6) {
-        return true;
+        return false;
     }
     else if (position.X + 1 != 0xF6) {
-        return false;
-    }
-    else if (position.X - 1 == 0xF6) {
         return true;
     }
-    else if (position.X - 1 != 0xF6) 
-    {
+    else if (position.X - 1 == 0xF6) {
         return false;
+    }
+    else if (position.X - 1 != 0xF6)
+    {
+        return true;
     }
 }
 
