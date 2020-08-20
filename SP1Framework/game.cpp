@@ -407,6 +407,10 @@ void moveNPC()
                 {
                     npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
                 }
+                else if (npc1.getCoords().Y - 1 >= 0 && Collision(npc1.getCoords()) == true)
+                {
+                    npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y);
+                }
             }
             else if (randomInt == 2 ) // Down
             {
@@ -771,31 +775,31 @@ void renderInputEvents()
 
 bool Collision(COORD position)
 {
-    if (position.Y - 1 == 0x1F) {
+    if (position.Y - 1 == 0xF6) {
         return true;
     }
-    else if (position.Y - 1 != 0x1F)
+    else if (position.Y - 1 != 0xF6)
     {
-        return true;
-    }
-    if (position.Y + 1 == 0x1F) {
         return false;
     }
-    else if (position.Y + 1 != 0x1F) {
+    if (position.Y + 1 == 0xF6) {
         return true;
     }
-    if (position.X + 1 == 0x1F) {
+    else if (position.Y + 1 != 0xF6) {
         return false;
     }
-    else if (position.X + 1 != 0x1F) {
+    if (position.X + 1 == 0xF6) {
         return true;
     }
-    if (position.X - 1 == 0x1F) {
+    else if (position.X + 1 != 0xF6) {
         return false;
     }
-    else if (position.X - 1 != 0x1F) 
+    if (position.X - 1 == 0xF6) {
+        return true;
+    }
+    else if (position.X - 1 != 0xF6) 
     {
-        return true;
+        return false;
     }
 }
 
