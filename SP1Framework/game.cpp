@@ -276,11 +276,15 @@ void moveCharacter()
         if (g_skKeyEvent[K_W].keyReleased && g_sChar.m_cLocation.Y > 0)
         {
             //Beep(1440, 30);
+
             g_sChar.m_cLocation.Y--;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
             lastMove = 1;
         }
+        else if (g_sChar.m_cLocation.Y - 1 == 1) {
+                g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
+           }
         if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0)
         {
             //Beep(1440, 30);
@@ -419,19 +423,19 @@ void moveNPC()
             int randomInt = rand() % 4 + 1;
             if (randomInt == 1) // Up
             {
-                if (npc1.getCoords().Y - 1 >= 0)
+                if (npc1.getCoords().Y - 1 >= 0 && Collision(npc1.getCoords()) == false)
                 {
                     npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
                 }
             }
-            else if (randomInt == 2) // Down
+            else if (randomInt == 2 ) // Down
             {
-                if (npc1.getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1)
+                if (npc1.getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1 && Collision(npc1.getCoords())== false)
                 {
                     npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
                 }
             }
-            else if (randomInt == 3) // Left
+            else if (randomInt == 3 && Collision(npc1.getCoords())==false) // Left
             {
                 if (npc1.getCoords().X - 1 >= 0)
                 {
@@ -440,8 +444,8 @@ void moveNPC()
             }
             else // Right
             {
-                if (npc1.getCoords().X + 1 >= 0)
-                {
+                if (npc1.getCoords().X + 1 >= 0 && Collision(npc1.getCoords()) == false)
+                {   
                     npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
                 }
             }
@@ -754,6 +758,36 @@ void renderInputEvents()
         break;
     }*/
     
+}
+
+bool Collision(COORD position)
+{
+    if (position.Y - 1 == 0x1F) {
+        return true;
+    }
+    else if (position.Y - 1 != 0x1F)
+    {
+        return true;
+    }
+    if (position.Y + 1 == 0x1F) {
+        return false;
+    }
+    else if (position.Y + 1 != 0x1F) {
+        return true;
+    }
+    if (position.X + 1 == 0x1F) {
+        return false;
+    }
+    else if (position.X + 1 != 0x1F) {
+        return true;
+    }
+    if (position.X - 1 == 0x1F) {
+        return false;
+    }
+    else if (position.X - 1 != 0x1F) 
+    {
+        return true;
+    }
 }
 
 
