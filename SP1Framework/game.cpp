@@ -186,6 +186,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case VK_OEM_PERIOD: key = K_PERIOD; break;
     case 0x31: key = K_1; break;
     case 0x32: key = K_2; break;
+    case 0x33: key = K_3; break;
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     }
@@ -272,15 +273,11 @@ void moveCharacter()
         if (g_skKeyEvent[K_W].keyReleased && g_sChar.m_cLocation.Y > 0)
         {
             //Beep(1440, 30);
-
             g_sChar.m_cLocation.Y--;
             g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
             lastMove = 1;
         }
-        else if (g_sChar.m_cLocation.Y - 1 == 1) {
-                g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
-           }
         if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0)
         {
             //Beep(1440, 30);
@@ -561,9 +558,15 @@ void renderMap()
         mapSel = true;
         // Set their spawn below
     }
-    else if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
+    if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
     {
         mapNum = 2;
+        mapSel = true;
+        // Set their spawn below
+    }
+    else if (g_skKeyEvent[K_3].keyReleased && mapSel == false)
+    {
+        mapNum = 3;
         mapSel = true;
         // Their spawnpoint
         g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
@@ -582,6 +585,10 @@ void renderMap()
         // Actual Map
     }
     else if (mapNum == 2 && mapSel == true)
+    {
+        // Settings
+    }
+    else if (mapNum == 3 && mapSel == true)
     {
         // Tutorial
         std::ifstream mapFile;
@@ -776,32 +783,7 @@ void renderInputEvents()
 
 bool Collision(COORD position)
 {
-    if (position.Y - 1 == 0xF6) {
-        return true;
-    }
-    else if (position.Y - 1 != 0xF6)
-    {
-        return false;
-    }
-    if (position.Y + 1 == 0xF6) {
-        return true;
-    }
-    else if (position.Y + 1 != 0xF6) {
-        return false;
-    }
-    if (position.X + 1 == 0xF6) {
-        return true;
-    }
-    else if (position.X + 1 != 0xF6) {
-        return false;
-    }
-    if (position.X - 1 == 0xF6) {
-        return true;
-    }
-    else if (position.X - 1 != 0xF6) 
-    {
-        return false;
-    }
+    return false;
 }
 
 
