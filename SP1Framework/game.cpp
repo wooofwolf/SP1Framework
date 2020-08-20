@@ -55,14 +55,6 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    // Zavier's
-    /*
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 44;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.05;
-    g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
-    g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
-    */
-
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -646,21 +638,6 @@ void renderMap()
         }
         mapFile.close();
     }
-
-    // Set up sample colours, and output shadings
-    /*const WORD colors[] = {
-        0x1B, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
-    };
-
-    COORD c;
-    for (int i = 0; i < 12; ++i)
-    {
-        c.X = 20 * i;
-        c.Y = i + 0;
-        colour(colors[i]);
-        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
-    }*/
 }
 
 void renderCharacter()
