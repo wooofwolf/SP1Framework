@@ -483,7 +483,17 @@ void processUserInput()
 {
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
-        g_bQuitGame = true;
+    {
+        if (mapNum == 1 || mapNum == 2 || mapNum == 3)
+        {
+            mapNum = 0;
+            mapSel = false;
+        }
+        else
+        {
+            g_bQuitGame = true;
+        }
+    }
 }
 
 void updateNPC()
@@ -535,19 +545,19 @@ void renderToScreen()
 void renderSplashScreen()  // renders the splash screen
 {
     // Main Menu
-    COORD c = g_Console.getConsoleSize();
+    /*COORD c = g_Console.getConsoleSize();
     c.Y /= 3;
     c.X = c.X / 2 - 3;
     g_Console.writeToBuffer(c, "Start", 0x03);
     c.Y += 7;
     c.X = g_Console.getConsoleSize().X / 2 - 6;
-    g_Console.writeToBuffer(c, "Instructions", 0x09);
+    g_Console.writeToBuffer(c, "Instructions", 0x09);*/
 }
 
 void renderGame()
 {
     renderMap();        // renders the map to the buffer first
-    if (mapNum != 0)
+    if (mapNum == 1 || mapNum == 3)
     {
         renderCharacter(); // renders the character into the buffer
         renderNPC();
@@ -566,7 +576,6 @@ void renderMap()
     {
         mapNum = 2;
         mapSel = true;
-        // Set their spawn below
     }
     else if (g_skKeyEvent[K_3].keyReleased && mapSel == false)
     {
@@ -576,9 +585,14 @@ void renderMap()
         g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
         g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.25;
         g_sChar.m_bActive = true;
+        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+
         g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.2;
         g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.2;
         g_sChar2.m_bActive = true;
+        g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
+        g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
     }
     if (mapNum == 0 && mapSel == false)
     {
@@ -659,21 +673,6 @@ void renderMap()
         }
         mapFile.close();
     }
-
-    // Set up sample colours, and output shadings
-    /*const WORD colors[] = {
-        0x1B, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
-    };
-
-    COORD c;
-    for (int i = 0; i < 12; ++i)
-    {
-        c.X = 20 * i;
-        c.Y = i + 0;
-        colour(colors[i]);
-        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
-    }*/
 }
 
 void renderCharacter()
