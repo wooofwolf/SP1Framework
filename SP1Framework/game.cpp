@@ -439,7 +439,7 @@ void moveNPC()
     else if (npc1.getAlive() == true)
     {
         // check if player is in range of NPC
-        if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2)) <= 100)
+        if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2) * 2) <= 25)
         {
             int npc1L, npc1R, npc1U, npc1D;
             npc1L = npc1.getCoords().X - 1;
@@ -483,7 +483,7 @@ void updateNPC()
 {
     if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y && npc1.getAlive() == true && npc1.getSecsOnFire() <= 0)
     {
-        npc1.setSecsOnFire(3);
+        npc1.setSecsOnFire(5);
         npcCol = 0x4C;
         
         fireWatch.startTimer();
@@ -555,7 +555,7 @@ void renderMap()
         {
             char c = mapFile.get();
             
-            if ((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2)) <= 144)
+            if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
             {
                 if (c == '1')
                 {
@@ -611,11 +611,18 @@ void renderNPC()
     updateNPC();
     if (npc1.getAlive() == true)
     {
-        g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+        if (pow(npc1.getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npc1.getCoords().X - g_sChar.m_cLocation.Y, 2) * 2 <= 36)
+        {
+            g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+        }
+        if (npc1.getSecsOnFire() > 0)
+        {
+            g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+        }
     }
     else
     {
-        g_Console.writeToBuffer(npc1.getCoords(), ' ', npcCol);
+        g_Console.writeToBuffer(npc1.getCoords(), ' ', 0x00);
     }
 }
 
