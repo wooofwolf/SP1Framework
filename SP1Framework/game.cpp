@@ -273,10 +273,17 @@ void moveCharacter()
         if (g_skKeyEvent[K_W].keyReleased && g_sChar.m_cLocation.Y > 0)
         {
             //Beep(1440, 30);
-            g_sChar.m_cLocation.Y--;
-            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-            lastMove = 1;
+            if (Collision(g_sChar.m_cLocation) == false) {
+                g_sChar.m_cLocation.Y--;
+                g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+                g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+                lastMove = 1;
+            }
+            else if (Collision(g_sChar.m_cLocation) == true) {
+                g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
+                g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+                lastMove = 0;
+            }
         }
         if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0)
         {
@@ -386,6 +393,7 @@ void moveCharacter()
         g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
         doneShoot = 0;
     }
+
 }
 
 void moveNPC()
@@ -400,7 +408,7 @@ void moveNPC()
             int randomInt = rand() % 4 + 1;
             if (randomInt == 1) // Up
             {
-                if (npc1.getCoords().Y - 1 >= 0 && Collision(npc1.getCoords()) == false)
+                if (npc1.getCoords().Y - 1 >= 0 && Collision(npc1.getCoords())-1 == false)
                 {
                     npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
                 }
@@ -600,7 +608,7 @@ void renderMap()
             {
                 char c = mapFile.get();
 
-                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36 || (npc1.getSecsOnFire() > 0 && (pow(x - npc1.getCoords().X, 2) + pow(y - npc1.getCoords().Y, 2) * 2 <= 16)))
                 {
                     if (c == '1')
                     {
@@ -783,7 +791,35 @@ void renderInputEvents()
 
 bool Collision(COORD position)
 {
-    return false;
+    COORD c;
+    // displays the framerate
+    std::ostringstream ss;
+    if (position.Y - 1 == 0xF6) {
+        return true;
+    }
+    else if (position.Y - 1 != 0xF6)
+    {
+        return false;
+    }
+    else if (position.Y + 1 == 0xF6) {
+        return true;
+    }
+    else if (position.Y + 1 != 0xF6) {
+        return false;
+    }
+    else if (position.X + 1 == 0xF6) {
+        return true;
+    }
+    else if (position.X + 1 != 0xF6) {
+        return false;
+    }
+    else if (position.X - 1 == 0xF6) {
+        return true;
+    }
+    else if (position.X - 1 != 0xF6) 
+    {
+        return false;
+    }
 }
 
 
