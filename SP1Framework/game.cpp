@@ -630,11 +630,18 @@ void renderNPC()
     updateNPC();
     if (npc1.getAlive() == true)
     {
-        g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol); 
+        if (pow(npc1.getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npc1.getCoords().X - g_sChar.m_cLocation.Y, 2) * 2 <= 36)
+        {
+            g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+        }
+        if (npc1.getSecsOnFire() > 0)
+        {
+            g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+        }
     }
     else
     {
-        g_Console.writeToBuffer(npc1.getCoords(), ' ', npcCol);
+        g_Console.writeToBuffer(npc1.getCoords(), ' ', 0x00);
     }
 }
 
