@@ -281,7 +281,7 @@ void moveCharacter()
             lastMove = 1;
         }
           
-        if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0)
+        if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
         {
             //Beep(1440, 30);
             g_sChar.m_cLocation.X--;
@@ -289,7 +289,7 @@ void moveCharacter()
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
             lastMove = 2;
         }
-        if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+        if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
         {
             //Beep(1440, 30);
             g_sChar.m_cLocation.Y++;
@@ -297,7 +297,7 @@ void moveCharacter()
             g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
             lastMove = 3;
         }
-        if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+        if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision (g_sChar.m_cLocation,'R') == false)
         {
             //Beep(1440, 30);
             g_sChar.m_cLocation.X++;
@@ -310,7 +310,7 @@ void moveCharacter()
             rOrC = 1;
             doneShoot++;
         }
-        if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
+        if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false)
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.Y--;
@@ -318,7 +318,7 @@ void moveCharacter()
             g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
             lastMove2 = 1;
         }
-        if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0)
+        if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0 && Collision(g_sChar2.m_cLocation, 'L') == false)
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.X--;
@@ -326,7 +326,7 @@ void moveCharacter()
             g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
             lastMove2 = 2;
         }
-        if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+        if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar2.m_cLocation, 'D') == false)
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.Y++;
@@ -334,7 +334,7 @@ void moveCharacter()
             g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
             lastMove2 = 3;
         }
-        if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+        if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar2.m_cLocation, 'R') == false)
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.X++;
@@ -404,32 +404,30 @@ void moveNPC()
             int randomInt = rand() % 4 + 1;
             if (randomInt == 1) // Up
             {
-                if (npc1.getCoords().Y - 1 >= 0)
+                if (npc1.getCoords().Y - 1 >= 0 && Collision(npc1.getCoords(), 'U') == false)
                 {
                     npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
                 }
-                else if (npc1.getCoords().Y - 1 >= 0)
-                {
-                    npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y);
-                }
+
+                
             }
             else if (randomInt == 2 ) // Down
             {
-                if (npc1.getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1)
+                if (npc1.getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1 && Collision(npc1.getCoords(), 'D') == false)
                 {
                     npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
                 }
             }
             else if (randomInt == 3) // Left
             {
-                if (npc1.getCoords().X - 1 >= 0)
+                if (npc1.getCoords().X - 1 >= 0 && Collision(npc1.getCoords(), 'L') == false)
                 {
                     npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
                 }
             }
             else // Right
             {
-                if (npc1.getCoords().X + 1 >= 0)
+                if (npc1.getCoords().X + 1 >= 0 && Collision(npc1.getCoords(), 'R') == false)
                 {   
                     npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
                 }
@@ -449,6 +447,7 @@ void moveNPC()
         if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2) * 2) <= 25)
         {
             int npc1L, npc1R, npc1U, npc1D;
+
             npc1L = npc1.getCoords().X - 1;
             npc1R = npc1.getCoords().X + 1;
             npc1U = npc1.getCoords().Y - 1;
@@ -791,6 +790,30 @@ bool Collision(COORD position, char direction)
     if (direction == 'U')
     {
         if (mapArray[position.X][position.Y - 1] == '1')
+        {
+            return true;
+        }
+        return false;
+    }
+    if (direction == 'D')
+    {
+        if (mapArray[position.X][position.Y+1] == '1')
+        {
+            return true;
+        }
+        return false;
+    }
+    if (direction == 'L')
+    {
+        if (mapArray[position.X-1][position.Y] == '1')
+        {
+            return true;
+        }
+        return false;
+    }
+    if (direction == 'R')
+    {
+        if (mapArray[position.X+1][position.Y] == '1')
         {
             return true;
         }
