@@ -636,7 +636,7 @@ void renderNPC()
     updateNPC();
     if (npc1.getAlive() == true)
     {
-        if (pow(npc1.getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npc1.getCoords().X - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npc1.getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npc1.getCoords().X - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
+        if (pow(npc1.getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npc1.getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npc1.getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npc1.getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
         {
             g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
         }
