@@ -607,10 +607,10 @@ void renderCharacter()
     WORD charColor2 = 0x90;
     //if (g_sChar.m_bActive)
         //charColor = 0x0A;
-    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
-    g_Console.writeToBuffer(g_sPjtl.m_cLocation, (char)1, charColor);
-    g_Console.writeToBuffer(g_sChar2.m_cLocation, (char)1, charColor2);
-    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, (char)1, charColor2);
+    g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', charColor);
+    g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', charColor);
+    g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', charColor2);
+    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', charColor2);
 }
 
 void renderNPC()
@@ -618,7 +618,7 @@ void renderNPC()
     updateNPC();
     if (npc1.getAlive() == true)
     {
-        if (pow(npc1.getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npc1.getCoords().X - g_sChar.m_cLocation.Y, 2) * 2 <= 36)
+        if (pow(npc1.getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npc1.getCoords().X - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npc1.getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npc1.getCoords().X - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
         {
             g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
         }
