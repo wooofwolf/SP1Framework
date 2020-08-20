@@ -19,6 +19,7 @@ int lastMove;
 int lastMove2;
 int doneShoot = 0;
 int rOrC;
+int mapNum = 0;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
@@ -254,8 +255,8 @@ void update(double dt)
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-    if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
-        g_eGameState = S_GAME;
+    //if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
+    g_eGameState = S_GAME;
 }
 
 void updateGame()       // gameplay logic
@@ -547,38 +548,44 @@ void renderGame()
 
 void renderMap()
 {
-    std::ifstream mapFile;
-    mapFile.open("TutorialMap.txt", std::ifstream::in);
-
-    for (int y = 0; y < 80; y++)
+    if (g_skKeyEvent[K_SPACE].keyReleased)
     {
-        for (int x = 0; x < 81; x++)
-        {
-            char c = mapFile.get();
-            
-            if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
-            {
-                if (c == '1')
-                {
-                    g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
-                }
-                else if (c == '0')
-                {
-                    g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
-                }
-            }
+        mapNum = 1;
+    }
+    if (mapNum == 1)
+    {
+        std::ifstream mapFile;
+        mapFile.open("TutorialMap.txt", std::ifstream::in);
 
-            else
+        for (int y = 0; y < 80; y++)
+        {
+            for (int x = 0; x < 81; x++)
             {
-                g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
+                char c = mapFile.get();
+
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
+                {
+                    if (c == '1')
+                    {
+                        g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                    }
+                    else if (c == '0')
+                    {
+                        g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                    }
+                }
+
+                else
+                {
+                    g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
+                }
             }
         }
+        mapFile.close();
     }
-    mapFile.close();
 
-   /*
     // Set up sample colours, and output shadings
-    const WORD colors[] = {
+    /*const WORD colors[] = {
         0x1B, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
         0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
     };
@@ -590,8 +597,7 @@ void renderMap()
         c.Y = i + 0;
         colour(colors[i]);
         g_Console.writeToBuffer(c, " °±²Û", colors[i]);
-    }
-    */
+    }*/
 }
 
 void renderCharacter()
