@@ -18,11 +18,12 @@ double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
 int doneShoot = 0;
-int rOrS;
+int rOrC;
+int mapNum = 0;
+bool mapSel = false;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 WORD npcCol = 0xB0;
-
 // NPC related stopwatch
 CStopWatch fireWatch;
 double secsPassed = 0;
@@ -60,13 +61,6 @@ void init( void )
     g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
     */
-    // Tutorial Level
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.25;
-    g_sChar.m_bActive = true;
-    g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.2;
-    g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.2;
-    g_sChar2.m_bActive = true;
 
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -190,6 +184,8 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case VK_RIGHT: key = K_RIGHT; break;
     case VK_OEM_COMMA: key = K_COMMA; break;
     case VK_OEM_PERIOD: key = K_PERIOD; break;
+    case 0x31: key = K_1; break;
+    case 0x32: key = K_2; break;
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     }
@@ -255,8 +251,8 @@ void update(double dt)
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-    if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
-        g_eGameState = S_GAME;
+    //if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
+    g_eGameState = S_GAME;
 }
 
 void updateGame()       // gameplay logic
@@ -268,7 +264,7 @@ void updateGame()       // gameplay logic
 }
 
 void moveCharacter()
-{    
+{
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
     if (doneShoot == 0)
@@ -311,15 +307,7 @@ void moveCharacter()
         }
         if (g_skKeyEvent[K_R].keyReleased)
         {
-            if (lastMove == 1)
-                g_sPjtl.m_cLocation.Y -= 1;
-            else if (lastMove == 2)
-                g_sPjtl.m_cLocation.X -= 1;
-            else if (lastMove == 3)
-                g_sPjtl.m_cLocation.Y += 1;
-            else if (lastMove == 4)
-                g_sPjtl.m_cLocation.X += 1;
-            rOrS = 1;
+            rOrC = 1;
             doneShoot++;
         }
         if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0)
@@ -356,15 +344,7 @@ void moveCharacter()
         }
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
-            if (lastMove2 == 1)
-                g_sPjtl2.m_cLocation.Y -= 1;
-            else if (lastMove2 == 2)
-                g_sPjtl2.m_cLocation.X -= 1;
-            else if (lastMove2 == 3)
-                g_sPjtl2.m_cLocation.Y += 1;
-            else if (lastMove2 == 4)
-                g_sPjtl2.m_cLocation.X += 1;
-            rOrS = 0;
+            rOrC = 0;
             doneShoot++;
         }
         if (g_skKeyEvent[K_SPACE].keyReleased)
@@ -373,10 +353,10 @@ void moveCharacter()
             // g_sChar2.m_bActive = !g_sChar2.m_bActive;
         }
     }
-    else if (doneShoot > 0 && doneShoot < 10)
+    else if (doneShoot > 0 && doneShoot < 11)
     {
         // Fire boy Shooting
-        if (rOrS == 1)
+        if (rOrC == 1)
         {
             if (lastMove == 1)
                 g_sPjtl.m_cLocation.Y -= 1;
@@ -388,7 +368,7 @@ void moveCharacter()
                 g_sPjtl.m_cLocation.X += 1;
         }
         // Water boy Shooting
-        else if (rOrS == 0)
+        else if (rOrC == 0)
         {
             if (lastMove2 == 1)
                 g_sPjtl2.m_cLocation.Y -= 1;
@@ -401,7 +381,7 @@ void moveCharacter()
         }
         doneShoot++;
     }
-    else if (doneShoot == 10)
+    else if (doneShoot == 11)
     {
         g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
         g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
@@ -498,7 +478,7 @@ void processUserInput()
 {
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
-        g_bQuitGame = true;    
+        g_bQuitGame = true;
 }
 
 void updateNPC()
@@ -562,45 +542,75 @@ void renderSplashScreen()  // renders the splash screen
 void renderGame()
 {
     renderMap();        // renders the map to the buffer first
-    renderCharacter();  // renders the character into the buffer
-    renderNPC();
+    if (mapNum != 0)
+    {
+        renderCharacter(); // renders the character into the buffer
+        renderNPC();
+    }
 }
 
 void renderMap()
 {
-    std::ifstream mapFile;
-  /*  mapFile.open("Zav Map.txt", std::ifstream::in);*/
-    mapFile.open("TutorialMap.txt", std::ifstream::in);
-
-    for (int y = 0; y < 80; y++)
+    if (g_skKeyEvent[K_1].keyReleased)
     {
-        for (int x = 0; x < 81; x++)
-        {
-            char c = mapFile.get();
-            
-            if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
-            {
-                if (c == '1')
-                {
-                    g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
-                }
-                else if (c == '0')
-                {
-                    g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
-                }
-            }
+        mapNum = 1;
+        mapSel = true;
+    }
+    else if (g_skKeyEvent[K_2].keyReleased)
+    {
+        mapNum = 2;
+        mapSel = true;
+        g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
+        g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.25;
+        g_sChar.m_bActive = true;
+        g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.2;
+        g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.2;
+        g_sChar2.m_bActive = true;
+    }
+    if (mapNum == 0 && mapSel == false)
+    {
 
-            else
+    }
+    else if (mapNum == 1 && mapSel == true)
+    {
+        // Actual Map
+    }
+    else if (mapNum == 2 && mapSel == true)
+    {
+        // Tutorial
+
+        std::ifstream mapFile;
+        mapFile.open("TutorialMap.txt", std::ifstream::in);
+
+        for (int y = 0; y < 80; y++)
+        {
+            for (int x = 0; x < 81; x++)
             {
-                g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
+                char c = mapFile.get();
+
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
+                {
+                    if (c == '1')
+                    {
+                        g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                    }
+                    else if (c == '0')
+                    {
+                        g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                    }
+                }
+
+                else
+                {
+                    g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
+                }
             }
         }
+        mapFile.close();
     }
-    mapFile.close();
 
-   /*
     // Set up sample colours, and output shadings
-    const WORD colors[] = {
+    /*const WORD colors[] = {
         0x1B, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
         0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
     };
@@ -612,8 +622,7 @@ void renderMap()
         c.Y = i + 0;
         colour(colors[i]);
         g_Console.writeToBuffer(c, " °±²Û", colors[i]);
-    }
-    */
+    }*/
 }
 
 void renderCharacter()
@@ -623,10 +632,10 @@ void renderCharacter()
     WORD charColor2 = 0x90;
     //if (g_sChar.m_bActive)
         //charColor = 0x0A;
-    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
-    g_Console.writeToBuffer(g_sPjtl.m_cLocation, (char)1, charColor);
-    g_Console.writeToBuffer(g_sChar2.m_cLocation, (char)1, charColor2);
-    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, (char)1, charColor2);
+    g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', charColor);
+    g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', charColor);
+    g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', charColor2);
+    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', charColor2);
 }
 
 void renderNPC()
@@ -634,7 +643,7 @@ void renderNPC()
     updateNPC();
     if (npc1.getAlive() == true)
     {
-        if (pow(npc1.getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npc1.getCoords().X - g_sChar.m_cLocation.Y, 2) * 2 <= 36)
+        if (pow(npc1.getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npc1.getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npc1.getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npc1.getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
         {
             g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
         }

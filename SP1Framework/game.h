@@ -39,6 +39,8 @@ enum EKEYS
     K_COMMA,
     K_PERIOD,
     K_ESCAPE,
+    K_1,
+    K_2,
     K_SPACE,
     K_COUNT
 };
