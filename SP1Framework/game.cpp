@@ -63,6 +63,8 @@ void init( void )
     g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
     
 
+
+
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -604,6 +606,10 @@ void renderMap()
         g_Console.writeToBuffer(3, 8, "/_/    \\_\\_|  \\___\\__,_|_| |_|\\___| |_____\\__, |_| |_|_|\\__|_|\\___/|_| |_|", 0xB4);
         g_Console.writeToBuffer(3, 9, "                                           __/ |                          ", 0xB4);
         g_Console.writeToBuffer(3, 10, "                                          |___/                           ", 0xB4);
+        g_Console.writeToBuffer(27, 14, "Press 1 to play map 1", 0xB4);
+        g_Console.writeToBuffer(26, 15, "Press 2 to open settings", 0xB4);
+        g_Console.writeToBuffer(26, 16, "Press 3 to play tutorial", 0xB4);
+        g_Console.writeToBuffer(25, 17, "Press Esc to quit the game", 0xB4);
     }
     else if (mapNum == 1 && mapSel == true)
     {
