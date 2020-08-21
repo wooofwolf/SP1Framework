@@ -463,13 +463,11 @@ void updateColour()
     }
 }
 
-void moveNPC(int n)
+
+void tpProj()
 {
-    if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
-    {
     g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
     g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-
 }
 
 void tpProj2()
@@ -478,7 +476,7 @@ void tpProj2()
     g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
 }
 
-void moveNPC()
+void moveNPC(int n)
 {
     if (npc1.getSecsOnFire() > 0)
     {
