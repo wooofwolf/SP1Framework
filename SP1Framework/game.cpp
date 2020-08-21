@@ -611,6 +611,8 @@ void renderMap()
                 if (c == '2')
                 {
                     npcPtr[n]->setCoords(x, y);
+                    npcPtr[n]->setAlive(true);
+                    static_cast<npc*>(npcPtr[n])->setCol(0xB0);
                     n++;
                 }
             }
@@ -633,6 +635,14 @@ void renderMap()
         g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.2;
         g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.2;
         tpProj2();
+
+        npcPtr[0]->setAlive(true);
+        static_cast<npc*>(npcPtr[0])->setCol(0xB0);
+        for (int n = 1; n < 10; n++)
+        {
+            npcPtr[n]->setAlive(false);
+            npcPtr[n]->setCoords(0, 0);
+        }
     }
     if (mapNum == 0 && mapSel == false)
     {
@@ -647,7 +657,7 @@ void renderMap()
     }
     else if (mapNum == 1 && mapSel == true)
     {
-        g_Console.clearBuffer();
+        clearScreen();
         std::ifstream mapFile;
         mapFile.open("Zav Map.txt", std::ifstream::in);
 
@@ -698,7 +708,7 @@ void renderMap()
     }
     else if (mapNum == 3 && mapSel == true)
     {
-        g_Console.clearBuffer();
+        clearScreen();
         // Tutorial
         std::ifstream mapFile;
         mapFile.open("TutorialMap.txt", std::ifstream::in);
