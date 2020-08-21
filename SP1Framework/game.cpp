@@ -459,8 +459,14 @@ void charAbility()
         tpProj1();
         tpProj2();
         doneShoot = 0;
-        fA = false;
-        wA = false;
+        if (fA == true)
+        {
+            fA = false;
+        }
+        if (wA == true)
+        {
+            wA = false;
+        }
     }
 }
 
