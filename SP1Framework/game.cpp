@@ -413,46 +413,45 @@ void charAbility()
         // Water boy Shooting
         else if (rOrC == 0)
         {
-            if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)
-            {
-                g_sPjtl2.m_cLocation.Y -= 1;
-                for (int n = 0; n < 10; n++) {
-                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || g_sPjtl2.m_cLocation.Y == static_cast<npc*>(npcPtr[n])->getCoords().Y)
+            
+                if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)
+                {
+                    g_sPjtl2.m_cLocation.Y -= 1;
+                    
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y)
                     {
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
                 }
-            }
-            else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)
-            {
-                g_sPjtl2.m_cLocation.X -= 1;
-                for (int n = 0; n < 10; n++) {
-                    if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || g_sPjtl2.m_cLocation.X == static_cast<npc*>(npcPtr[n])->getCoords().X)
+                else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)
+                {
+                    g_sPjtl2.m_cLocation.X -= 1;
+                    
+                    if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
                 }
-            }
-            else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)
-            {
-                g_sPjtl2.m_cLocation.Y += 1;
-                for (int n = 0; n < 10; n++) {
-                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || g_sPjtl2.m_cLocation.Y == static_cast<npc*>(npcPtr[n])->getCoords().Y)
+                else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)
+                {
+                    g_sPjtl2.m_cLocation.Y += 1;
+                    
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y)
+                    {
+                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                    }
+                    
+                }
+                else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)
+                {
+                    g_sPjtl2.m_cLocation.X += 1;
+                   
+                    if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
                 }
-            }
-            else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)
-            {
-                g_sPjtl2.m_cLocation.X += 1;
-                for (int n = 0; n < 10; n++) {
-                    if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || g_sPjtl2.m_cLocation.X == static_cast<npc*>(npcPtr[n])->getCoords().X)
-                    {
-                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
-                    }
-                }
-            }
+            
         }
         doneShoot++;
     }
@@ -480,12 +479,12 @@ void updateColour()
     }
     if (wA == false)
     {
-        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'F', 0x90);
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
         g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x90);
     }
     else if (wA == true)
     {
-        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'F', 0xB0);
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0xB0);
         g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0xB0);
     }
 }
@@ -602,6 +601,14 @@ void updateNPC(int n)
         static_cast<npc*>(npcPtr[n])->setCol(0x4C);
 
         fireWatch.startTimer();
+    }
+
+    else if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
+    {
+        static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
+        static_cast<npc*>(npcPtr[n])->setCol(0xB0);
+
+        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
     }
 }
 
