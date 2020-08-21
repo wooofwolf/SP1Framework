@@ -252,6 +252,7 @@ void updateGame()       // gameplay logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
+    charAbility();
                         // sound can be played here too.
     moveNPC();
 }
@@ -260,78 +261,89 @@ void moveCharacter()
 {
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
+    if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.Y--;
+        tpProj1();
+        lastMove = 1;
+    }
+    if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.X--;
+        tpProj1();
+        lastMove = 2;
+    }
+    if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.Y++;
+        tpProj1();
+        lastMove = 3;
+    }
+    if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar.m_cLocation, 'R') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.X++;
+        tpProj1();
+        lastMove = 4;
+    }
+    if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar2.m_cLocation.Y--;
+        tpProj2();
+        lastMove2 = 1;
+    }
+    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0 && Collision(g_sChar2.m_cLocation, 'L') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar2.m_cLocation.X--;
+        tpProj2();
+        lastMove2 = 2;
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar2.m_cLocation, 'D') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar2.m_cLocation.Y++;
+        tpProj2();
+        lastMove2 = 3;
+    }
+    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar2.m_cLocation, 'R') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar2.m_cLocation.X++;
+        tpProj2();
+        lastMove2 = 4;
+    }
+}
+
+void tpProj1()
+{
+    g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+    g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+}
+
+void tpProj2()
+{
+    g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
+    g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+}
+
+void charAbility()
+{
     if (doneShoot == 0)
     {
-        if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar.m_cLocation.Y--;
-            tpProj1();
-            lastMove = 1;
-        }
-        if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar.m_cLocation.X--;
-            tpProj1();
-            lastMove = 2;
-        }
-        if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar.m_cLocation.Y++;
-            tpProj1();
-            lastMove = 3;
-        }
-        if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision (g_sChar.m_cLocation,'R') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar.m_cLocation.X++;
-            tpProj1();
-            lastMove = 4;
-        }
         if (g_skKeyEvent[K_R].keyReleased)
         {
             rOrC = 1;
             doneShoot++;
         }
-        if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar2.m_cLocation.Y--;
-            tpProj2();
-            lastMove2 = 1;
-        }
-        if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0 && Collision(g_sChar2.m_cLocation, 'L') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar2.m_cLocation.X--;
-            tpProj2();
-            lastMove2 = 2;
-        }
-        if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar2.m_cLocation, 'D') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar2.m_cLocation.Y++;
-            tpProj2();
-            lastMove2 = 3;
-        }
-        if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar2.m_cLocation, 'R') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar2.m_cLocation.X++;
-            tpProj2();
-            lastMove2 = 4;
-        }
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
             rOrC = 0;
             doneShoot++;
-        }
-        if (g_skKeyEvent[K_SPACE].keyReleased)
-        {
-            // g_sChar.m_bActive = !g_sChar.m_bActive;
-            // g_sChar2.m_bActive = !g_sChar2.m_bActive;
         }
     }
     else if (doneShoot > 0 && doneShoot < 11)
@@ -368,19 +380,6 @@ void moveCharacter()
         tpProj2();
         doneShoot = 0;
     }
-
-}
-
-void tpProj1()
-{
-    g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-    g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-}
-
-void tpProj2()
-{
-    g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
-    g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
 }
 
 void moveNPC()
