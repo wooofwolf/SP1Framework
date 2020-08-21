@@ -267,7 +267,7 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
     charAbility();
-    renderCharacter();
+    updateColour();
     for (int n = 0; n < 10; n++)
     {
         moveNPC(n);
@@ -368,7 +368,7 @@ void charAbility()
             rOrC = 0;
             doneShoot++;
         }
-        if (g_skKeyEvent[K_COMMA].keyReleased)
+        if (g_skKeyEvent[K_PERIOD].keyReleased)
         {
             wA = true;
         }
@@ -378,25 +378,53 @@ void charAbility()
         // Fire boy Shooting
         if (rOrC == 1)
         {
-            if (lastMove == 1)
-                g_sPjtl.m_cLocation.Y -= 1;
-            else if (lastMove == 2)
-                g_sPjtl.m_cLocation.X -= 1;
-            else if (lastMove == 3)
-                g_sPjtl.m_cLocation.Y += 1;
-            else if (lastMove == 4)
-                g_sPjtl.m_cLocation.X += 1;
+            if (lastMove == 1 && Collision(g_sPjtl.m_cLocation, 'U') == false)
+                if ((g_sPjtl.m_cLocation.Y - 1) != g_sChar2.m_cLocation.Y)
+                {
+                    g_sPjtl.m_cLocation.Y -= 1;
+                }
+                else if ((g_sPjtl.m_cLocation.Y - 1) == g_sChar2.m_cLocation.Y)
+                {
+                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                }
+            else if (lastMove == 2 && Collision(g_sPjtl.m_cLocation, 'L') == false)
+                if ((g_sPjtl.m_cLocation.X - 1) != g_sChar2.m_cLocation.X)
+                {
+                    g_sPjtl.m_cLocation.X -= 1;
+                }
+                else if ((g_sPjtl.m_cLocation.X - 1) == g_sChar2.m_cLocation.X)
+                {
+                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                }
+            else if (lastMove == 3 && Collision(g_sPjtl.m_cLocation, 'D') == false)
+                if ((g_sPjtl.m_cLocation.Y + 1) != g_sChar2.m_cLocation.Y)
+                {
+                    g_sPjtl.m_cLocation.Y += 1;
+                }
+                else if ((g_sPjtl.m_cLocation.Y - 1) == g_sChar2.m_cLocation.Y)
+                {
+                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                }
+            else if (lastMove == 4 && Collision(g_sPjtl.m_cLocation, 'R') == false)
+                if ((g_sPjtl.m_cLocation.X + 1) != g_sChar2.m_cLocation.X)
+                {
+                    g_sPjtl.m_cLocation.X += 1;
+                }
+                else if ((g_sPjtl.m_cLocation.X+- 1) == g_sChar2.m_cLocation.X)
+                {
+                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                }
         }
         // Water boy Shooting
         else if (rOrC == 0)
         {
-            if (lastMove2 == 1)
+            if (lastMove2 == 1 && (Collision(g_sPjtl2.m_cLocation, 'U') == false)) 
                 g_sPjtl2.m_cLocation.Y -= 1;
-            else if (lastMove2 == 2)
+            else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)
                 g_sPjtl2.m_cLocation.X -= 1;
-            else if (lastMove2 == 3)
+            else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)
                 g_sPjtl2.m_cLocation.Y += 1;
-            else if (lastMove2 == 4)
+            else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)
                 g_sPjtl2.m_cLocation.X += 1;
         }
         doneShoot++;
@@ -411,9 +439,48 @@ void charAbility()
     }
 }
 
+void updateColour()
+{
+    if (fA == false)
+    {
+        g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0x4F);
+        g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0x4F);
+    }
+    else if (fA == true)
+    {
+        g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0xCF);
+        g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0xCF);
+    }
+    if (wA == false)
+    {
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'F', 0x90);
+        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x90);
+    }
+    else if (wA == true)
+    {
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'F', 0xB0);
+        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0xB0);
+    }
+}
+
 void moveNPC(int n)
 {
     if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
+    {
+    g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+    g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+
+}
+
+void tpProj2()
+{
+    g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
+    g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+}
+
+void moveNPC()
+{
+    if (npc1.getSecsOnFire() > 0)
     {
         secsPassed += fireWatch.getElapsedTime();
 
@@ -654,6 +721,10 @@ void renderMap()
         g_Console.writeToBuffer(3, 8, "/_/    \\_\\_|  \\___\\__,_|_| |_|\\___| |_____\\__, |_| |_|_|\\__|_|\\___/|_| |_|", 0xB4);
         g_Console.writeToBuffer(3, 9, "                                           __/ |                          ", 0xB4);
         g_Console.writeToBuffer(3, 10, "                                          |___/                           ", 0xB4);
+        g_Console.writeToBuffer(27, 14, "Press 1 to play map 1", 0xB4);
+        g_Console.writeToBuffer(26, 15, "Press 2 to open settings", 0xB4);
+        g_Console.writeToBuffer(26, 16, "Press 3 to play tutorial", 0xB4);
+        g_Console.writeToBuffer(25, 17, "Press Esc to quit the game", 0xB4);
     }
     else if (mapNum == 1 && mapSel == true)
     {
@@ -749,25 +820,13 @@ void renderMap()
 void renderCharacter()
 {
     // Draw the location of the character
-    if (fA == false)
-    {
-        g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0x4F);
-        g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0x4F);
-    }
-    else if (fA == true)
-    {
+    WORD charColor = 0x4F;
+    WORD charColor2 = 0x90;
 
-    }
-    if (wA == false)
-    {
-        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
-        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x90);
-    }
-    else if (wA == true)
-    {
-        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x10);
-        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x10);
-    }
+    g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', charColor);
+    g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', charColor);
+    g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', charColor2);
+    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', charColor2);
 }
 
 void renderNPC(int n)
