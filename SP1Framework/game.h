@@ -70,9 +70,9 @@ void shutdown    ( void );      // do clean up, free memory
 void splashScreenWait();    // waits for time to pass in splash screen
 void updateGame();          // gameplay logic
 void moveCharacter();       // moves the character, collision detection, physics, etc
-void tpProj1();      // tp projectile to character
-void tpProj2();      // tp projectile2 to character2
-void charAbility();
+void tpProj1();             // tp projectile to character
+void tpProj2();             // tp projectile2 to character2
+void charAbility();         // animation for projectile and ability
 void moveNPC();             // checks how far the player is from npc, npc moves if player is close.
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
 void updateNPC();           // checks if the NPC gets caught on fire

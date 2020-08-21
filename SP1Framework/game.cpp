@@ -252,8 +252,8 @@ void updateGame()       // gameplay logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
+    charPjtl();
     charAbility();
-                        // sound can be played here too.
     moveNPC();
 }
 
@@ -335,15 +335,26 @@ void charAbility()
 {
     if (doneShoot == 0)
     {
+        // Fire boy
         if (g_skKeyEvent[K_R].keyReleased)
         {
             rOrC = 1;
             doneShoot++;
         }
+        if (g_skKeyEvent[K_T].keyReleased)
+        {
+
+        }
+
+        // Water boy
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
             rOrC = 0;
             doneShoot++;
+        }
+        if (g_skKeyEvent[K_COMMA].keyReleased)
+        {
+
         }
     }
     else if (doneShoot > 0 && doneShoot < 11)
