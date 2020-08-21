@@ -17,13 +17,16 @@ double  g_dElapsedTime;
 double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
+int pjtlRange = 5;
 int doneShoot = 0;
+int abilityRange = 3;
 int rOrC;
 int mapNum = 0;
 bool mapSel = false;
+bool fA = false;
+bool wA = false;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
-WORD npcCol = 0xB0;
 char mapArray[81][26];
 // NPC related stopwatch
 CStopWatch fireWatch;
@@ -35,7 +38,7 @@ SGameChar   g_sPjtl;
 SGameChar   g_sChar2;
 SGameChar   g_sPjtl2;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
-npc         npc1(10, 10);
+entity*     npcPtr[10];
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
@@ -49,6 +52,17 @@ Console g_Console(80, 25, "SP1 Framework");
 //--------------------------------------------------------------
 void init( void )
 {
+    npcPtr[0] = new npc;
+    npcPtr[1] = new npc;
+    npcPtr[2] = new npc;
+    npcPtr[3] = new npc;
+    npcPtr[4] = new npc;
+    npcPtr[5] = new npc;
+    npcPtr[6] = new npc;
+    npcPtr[7] = new npc;
+    npcPtr[8] = new npc;
+    npcPtr[9] = new npc;
+
     // Set precision for floating point output
     g_dElapsedTime = 0.0;    
 
@@ -252,89 +266,114 @@ void updateGame()       // gameplay logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
-                        // sound can be played here too.
-    moveNPC();
+    charAbility();
+    renderCharacter();
+    for (int n = 0; n < 10; n++)
+    {
+        moveNPC(n);
+    }
 }
 
 void moveCharacter()
 {
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
+    if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.Y--;
+        tpProj1();
+        lastMove = 1;
+    }
+    if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.X--;
+        tpProj1();
+        lastMove = 2;
+    }
+    if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.Y++;
+        tpProj1();
+        lastMove = 3;
+    }
+    if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar.m_cLocation, 'R') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.X++;
+        tpProj1();
+        lastMove = 4;
+    }
+    if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar2.m_cLocation.Y--;
+        tpProj2();
+        lastMove2 = 1;
+    }
+    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0 && Collision(g_sChar2.m_cLocation, 'L') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar2.m_cLocation.X--;
+        tpProj2();
+        lastMove2 = 2;
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar2.m_cLocation, 'D') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar2.m_cLocation.Y++;
+        tpProj2();
+        lastMove2 = 3;
+    }
+    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar2.m_cLocation, 'R') == false)
+    {
+        //Beep(1440, 30);
+        g_sChar2.m_cLocation.X++;
+        tpProj2();
+        lastMove2 = 4;
+    }
+}
+
+void tpProj1()
+{
+    g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+    g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+}
+
+void tpProj2()
+{
+    g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
+    g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+}
+
+void charAbility()
+{
     if (doneShoot == 0)
     {
-        if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar.m_cLocation.Y--;
-            tpProj1();
-            lastMove = 1;
-        }
-        if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar.m_cLocation.X--;
-            tpProj1();
-            lastMove = 2;
-        }
-        if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar.m_cLocation.Y++;
-            tpProj1();
-            lastMove = 3;
-        }
-        if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision (g_sChar.m_cLocation,'R') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar.m_cLocation.X++;
-            tpProj1();
-            lastMove = 4;
-        }
+        // Fire boy
         if (g_skKeyEvent[K_R].keyReleased)
         {
             rOrC = 1;
             doneShoot++;
         }
-        if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false)
+        if (g_skKeyEvent[K_T].keyReleased)
         {
-            //Beep(1440, 30);
-            g_sChar2.m_cLocation.Y--;
-            tpProj2();
-            lastMove2 = 1;
+            fA = true;
         }
-        if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0 && Collision(g_sChar2.m_cLocation, 'L') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar2.m_cLocation.X--;
-            tpProj2();
-            lastMove2 = 2;
-        }
-        if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar2.m_cLocation, 'D') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar2.m_cLocation.Y++;
-            tpProj2();
-            lastMove2 = 3;
-        }
-        if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar2.m_cLocation, 'R') == false)
-        {
-            //Beep(1440, 30);
-            g_sChar2.m_cLocation.X++;
-            tpProj2();
-            lastMove2 = 4;
-        }
+        // Water boy
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
             rOrC = 0;
             doneShoot++;
         }
-        if (g_skKeyEvent[K_SPACE].keyReleased)
+        if (g_skKeyEvent[K_COMMA].keyReleased)
         {
-            // g_sChar.m_bActive = !g_sChar.m_bActive;
-            // g_sChar2.m_bActive = !g_sChar2.m_bActive;
+            wA = true;
         }
     }
-    else if (doneShoot > 0 && doneShoot < 11)
+    else if (doneShoot > 0 && doneShoot <= pjtlRange)
     {
         // Fire boy Shooting
         if (rOrC == 1)
@@ -390,17 +429,20 @@ void moveCharacter()
         }
         doneShoot++;
     }
-    else if (doneShoot == 11)
+    else if (doneShoot == (pjtlRange + 1))
     {
         tpProj1();
         tpProj2();
         doneShoot = 0;
+        fA = false;
+        wA = false;
     }
-
 }
 
-void tpProj1()
+void moveNPC(int n)
 {
+    if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
+    {
     g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
     g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
 
@@ -424,76 +466,76 @@ void moveNPC()
             int randomInt = rand() % 4 + 1;
             if (randomInt == 1) // Up
             {
-                if (npc1.getCoords().Y - 1 >= 0 && Collision(npc1.getCoords(), 'U') == false)
+                if (npcPtr[n]->getCoords().Y - 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'U') == false)
                 {
-                    npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
                 }
 
                 
             }
             else if (randomInt == 2 ) // Down
             {
-                if (npc1.getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1 && Collision(npc1.getCoords(), 'D') == false)
+                if (npcPtr[n]->getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1 && Collision(npcPtr[n]->getCoords(), 'D') == false)
                 {
-                    npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
                 }
             }
             else if (randomInt == 3) // Left
             {
-                if (npc1.getCoords().X - 1 >= 0 && Collision(npc1.getCoords(), 'L') == false)
+                if (npcPtr[n]->getCoords().X - 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'L') == false)
                 {
-                    npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
                 }
             }
             else // Right
             {
-                if (npc1.getCoords().X + 1 >= 0 && Collision(npc1.getCoords(), 'R') == false)
+                if (npcPtr[n]->getCoords().X + 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'R') == false)
                 {   
-                    npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
                 }
             }
-            npc1.setSecsOnFire(npc1.getSecsOnFire() - 0.33);
-            if (npc1.getSecsOnFire() <= 0)
+            static_cast<npc*>(npcPtr[n])->setSecsOnFire(static_cast<npc*>(npcPtr[n])->getSecsOnFire() - 0.33);
+            if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0)
             {
-                npc1.setAlive(false);
+                npcPtr[n]->setAlive(false);
             }
             secsPassed = 0;
         }
     }
 
-    else if (npc1.getAlive() == true)
+    else if (npcPtr[n]->getAlive() == true)
     {
         // check if player is in range of NPC
-        if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2) * 2) <= 25)
+        if ((pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2) * 2) <= 25)
         {
 
             int npc1L, npc1R, npc1U, npc1D;
 
-            npc1L = npc1.getCoords().X - 1;
-            npc1R = npc1.getCoords().X + 1;
-            npc1U = npc1.getCoords().Y - 1;
-            npc1D = npc1.getCoords().Y + 1;
+            npc1L = npcPtr[n]->getCoords().X - 1;
+            npc1R = npcPtr[n]->getCoords().X + 1;
+            npc1U = npcPtr[n]->getCoords().Y - 1;
+            npc1D = npcPtr[n]->getCoords().Y + 1;
 
-            npc1L = (pow(g_sChar.m_cLocation.X - npc1L, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2));
-            npc1R = (pow(g_sChar.m_cLocation.X - npc1R, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2));
-            npc1U = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
-            npc1D = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
+            npc1L = (pow(g_sChar.m_cLocation.X - npc1L, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
+            npc1R = (pow(g_sChar.m_cLocation.X - npc1R, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
+            npc1U = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
+            npc1D = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
 
-            if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && Collision(npc1.getCoords(), 'R') == false)
+            if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && Collision(npcPtr[n]->getCoords(), 'R') == false)
             {
-                npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
+                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
             }
-            else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && Collision(npc1.getCoords(), 'L') == false)
+            else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && Collision(npcPtr[n]->getCoords(), 'L') == false)
             {
-                npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
+                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
             }
-            else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && Collision(npc1.getCoords(), 'D') == false)
+            else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && Collision(npcPtr[n]->getCoords(), 'D') == false)
             {
-                npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
+                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
             }
-            else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && Collision(npc1.getCoords(), 'U') == false)
+            else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && Collision(npcPtr[n]->getCoords(), 'U') == false)
             {
-                npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
+                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
             }
         }
     }
@@ -516,12 +558,12 @@ void processUserInput()
     }
 }
 
-void updateNPC()
+void updateNPC(int n)
 {
-    if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y && npc1.getAlive() == true && npc1.getSecsOnFire() <= 0)
+    if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0)
     {
-        npc1.setSecsOnFire(5);
-        npcCol = 0x4C;
+        static_cast<npc*>(npcPtr[n])->setSecsOnFire(5);
+        static_cast<npc*>(npcPtr[n])->setCol(0x4C);
         
         fireWatch.startTimer();
     }
@@ -580,7 +622,10 @@ void renderGame()
     if (mapNum == 1 || mapNum == 3)
     {
         renderCharacter(); // renders the character into the buffer
-        renderNPC();
+        for (int n = 0; n < 10; n++)
+        {
+            renderNPC(n);
+        }
     }
 }
 
@@ -597,6 +642,22 @@ void renderMap()
         g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
         g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
         tpProj2();
+
+        int n = 0;
+        std::ifstream mapFile;
+        mapFile.open("Zav Map.txt", std::ifstream::in);
+        for (int y = 0; y < 26; y++)
+        {
+            for (int x = 0; x < 81; x++)
+            {
+                char c = mapFile.get();
+                if (c == '2')
+                {
+                    npcPtr[n]->setCoords(x, y);
+                    n++;
+                }
+            }
+        }
     }
     if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
     {
@@ -633,6 +694,7 @@ void renderMap()
     }
     else if (mapNum == 1 && mapSel == true)
     {
+        g_Console.clearBuffer();
         std::ifstream mapFile;
         mapFile.open("Zav Map.txt", std::ifstream::in);
 
@@ -643,13 +705,13 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
-                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36 || (npc1.getSecsOnFire() > 0 && (pow(x - npc1.getCoords().X, 2) + pow(y - npc1.getCoords().Y, 2) * 2 <= 16)))
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
                     if (c == '1')
                     {
                         g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
                     }
-                    else if (c == '0')
+                    else if (c == '0' || c == '2')
                     {
                         g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
                     }
@@ -658,6 +720,21 @@ void renderMap()
                 else
                 {
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
+                }
+
+                for (int n = 0; n < 10; n++)
+                {
+                    if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
+                    {
+                        if (c == '1')
+                        {
+                            g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                        }
+                        else if (c == '0' || c == '2')
+                        {
+                            g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                        }
+                    }
                 }
             }
         }
@@ -668,6 +745,7 @@ void renderMap()
     }
     else if (mapNum == 3 && mapSel == true)
     {
+        g_Console.clearBuffer();
         // Tutorial
         std::ifstream mapFile;
         mapFile.open("TutorialMap.txt", std::ifstream::in);
@@ -679,14 +757,18 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
-                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36 || (npc1.getSecsOnFire() > 0 && (pow(x - npc1.getCoords().X, 2) + pow(y - npc1.getCoords().Y, 2) * 2 <= 16)))
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
                     if (c == '1')
                     {
                         g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
                     }
-                    else if (c == '0')
+                    else if (c == '0' || c == '2')
                     {
+                        if (c == '2')
+                        {
+                            npcPtr[0]->setCoords(x, y);
+                        }
                         g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
                     }
                 }
@@ -704,33 +786,47 @@ void renderMap()
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0x4F;
-    WORD charColor2 = 0x90;
-    //if (g_sChar.m_bActive)
-        //charColor = 0x0A;
-    g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', charColor);
-    g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', charColor);
-    g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', charColor2);
-    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', charColor2);
+    if (fA == false)
+    {
+        g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0x4F);
+        g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0x4F);
+    }
+    else if (fA == true)
+    {
+
+    }
+    if (wA == false)
+    {
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
+        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x90);
+    }
+    else if (wA == true)
+    {
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x10);
+        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x10);
+    }
 }
 
-void renderNPC()
+void renderNPC(int n)
 {
-    updateNPC();
-    if (npc1.getAlive() == true)
+    for (int n = 0; n < 10; n++)
     {
-        if (pow(npc1.getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npc1.getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npc1.getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npc1.getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
+        updateNPC(n);
+    }
+    if (npcPtr[n]->getAlive() == true)
+    {
+        if (pow(npcPtr[n]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npcPtr[n]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
         {
-            g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+            g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
         }
-        if (npc1.getSecsOnFire() > 0)
+        if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
         {
-            g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+            g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
         }
     }
     else
     {
-        g_Console.writeToBuffer(npc1.getCoords(), ' ', 0x00);
+        g_Console.writeToBuffer(npcPtr[n]->getCoords(), ' ', 0x00);
     }
 }
 

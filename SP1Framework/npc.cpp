@@ -9,6 +9,7 @@ npc::npc()
 	setCoords(0, 0);
 	setAlive(true);
 
+	colour = 0xB0;
 	secsOnFire = 0;
 	noOfNPCs++;
 }
@@ -18,6 +19,7 @@ npc::npc(int x, int y)
 	setCoords(x, y);
 	setAlive(true);
 
+	colour = 0xB0;
 	secsOnFire = 0;
 	noOfNPCs++;
 }
@@ -27,6 +29,7 @@ npc::npc(COORD location)
 	setCoords(location);
 	setAlive(true);
 
+	colour = 0xB0;
 	secsOnFire = 0;
 	noOfNPCs++;
 }
@@ -46,6 +49,11 @@ double npc::getSecsOnFire(void)
 	return secsOnFire;
 }
 
+WORD npc::getCol(void)
+{
+	return colour;
+}
+
 void npc::setNoOfNPCs(int number)
 {
 	noOfNPCs = number;
@@ -54,6 +62,11 @@ void npc::setNoOfNPCs(int number)
 void npc::setSecsOnFire(double number)
 {
 	secsOnFire = number;
+}
+
+void npc::setCol(WORD colour)
+{
+	this->colour = colour;
 }
 
 void npc::move(void)
