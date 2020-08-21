@@ -378,26 +378,73 @@ void charAbility()
         // Fire boy Shooting
         if (rOrC == 1)
         {
-            if (lastMove == 1)
+            if (lastMove == 1 && Collision(g_sPjtl.m_cLocation, 'U') == false) {
                 g_sPjtl.m_cLocation.Y -= 1;
-            else if (lastMove == 2)
+                if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)
+                {
+                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                }
+            }
+            else if (lastMove == 2 && Collision(g_sPjtl.m_cLocation, 'L') == false)
+            {
                 g_sPjtl.m_cLocation.X -= 1;
-            else if (lastMove == 3)
+                if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)
+                {
+                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                }
+            }
+            else if (lastMove == 3 && Collision(g_sPjtl.m_cLocation, 'D') == false)
+            {
                 g_sPjtl.m_cLocation.Y += 1;
-            else if (lastMove == 4)
+                if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)
+                {
+                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                }
+            }
+            else if (lastMove == 4 && Collision(g_sPjtl.m_cLocation, 'R') == false)
+            {
                 g_sPjtl.m_cLocation.X += 1;
+                if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)
+                {
+                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                }
+            }
         }
         // Water boy Shooting
         else if (rOrC == 0)
         {
-            if (lastMove2 == 1)
+            if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)
+            {
                 g_sPjtl2.m_cLocation.Y -= 1;
-            else if (lastMove2 == 2)
+                if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y)
+                {
+                    g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                }
+            }
+            else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)
+            {
                 g_sPjtl2.m_cLocation.X -= 1;
-            else if (lastMove2 == 3)
+                if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
+                {
+                    g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                }
+            }
+            else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)
+            {
                 g_sPjtl2.m_cLocation.Y += 1;
-            else if (lastMove2 == 4)
+                if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y)
+                {
+                    g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                }
+            }
+            else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)
+            {
                 g_sPjtl2.m_cLocation.X += 1;
+                if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
+                {
+                    g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                }
+            }
         }
         doneShoot++;
     }
