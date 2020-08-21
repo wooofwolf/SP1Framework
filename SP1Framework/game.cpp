@@ -17,7 +17,9 @@ double  g_dElapsedTime;
 double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
+int pjtlRange = 5;
 int doneShoot = 0;
+int abilityRange = 3;
 int rOrC;
 int mapNum = 0;
 bool mapSel = false;
@@ -348,18 +350,29 @@ void charAbility()
 {
     if (doneShoot == 0)
     {
+        // Fire boy
         if (g_skKeyEvent[K_R].keyReleased)
         {
             rOrC = 1;
             doneShoot++;
         }
+        if (g_skKeyEvent[K_T].keyReleased)
+        {
+
+        }
+
+        // Water boy
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
             rOrC = 0;
             doneShoot++;
         }
+        if (g_skKeyEvent[K_COMMA].keyReleased)
+        {
+
+        }
     }
-    else if (doneShoot > 0 && doneShoot < 11)
+    else if (doneShoot > 0 && doneShoot <= pjtlRange)
     {
         // Fire boy Shooting
         if (rOrC == 1)
@@ -387,7 +400,7 @@ void charAbility()
         }
         doneShoot++;
     }
-    else if (doneShoot == 11)
+    else if (doneShoot == (pjtlRange + 1))
     {
         tpProj1();
         tpProj2();
