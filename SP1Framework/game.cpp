@@ -671,6 +671,7 @@ void renderMap()
     }
     else if (mapNum == 1 && mapSel == true)
     {
+        g_Console.clearBuffer();
         std::ifstream mapFile;
         mapFile.open("Zav Map.txt", std::ifstream::in);
 
@@ -721,6 +722,7 @@ void renderMap()
     }
     else if (mapNum == 3 && mapSel == true)
     {
+        g_Console.clearBuffer();
         // Tutorial
         std::ifstream mapFile;
         mapFile.open("TutorialMap.txt", std::ifstream::in);
@@ -738,8 +740,12 @@ void renderMap()
                     {
                         g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
                     }
-                    else if (c == '0')
+                    else if (c == '0' || c == '2')
                     {
+                        if (c == '2')
+                        {
+                            npcPtr[0]->setCoords(x, y);
+                        }
                         g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
                     }
                 }
