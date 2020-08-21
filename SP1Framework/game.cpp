@@ -23,7 +23,6 @@ int mapNum = 0;
 bool mapSel = false;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
-WORD npcCol = 0xB0;
 char mapArray[81][26];
 // NPC related stopwatch
 CStopWatch fireWatch;
@@ -35,7 +34,7 @@ SGameChar   g_sPjtl;
 SGameChar   g_sChar2;
 SGameChar   g_sPjtl2;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
-npc         npc1(10, 10);
+entity*     npcPtr[10];
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
@@ -49,6 +48,17 @@ Console g_Console(80, 25, "SP1 Framework");
 //--------------------------------------------------------------
 void init( void )
 {
+    npcPtr[0] = new npc;
+    npcPtr[1] = new npc;
+    npcPtr[2] = new npc;
+    npcPtr[3] = new npc;
+    npcPtr[4] = new npc;
+    npcPtr[5] = new npc;
+    npcPtr[6] = new npc;
+    npcPtr[7] = new npc;
+    npcPtr[8] = new npc;
+    npcPtr[9] = new npc;
+
     // Set precision for floating point output
     g_dElapsedTime = 0.0;    
 
@@ -254,7 +264,10 @@ void updateGame()       // gameplay logic
     moveCharacter();    // moves the character, collision detection, physics, etc
     charAbility();
                         // sound can be played here too.
-    moveNPC();
+    for (int n = 0; n < 10; n++)
+    {
+        moveNPC(n);
+    }
 }
 
 void moveCharacter()
@@ -382,9 +395,9 @@ void charAbility()
     }
 }
 
-void moveNPC()
+void moveNPC(int n)
 {
-    if (npc1.getSecsOnFire() > 0)
+    if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
     {
         secsPassed += fireWatch.getElapsedTime();
 
@@ -394,76 +407,76 @@ void moveNPC()
             int randomInt = rand() % 4 + 1;
             if (randomInt == 1) // Up
             {
-                if (npc1.getCoords().Y - 1 >= 0 && Collision(npc1.getCoords(), 'U') == false)
+                if (npcPtr[n]->getCoords().Y - 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'U') == false)
                 {
-                    npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
                 }
 
                 
             }
             else if (randomInt == 2 ) // Down
             {
-                if (npc1.getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1 && Collision(npc1.getCoords(), 'D') == false)
+                if (npcPtr[n]->getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1 && Collision(npcPtr[n]->getCoords(), 'D') == false)
                 {
-                    npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
                 }
             }
             else if (randomInt == 3) // Left
             {
-                if (npc1.getCoords().X - 1 >= 0 && Collision(npc1.getCoords(), 'L') == false)
+                if (npcPtr[n]->getCoords().X - 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'L') == false)
                 {
-                    npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
                 }
             }
             else // Right
             {
-                if (npc1.getCoords().X + 1 >= 0 && Collision(npc1.getCoords(), 'R') == false)
+                if (npcPtr[n]->getCoords().X + 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'R') == false)
                 {   
-                    npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
                 }
             }
-            npc1.setSecsOnFire(npc1.getSecsOnFire() - 0.33);
-            if (npc1.getSecsOnFire() <= 0)
+            static_cast<npc*>(npcPtr[n])->setSecsOnFire(static_cast<npc*>(npcPtr[n])->getSecsOnFire() - 0.33);
+            if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0)
             {
-                npc1.setAlive(false);
+                npcPtr[n]->setAlive(false);
             }
             secsPassed = 0;
         }
     }
 
-    else if (npc1.getAlive() == true)
+    else if (npcPtr[n]->getAlive() == true)
     {
         // check if player is in range of NPC
-        if ((pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2) * 2) <= 25)
+        if ((pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2) * 2) <= 25)
         {
 
             int npc1L, npc1R, npc1U, npc1D;
 
-            npc1L = npc1.getCoords().X - 1;
-            npc1R = npc1.getCoords().X + 1;
-            npc1U = npc1.getCoords().Y - 1;
-            npc1D = npc1.getCoords().Y + 1;
+            npc1L = npcPtr[n]->getCoords().X - 1;
+            npc1R = npcPtr[n]->getCoords().X + 1;
+            npc1U = npcPtr[n]->getCoords().Y - 1;
+            npc1D = npcPtr[n]->getCoords().Y + 1;
 
-            npc1L = (pow(g_sChar.m_cLocation.X - npc1L, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2));
-            npc1R = (pow(g_sChar.m_cLocation.X - npc1R, 2) + pow(g_sChar.m_cLocation.Y - npc1.getCoords().Y, 2));
-            npc1U = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
-            npc1D = (pow(g_sChar.m_cLocation.X - npc1.getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
+            npc1L = (pow(g_sChar.m_cLocation.X - npc1L, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
+            npc1R = (pow(g_sChar.m_cLocation.X - npc1R, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
+            npc1U = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
+            npc1D = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
 
-            if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && Collision(npc1.getCoords(), 'R') == false)
+            if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && Collision(npcPtr[n]->getCoords(), 'R') == false)
             {
-                npc1.setCoords(npc1.getCoords().X + 1, npc1.getCoords().Y);
+                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
             }
-            else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && Collision(npc1.getCoords(), 'L') == false)
+            else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && Collision(npcPtr[n]->getCoords(), 'L') == false)
             {
-                npc1.setCoords(npc1.getCoords().X - 1, npc1.getCoords().Y);
+                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
             }
-            else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && Collision(npc1.getCoords(), 'D') == false)
+            else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && Collision(npcPtr[n]->getCoords(), 'D') == false)
             {
-                npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y + 1);
+                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
             }
-            else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && Collision(npc1.getCoords(), 'U') == false)
+            else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && Collision(npcPtr[n]->getCoords(), 'U') == false)
             {
-                npc1.setCoords(npc1.getCoords().X, npc1.getCoords().Y - 1);
+                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
             }
         }
     }
@@ -486,12 +499,12 @@ void processUserInput()
     }
 }
 
-void updateNPC()
+void updateNPC(int n)
 {
-    if (g_sPjtl.m_cLocation.X == npc1.getCoords().X && g_sPjtl.m_cLocation.Y == npc1.getCoords().Y && npc1.getAlive() == true && npc1.getSecsOnFire() <= 0)
+    if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0)
     {
-        npc1.setSecsOnFire(5);
-        npcCol = 0x4C;
+        static_cast<npc*>(npcPtr[n])->setSecsOnFire(5);
+        static_cast<npc*>(npcPtr[n])->setCol(0x4C);
         
         fireWatch.startTimer();
     }
@@ -550,7 +563,10 @@ void renderGame()
     if (mapNum == 1 || mapNum == 3)
     {
         renderCharacter(); // renders the character into the buffer
-        renderNPC();
+        for (int n = 0; n < 10; n++)
+        {
+            renderNPC(n);
+        }
     }
 }
 
@@ -567,6 +583,22 @@ void renderMap()
         g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
         g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
         tpProj2();
+
+        int n = 0;
+        std::ifstream mapFile;
+        mapFile.open("Zav Map.txt", std::ifstream::in);
+        for (int y = 0; y < 26; y++)
+        {
+            for (int x = 0; x < 81; x++)
+            {
+                char c = mapFile.get();
+                if (c == '2')
+                {
+                    npcPtr[n]->setCoords(x, y);
+                    n++;
+                }
+            }
+        }
     }
     if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
     {
@@ -609,13 +641,13 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
-                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36 || (npc1.getSecsOnFire() > 0 && (pow(x - npc1.getCoords().X, 2) + pow(y - npc1.getCoords().Y, 2) * 2 <= 16)))
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
                     if (c == '1')
                     {
                         g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
                     }
-                    else if (c == '0')
+                    else if (c == '0' || c == '2')
                     {
                         g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
                     }
@@ -624,6 +656,21 @@ void renderMap()
                 else
                 {
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
+                }
+
+                for (int n = 0; n < 10; n++)
+                {
+                    if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
+                    {
+                        if (c == '1')
+                        {
+                            g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                        }
+                        else if (c == '0' || c == '2')
+                        {
+                            g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                        }
+                    }
                 }
             }
         }
@@ -645,7 +692,7 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
-                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36 || (npc1.getSecsOnFire() > 0 && (pow(x - npc1.getCoords().X, 2) + pow(y - npc1.getCoords().Y, 2) * 2 <= 16)))
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
                     if (c == '1')
                     {
@@ -680,23 +727,26 @@ void renderCharacter()
     g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', charColor2);
 }
 
-void renderNPC()
+void renderNPC(int n)
 {
-    updateNPC();
-    if (npc1.getAlive() == true)
+    for (int n = 0; n < 10; n++)
     {
-        if (pow(npc1.getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npc1.getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npc1.getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npc1.getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
+        updateNPC(n);
+    }
+    if (npcPtr[n]->getAlive() == true)
+    {
+        if (pow(npcPtr[n]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npcPtr[n]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
         {
-            g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+            g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
         }
-        if (npc1.getSecsOnFire() > 0)
+        if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
         {
-            g_Console.writeToBuffer(npc1.getCoords(), 'N', npcCol);
+            g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
         }
     }
     else
     {
-        g_Console.writeToBuffer(npc1.getCoords(), ' ', 0x00);
+        g_Console.writeToBuffer(npcPtr[n]->getCoords(), ' ', 0x00);
     }
 }
 

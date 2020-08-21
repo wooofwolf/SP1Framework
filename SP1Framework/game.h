@@ -73,15 +73,15 @@ void moveCharacter();       // moves the character, collision detection, physics
 void tpProj1();      // tp projectile to character
 void tpProj2();      // tp projectile2 to character2
 void charAbility();
-void moveNPC();             // checks how far the player is from npc, npc moves if player is close.
+void moveNPC(int n);             // checks how far the player is from npc, npc moves if player is close.
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
-void updateNPC();           // checks if the NPC gets caught on fire
+void updateNPC(int n);           // checks if the NPC gets caught on fire
 void clearScreen();         // clears the current screen and draw from scratch 
 void renderSplashScreen();  // renders the splash screen
 void renderGame();          // renders the game stuff
 void renderMap();           // renders the map to the buffer first
 void renderCharacter();     // renders the character into the buffer
-void renderNPC();           // renders npc into the buffer
+void renderNPC(int n);           // renders npc into the buffer
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
 void renderInputEvents();   // renders the status of input events
