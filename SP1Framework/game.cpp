@@ -38,7 +38,7 @@ SGameChar   g_sPjtl;
 SGameChar   g_sChar2;
 SGameChar   g_sPjtl2;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
-entity*     npcPtr[10];
+entity* npcPtr[10];
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
@@ -50,7 +50,7 @@ Console g_Console(80, 25, "SP1 Framework");
 // Input    : void
 // Output   : void
 //--------------------------------------------------------------
-void init( void )
+void init(void)
 {
     npcPtr[0] = new npc;
     npcPtr[1] = new npc;
@@ -64,7 +64,7 @@ void init( void )
     npcPtr[9] = new npc;
 
     // Set precision for floating point output
-    g_dElapsedTime = 0.0;    
+    g_dElapsedTime = 0.0;
 
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
@@ -84,7 +84,7 @@ void init( void )
 // Input    : Void
 // Output   : void
 //--------------------------------------------------------------
-void shutdown( void )
+void shutdown(void)
 {
     // Reset to white text on black background
     colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
@@ -105,12 +105,12 @@ void shutdown( void )
 // Input    : Void
 // Output   : void
 //--------------------------------------------------------------
-void getInput( void )
+void getInput(void)
 {
     // resets all the keyboard events
     memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
     // then call the console to detect input from user
-    g_Console.readConsoleInput();    
+    g_Console.readConsoleInput();
 }
 
 //--------------------------------------------------------------
@@ -154,7 +154,7 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
 // Output   : void
 //--------------------------------------------------------------
 void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
-{    
+{
     switch (g_eGameState)
     {
     case S_SPLASHSCREEN: // don't handle anything for the splash screen
@@ -187,7 +187,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case 0x54: key = K_T; break;
     case VK_UP: key = K_UP; break;
     case VK_DOWN: key = K_DOWN; break;
-    case VK_LEFT: key = K_LEFT; break; 
+    case VK_LEFT: key = K_LEFT; break;
     case VK_RIGHT: key = K_RIGHT; break;
     case VK_OEM_COMMA: key = K_COMMA; break;
     case VK_OEM_PERIOD: key = K_PERIOD; break;
@@ -195,7 +195,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case 0x32: key = K_2; break;
     case 0x33: key = K_3; break;
     case VK_SPACE: key = K_SPACE; break;
-    case VK_ESCAPE: key = K_ESCAPE; break; 
+    case VK_ESCAPE: key = K_ESCAPE; break;
     }
     // a key pressed event would be one with bKeyDown == true
     // a key released event would be one with bKeyDown == false
@@ -205,7 +205,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     {
         g_skKeyEvent[key].keyDown = keyboardEvent.bKeyDown;
         g_skKeyEvent[key].keyReleased = !keyboardEvent.bKeyDown;
-    }    
+    }
 }
 
 //--------------------------------------------------------------
@@ -249,10 +249,10 @@ void update(double dt)
 
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
-            break;
-        case S_GAME: updateGame(); // gameplay logic when we are in the game
-            break;
+    case S_SPLASHSCREEN: splashScreenWait(); // game logic for the splash screen
+        break;
+    case S_GAME: updateGame(); // gameplay logic when we are in the game
+        break;
     }
 }
 
@@ -378,53 +378,25 @@ void charAbility()
         // Fire boy Shooting
         if (rOrC == 1)
         {
-            if (lastMove == 1 && Collision(g_sPjtl.m_cLocation, 'U') == false)
-                if ((g_sPjtl.m_cLocation.Y - 1) != g_sChar2.m_cLocation.Y)
-                {
-                    g_sPjtl.m_cLocation.Y -= 1;
-                }
-                else if ((g_sPjtl.m_cLocation.Y - 1) == g_sChar2.m_cLocation.Y)
-                {
-                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
-                }
-            else if (lastMove == 2 && Collision(g_sPjtl.m_cLocation, 'L') == false)
-                if ((g_sPjtl.m_cLocation.X - 1) != g_sChar2.m_cLocation.X)
-                {
-                    g_sPjtl.m_cLocation.X -= 1;
-                }
-                else if ((g_sPjtl.m_cLocation.X - 1) == g_sChar2.m_cLocation.X)
-                {
-                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
-                }
-            else if (lastMove == 3 && Collision(g_sPjtl.m_cLocation, 'D') == false)
-                if ((g_sPjtl.m_cLocation.Y + 1) != g_sChar2.m_cLocation.Y)
-                {
-                    g_sPjtl.m_cLocation.Y += 1;
-                }
-                else if ((g_sPjtl.m_cLocation.Y - 1) == g_sChar2.m_cLocation.Y)
-                {
-                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
-                }
-            else if (lastMove == 4 && Collision(g_sPjtl.m_cLocation, 'R') == false)
-                if ((g_sPjtl.m_cLocation.X + 1) != g_sChar2.m_cLocation.X)
-                {
-                    g_sPjtl.m_cLocation.X += 1;
-                }
-                else if ((g_sPjtl.m_cLocation.X+- 1) == g_sChar2.m_cLocation.X)
-                {
-                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
-                }
+            if (lastMove == 1)
+                g_sPjtl.m_cLocation.Y -= 1;
+            else if (lastMove == 2)
+                g_sPjtl.m_cLocation.X -= 1;
+            else if (lastMove == 3)
+                g_sPjtl.m_cLocation.Y += 1;
+            else if (lastMove == 4)
+                g_sPjtl.m_cLocation.X += 1;
         }
         // Water boy Shooting
         else if (rOrC == 0)
         {
-            if (lastMove2 == 1 && (Collision(g_sPjtl2.m_cLocation, 'U') == false)) 
+            if (lastMove2 == 1)
                 g_sPjtl2.m_cLocation.Y -= 1;
-            else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)
+            else if (lastMove2 == 2)
                 g_sPjtl2.m_cLocation.X -= 1;
-            else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)
+            else if (lastMove2 == 3)
                 g_sPjtl2.m_cLocation.Y += 1;
-            else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)
+            else if (lastMove2 == 4)
                 g_sPjtl2.m_cLocation.X += 1;
         }
         doneShoot++;
@@ -495,9 +467,9 @@ void moveNPC()
                     npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
                 }
 
-                
+
             }
-            else if (randomInt == 2 ) // Down
+            else if (randomInt == 2) // Down
             {
                 if (npcPtr[n]->getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1 && Collision(npcPtr[n]->getCoords(), 'D') == false)
                 {
@@ -514,7 +486,7 @@ void moveNPC()
             else // Right
             {
                 if (npcPtr[n]->getCoords().X + 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'R') == false)
-                {   
+                {
                     npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
                 }
             }
@@ -588,7 +560,7 @@ void updateNPC(int n)
     {
         static_cast<npc*>(npcPtr[n])->setSecsOnFire(5);
         static_cast<npc*>(npcPtr[n])->setCol(0x4C);
-        
+
         fireWatch.startTimer();
     }
 }
@@ -711,10 +683,6 @@ void renderMap()
         g_Console.writeToBuffer(3, 8, "/_/    \\_\\_|  \\___\\__,_|_| |_|\\___| |_____\\__, |_| |_|_|\\__|_|\\___/|_| |_|", 0xB4);
         g_Console.writeToBuffer(3, 9, "                                           __/ |                          ", 0xB4);
         g_Console.writeToBuffer(3, 10, "                                          |___/                           ", 0xB4);
-        g_Console.writeToBuffer(27, 14, "Press 1 to play map 1", 0xB4);
-        g_Console.writeToBuffer(26, 15, "Press 2 to open settings", 0xB4);
-        g_Console.writeToBuffer(26, 16, "Press 3 to play tutorial", 0xB4);
-        g_Console.writeToBuffer(25, 17, "Press Esc to quit the game", 0xB4);
     }
     else if (mapNum == 1 && mapSel == true)
     {
@@ -865,7 +833,7 @@ void renderFramerate()
 void renderInputEvents()
 {
     // keyboard events
-    COORD startPos = {50, 2};
+    COORD startPos = { 50, 2 };
     std::ostringstream ss;
     std::string key;
     /*for (int i = 0; i < K_COUNT; ++i)
@@ -917,40 +885,40 @@ void renderInputEvents()
     /*ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";*/
     g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
     ss.str("");
-   /* switch (g_mouseEvent.eventFlags)
-    {
-    case 0:
-        if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-        {
-            ss.str("Left Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
-        }
-        else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
-        {
-            ss.str("Right Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
-        }
-        else
-        {
-            ss.str("Some Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
-        }
-        break;
-    case DOUBLE_CLICK:
-        ss.str("Double Clicked");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
-        break;        
-    case MOUSE_WHEELED:
-        if (g_mouseEvent.buttonState & 0xFF000000)
-            ss.str("Mouse wheeled down");
-        else
-            ss.str("Mouse wheeled up");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
-        break;*/
-   /* default:        
-        break;
-    }*/
-    
+    /* switch (g_mouseEvent.eventFlags)
+     {
+     case 0:
+         if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+         {
+             ss.str("Left Button Pressed");
+             g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
+         }
+         else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
+         {
+             ss.str("Right Button Pressed");
+             g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
+         }
+         else
+         {
+             ss.str("Some Button Pressed");
+             g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
+         }
+         break;
+     case DOUBLE_CLICK:
+         ss.str("Double Clicked");
+         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
+         break;
+     case MOUSE_WHEELED:
+         if (g_mouseEvent.buttonState & 0xFF000000)
+             ss.str("Mouse wheeled down");
+         else
+             ss.str("Mouse wheeled up");
+         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
+         break;*/
+         /* default:
+              break;
+          }*/
+
 }
 
 bool Collision(COORD position, char direction)
@@ -965,7 +933,7 @@ bool Collision(COORD position, char direction)
     }
     if (direction == 'D')
     {
-        if (mapArray[position.X][position.Y+1] == '1')
+        if (mapArray[position.X][position.Y + 1] == '1')
         {
             return true;
         }
@@ -973,7 +941,7 @@ bool Collision(COORD position, char direction)
     }
     if (direction == 'L')
     {
-        if (mapArray[position.X-1][position.Y] == '1')
+        if (mapArray[position.X - 1][position.Y] == '1')
         {
             return true;
         }
@@ -981,7 +949,7 @@ bool Collision(COORD position, char direction)
     }
     if (direction == 'R')
     {
-        if (mapArray[position.X+1][position.Y] == '1')
+        if (mapArray[position.X + 1][position.Y] == '1')
         {
             return true;
         }
