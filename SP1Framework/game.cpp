@@ -267,7 +267,6 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
     charAbility();
-    updateColour();
     for (int n = 0; n < 10; n++)
     {
         moveNPC(n);
@@ -462,30 +461,6 @@ void charAbility()
         doneShoot = 0;
         fA = false;
         wA = false;
-    }
-}
-
-void updateColour()
-{
-    if (fA == false)
-    {
-        g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0x4F);
-        g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0x4F);
-    }
-    else if (fA == true)
-    {
-        g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0xCF);
-        g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0xCF);
-    }
-    if (wA == false)
-    {
-        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
-        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x90);
-    }
-    else if (wA == true)
-    {
-        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0xB0);
-        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0xB0);
     }
 }
 
@@ -848,13 +823,31 @@ void renderMap()
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0x4F;
-    WORD charColor2 = 0x90;
+    g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0x4F);
+    g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0x4F);
+    g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
+    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x90);
 
-    g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', charColor);
-    g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', charColor);
-    g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', charColor2);
-    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', charColor2);
+    if (fA == false)
+    {
+        g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0x4F);
+        g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0x4F);
+    }
+    else if (fA == true)
+    {
+        g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0xCF);
+        g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0xCF);
+    }
+    if (wA == false)
+    {
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
+        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x90);
+    }
+    else if (wA == true)
+    {
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0xB0);
+        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0xB0);
+    }
 }
 
 void renderNPC(int n)
