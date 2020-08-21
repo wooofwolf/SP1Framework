@@ -55,14 +55,6 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    // Zavier's
-    
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 44;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.05;
-    g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
-    g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
-    
-
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -250,7 +242,6 @@ void update(double dt)
     }
 }
 
-
 void splashScreenWait()    // waits for time to pass in splash screen
 {
     //if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
@@ -274,35 +265,29 @@ void moveCharacter()
         if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
         {
             //Beep(1440, 30);
-
             g_sChar.m_cLocation.Y--;
-            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            tpProj1();
             lastMove = 1;
         }
-          
         if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
         {
             //Beep(1440, 30);
             g_sChar.m_cLocation.X--;
-            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            tpProj1();
             lastMove = 2;
         }
         if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
         {
             //Beep(1440, 30);
             g_sChar.m_cLocation.Y++;
-            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            tpProj1();
             lastMove = 3;
         }
         if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision (g_sChar.m_cLocation,'R') == false)
         {
             //Beep(1440, 30);
             g_sChar.m_cLocation.X++;
-            g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-            g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            tpProj1();
             lastMove = 4;
         }
         if (g_skKeyEvent[K_R].keyReleased)
@@ -314,32 +299,28 @@ void moveCharacter()
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.Y--;
-            g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
-            g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+            tpProj2();
             lastMove2 = 1;
         }
         if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0 && Collision(g_sChar2.m_cLocation, 'L') == false)
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.X--;
-            g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
-            g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+            tpProj2();
             lastMove2 = 2;
         }
         if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar2.m_cLocation, 'D') == false)
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.Y++;
-            g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
-            g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+            tpProj2();
             lastMove2 = 3;
         }
         if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar2.m_cLocation, 'R') == false)
         {
             //Beep(1440, 30);
             g_sChar2.m_cLocation.X++;
-            g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
-            g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+            tpProj2();
             lastMove2 = 4;
         }
         if (g_skKeyEvent[K_COMMA].keyReleased)
@@ -383,13 +364,23 @@ void moveCharacter()
     }
     else if (doneShoot == 11)
     {
-        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-        g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
-        g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+        tpProj1();
+        tpProj2();
         doneShoot = 0;
     }
 
+}
+
+void tpProj1()
+{
+    g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+    g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+}
+
+void tpProj2()
+{
+    g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
+    g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
 }
 
 void moveNPC()
@@ -571,6 +562,12 @@ void renderMap()
         mapNum = 1;
         mapSel = true;
         // Set their spawn below
+        g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 44;
+        g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.05;
+        tpProj1();
+        g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
+        g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
+        tpProj2();
     }
     if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
     {
@@ -584,15 +581,11 @@ void renderMap()
         // Their spawnpoint
         g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
         g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.25;
-        g_sChar.m_bActive = true;
-        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+        tpProj1();
 
         g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.2;
         g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.2;
-        g_sChar2.m_bActive = true;
-        g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
-        g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
+        tpProj2();
     }
     if (mapNum == 0 && mapSel == false)
     {
