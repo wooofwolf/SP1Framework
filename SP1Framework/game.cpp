@@ -17,7 +17,7 @@ double  g_dElapsedTime;
 double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
-int pjtlRange = 5;
+int pjtlRange = 7;
 int doneShoot = 0;
 int abilityRange = 3;
 int rOrC;
