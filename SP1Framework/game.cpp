@@ -476,12 +476,12 @@ void updateColour()
     }
     if (wA == false)
     {
-        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'F', 0x90);
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
         g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x90);
     }
     else if (wA == true)
     {
-        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'F', 0xB0);
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0xB0);
         g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0xB0);
     }
 }
