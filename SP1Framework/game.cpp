@@ -17,7 +17,9 @@ double  g_dElapsedTime;
 double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
+int pjtlRange = 5;
 int doneShoot = 0;
+int abilityRange = 3;
 int rOrC;
 int mapNum = 0;
 bool mapSel = false;
@@ -252,7 +254,6 @@ void updateGame()       // gameplay logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
-    charPjtl();
     charAbility();
     moveNPC();
 }
@@ -357,7 +358,7 @@ void charAbility()
 
         }
     }
-    else if (doneShoot > 0 && doneShoot < 11)
+    else if (doneShoot > 0 && doneShoot <= pjtlRange)
     {
         // Fire boy Shooting
         if (rOrC == 1)
@@ -385,7 +386,7 @@ void charAbility()
         }
         doneShoot++;
     }
-    else if (doneShoot == 11)
+    else if (doneShoot == (pjtlRange + 1))
     {
         tpProj1();
         tpProj2();
