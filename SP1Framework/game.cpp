@@ -439,21 +439,6 @@ void moveNPC(int n)
 {
     if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
     {
-    g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-    g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-
-}
-
-void tpProj2()
-{
-    g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
-    g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
-}
-
-void moveNPC()
-{
-    if (npc1.getSecsOnFire() > 0)
-    {
         secsPassed += fireWatch.getElapsedTime();
 
         if (secsPassed > 0.33)
