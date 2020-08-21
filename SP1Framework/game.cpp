@@ -681,7 +681,9 @@ void renderMap()
                 char c = mapFile.get();
                 if (c == '2')
                 {
+                    npcPtr[n]->setAlive(true);
                     npcPtr[n]->setCoords(x, y);
+                    static_cast<npc*>(npcPtr[n])->setCol(0xB0);
                     n++;
                 }
             }
@@ -704,6 +706,27 @@ void renderMap()
         g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.2;
         g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.2;
         tpProj2();
+
+        std::ifstream mapFile;
+        mapFile.open("TutorialMap.txt", std::ifstream::in);
+        for (int y = 0; y < 26; y++)
+        {
+            for (int x = 0; x < 81; x++)
+            {
+                char c = mapFile.get();
+                if (c == '2')
+                {
+                    npcPtr[0]->setAlive(true);
+                    npcPtr[0]->setCoords(x, y);
+                    static_cast<npc*>(npcPtr[0])->setCol(0xB0);
+                }
+            }
+        }
+        for (int n = 1; n < 10; n++)
+        {
+            npcPtr[n]->setAlive(false);
+            npcPtr[n]->setCoords(0, 0);
+        }
     }
     if (mapNum == 0 && mapSel == false)
     {
@@ -785,7 +808,7 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
-                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36 || ((pow(x - npcPtr[0]->getCoords().X, 2) + pow(y - npcPtr[0]->getCoords().Y, 2) * 2) <=16 && static_cast<npc*>(npcPtr[0])->getSecsOnFire() > 0))
                 {
                     if (c == '1')
                     {
@@ -793,10 +816,6 @@ void renderMap()
                     }
                     else if (c == '0' || c == '2')
                     {
-                        if (c == '2')
-                        {
-                            npcPtr[0]->setCoords(x, y);
-                        }
                         g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
                     }
                 }
