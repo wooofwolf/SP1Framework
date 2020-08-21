@@ -413,48 +413,46 @@ void charAbility()
         // Water boy Shooting
         else if (rOrC == 0)
         {
-            
-                if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)
-                {
-                    g_sPjtl2.m_cLocation.Y -= 1;
-                    for (int n = 0; n < 10; n++) {
-                        if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || g_sPjtl2.m_cLocation.Y == static_cast<npc*>(npcPtr[n])->getCoords().Y)
-                        {
-                            g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
-                        }
+            if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)
+            {
+                g_sPjtl2.m_cLocation.Y -= 1;
+                for (int n = 0; n < 10; n++) {
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || g_sPjtl2.m_cLocation.Y == static_cast<npc*>(npcPtr[n])->getCoords().Y)
+                    {
+                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
                 }
-                else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)
-                {
-                    g_sPjtl2.m_cLocation.X -= 1;
-                    for (int n = 0; n < 10; n++) {
-                        if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || g_sPjtl2.m_cLocation.X == static_cast<npc*>(npcPtr[n])->getCoords().X)
-                        {
-                            g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
-                        }
+            }
+            else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)
+            {
+                g_sPjtl2.m_cLocation.X -= 1;
+                for (int n = 0; n < 10; n++) {
+                    if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || g_sPjtl2.m_cLocation.X == static_cast<npc*>(npcPtr[n])->getCoords().X)
+                    {
+                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
                 }
-                else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)
-                {
-                    g_sPjtl2.m_cLocation.Y += 1;
-                    for (int n = 0; n < 10; n++) {
-                        if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || g_sPjtl2.m_cLocation.Y == static_cast<npc*>(npcPtr[n])->getCoords().Y)
-                        {
-                            g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
-                        }
+            }
+            else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)
+            {
+                g_sPjtl2.m_cLocation.Y += 1;
+                for (int n = 0; n < 10; n++) {
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || g_sPjtl2.m_cLocation.Y == static_cast<npc*>(npcPtr[n])->getCoords().Y)
+                    {
+                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
                 }
-                else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)
-                {
-                    g_sPjtl2.m_cLocation.X += 1;
-                    for (int n = 0; n < 10; n++) {
-                        if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || g_sPjtl2.m_cLocation.X == static_cast<npc*>(npcPtr[n])->getCoords().X)
-                        {
-                            g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
-                        }
+            }
+            else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)
+            {
+                g_sPjtl2.m_cLocation.X += 1;
+                for (int n = 0; n < 10; n++) {
+                    if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || g_sPjtl2.m_cLocation.X == static_cast<npc*>(npcPtr[n])->getCoords().X)
+                    {
+                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
                 }
-            
+            }
         }
         doneShoot++;
     }
