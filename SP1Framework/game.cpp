@@ -647,11 +647,6 @@ void renderMap()
     }
     else if (mapNum == 1 && mapSel == true)
     {
-        for (int n = 0; n < 10; n++)
-        {
-            npcPtr[n]->setAlive(true);
-        }
-
         g_Console.clearBuffer();
         std::ifstream mapFile;
         mapFile.open("Zav Map.txt", std::ifstream::in);
@@ -703,12 +698,6 @@ void renderMap()
     }
     else if (mapNum == 3 && mapSel == true)
     {
-        for (int n = 1; n < 10; n++)
-        {
-            npcPtr[n]->setAlive(false);
-            g_Console.writeToBuffer(npcPtr[n]->getCoords(), " °±²Û", 0x1B);
-        }
-        
         g_Console.clearBuffer();
         // Tutorial
         std::ifstream mapFile;
