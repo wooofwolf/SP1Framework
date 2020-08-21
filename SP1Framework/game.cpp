@@ -23,6 +23,8 @@ int abilityRange = 3;
 int rOrC;
 int mapNum = 0;
 bool mapSel = false;
+bool fA = false;
+bool wA = false;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 char mapArray[81][26];
@@ -265,7 +267,7 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
     charAbility();
-                        // sound can be played here too.
+    renderCharacter();
     for (int n = 0; n < 10; n++)
     {
         moveNPC(n);
@@ -358,9 +360,8 @@ void charAbility()
         }
         if (g_skKeyEvent[K_T].keyReleased)
         {
-
+            fA = true;
         }
-
         // Water boy
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
@@ -369,7 +370,7 @@ void charAbility()
         }
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
-            WORD charColor2 = 0x10;
+            wA = true;
         }
     }
     else if (doneShoot > 0 && doneShoot <= pjtlRange)
@@ -402,11 +403,11 @@ void charAbility()
     }
     else if (doneShoot == (pjtlRange + 1))
     {
-        WORD charColor = 0x4F;
-        WORD charColor2 = 0x90;
         tpProj1();
         tpProj2();
         doneShoot = 0;
+        fA = false;
+        wA = false;
     }
 }
 
@@ -732,14 +733,25 @@ void renderMap()
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0x4F;
-    WORD charColor2 = 0x90;
-    //if (g_sChar.m_bActive)
-        //charColor = 0x0A;
-    g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', charColor);
-    g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', charColor);
-    g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', charColor2);
-    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', charColor2);
+    if (fA == false)
+    {
+        g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0x4F);
+        g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0x4F);
+    }
+    else if (fA == true)
+    {
+
+    }
+    if (wA == false)
+    {
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
+        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x90);
+    }
+    else if (wA == true)
+    {
+        g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x10);
+        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x10);
+    }
 }
 
 void renderNPC(int n)
