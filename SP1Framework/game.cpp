@@ -355,7 +355,7 @@ void charAbility()
         }
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
-
+            WORD charColor2 = 0x10;
         }
     }
     else if (doneShoot > 0 && doneShoot <= pjtlRange)
@@ -388,6 +388,8 @@ void charAbility()
     }
     else if (doneShoot == (pjtlRange + 1))
     {
+        WORD charColor = 0x4F;
+        WORD charColor2 = 0x90;
         tpProj1();
         tpProj2();
         doneShoot = 0;
