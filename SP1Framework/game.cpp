@@ -467,9 +467,9 @@ void moveNPC(int n)
 {
     if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
     {
-    g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
-    g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
-
+        g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
+        g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
+    }
 }
 
 void tpProj2()
