@@ -21,6 +21,7 @@ int pjtlRange = 7;
 int doneShoot = 0;
 int abilityRange = 3;
 int rOrC;
+int tOrP;
 int mapNum = 0;
 bool mapSel = false;
 bool fA = false;
@@ -355,6 +356,7 @@ void charAbility()
         if (g_skKeyEvent[K_R].keyReleased)
         {
             rOrC = 1;
+            tOrP = 1;
             doneShoot++;
         }
         if (g_skKeyEvent[K_T].keyReleased)
@@ -365,6 +367,7 @@ void charAbility()
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
             rOrC = 0;
+            tOrP = 0;
             doneShoot++;
         }
         if (g_skKeyEvent[K_PERIOD].keyReleased)
@@ -416,7 +419,6 @@ void charAbility()
                 if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)
                 {
                     g_sPjtl2.m_cLocation.Y -= 1;
-                    
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
@@ -459,11 +461,11 @@ void charAbility()
         tpProj1();
         tpProj2();
         doneShoot = 0;
-        if (fA == true)
+        if (fA == true && tOrP == 1)
         {
             fA = false;
         }
-        if (wA == true)
+        if (wA == true && tOrP == 0)
         {
             wA = false;
         }
@@ -1025,6 +1027,3 @@ bool Collision(COORD position, char direction)
         return false;
     }
 }
-
-
-
