@@ -26,10 +26,18 @@ int mapNum = 0;
 bool mapSel = false;
 bool fA = false;
 bool wA = false;
-bool showfcontrols = true;
-bool shownpc = false;
-bool shownpc2 = false;
-bool showobjective = false;
+bool showFcontrols = true;
+bool showFnpc = false;
+bool showFnpc2 = false;
+bool showFability = false;
+bool showFobjective = false;
+bool showWcontrols = false;
+bool shownWcontrols = false;
+bool showWnpc = false;
+bool showWnpc2 = false;
+bool showWability = false;
+bool shownWability = false;
+bool showWobjective = false;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 char mapArray[81][26];
@@ -392,6 +400,10 @@ void charAbility()
                 {
                     g_sPjtl.m_cLocation = g_sChar.m_cLocation;
                 }
+                if (doneShoot == pjtlRange - 2)
+                {
+                    doneShoot += 2;
+                }
             }
             else if (lastMove == 2 && Collision(g_sPjtl.m_cLocation, 'L') == false)
             {
@@ -407,6 +419,10 @@ void charAbility()
                 if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)
                 {
                     g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                }
+                if (doneShoot == pjtlRange - 2)
+                {
+                    doneShoot += 2;
                 }
             }
             else if (lastMove == 4 && Collision(g_sPjtl.m_cLocation, 'R') == false)
@@ -445,6 +461,10 @@ void charAbility()
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
                 }
+                if (doneShoot == pjtlRange - 2)
+                {
+                    doneShoot += 2;
+                }
             }
             else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)
             {
@@ -475,7 +495,10 @@ void charAbility()
                     g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
 
                 }
-
+                if (doneShoot == pjtlRange - 2)
+                {
+                    doneShoot += 2;
+                }
             }
             else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)
             {
@@ -640,7 +663,7 @@ void updateNPC(int n)
         fireWatch.startTimer();
     }
 
-    if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
+    if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 || static_cast<npc*>(npcPtr[n])->getCol() == 0x4C))
     {
         static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
         static_cast<npc*>(npcPtr[n])->setCol(0x90);
@@ -750,7 +773,12 @@ void renderMap()
     }
     else if (g_skKeyEvent[K_3].keyReleased && mapSel == false)
     {
-        shownpc = false;
+        shownWability = false;
+        shownWcontrols = false;
+        showWcontrols = false;
+        showWobjective = false;
+        showFobjective = false;
+        showFcontrols = true;
         mapNum = 3;
         mapSel = true;
         // Their spawnpoint
@@ -779,10 +807,9 @@ void renderMap()
                 }
             }
         }
-        for (int n = 2; n < 10; n++)
+        for (int n = 5; n < 10; n++)
         {
-            npcPtr[n]->setAlive(false);
-            npcPtr[n]->setCoords(0, 0);
+            static_cast<npc*>(npcPtr[n])->setCol(0x4C);
         }
     }
     if (mapNum == 0 && mapSel == false)
@@ -865,7 +892,7 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
-                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36 || ((pow(x - npcPtr[0]->getCoords().X, 2) + pow(y - npcPtr[0]->getCoords().Y, 2) * 2) <=16 && static_cast<npc*>(npcPtr[0])->getSecsOnFire() > 0))
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
                     if (c == '1')
                     {
@@ -881,47 +908,122 @@ void renderMap()
                 {
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
                 }
+
+                for (int n = 0; n < 10; n++)
+                {
+                    if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
+                    {
+                        if (c == '1')
+                        {
+                            g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                        }
+                        else if (c == '0' || c == '2')
+                        {
+                            g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                        }
+                    }
+                }
             }
         }
         mapFile.close();
-        
-        g_Console.writeToBuffer(2, 16, "Waterboy Movement:", 0x0F);
-        g_Console.writeToBuffer(6, 17, "Arrow Keys", 0x0F);
 
         if (g_sChar.m_cLocation.X == 35 && g_sChar.m_cLocation.Y == 9)
         {
-            showfcontrols = false;
-            shownpc = true;
+            showFcontrols = false;
+            showFnpc = true;
         }
         if (g_sChar.m_cLocation.X == 51 && g_sChar.m_cLocation.Y == 11)
         {
-            shownpc = false;
-            shownpc2 = true;
+            showFnpc = false;
+            showFnpc2 = true;
         }
-        if (npcPtr[0]->getAlive() == false && npcPtr[1]->getAlive() == false)
+        if (g_sChar.m_cLocation.X == 67 && g_sChar.m_cLocation.Y == 11)
         {
-            shownpc2 = false;
-            showobjective = true;
+            showFnpc2 = false;
+            showFability = true;
+        }
+        if (npcPtr[0]->getAlive() == false && npcPtr[1]->getAlive() == false && npcPtr[2]->getAlive() == false && npcPtr[3]->getAlive() == false && npcPtr[4]->getAlive() == false)
+        {
+            showFability = false;
+            showFobjective = true;
+            showWcontrols = true;
+        }
+        if (g_sChar2.m_cLocation.X == 35 && g_sChar2.m_cLocation.Y == 15)
+        {
+            showWcontrols = false;
+            shownWcontrols = true;
+            showWnpc = true;
+        }
+        if (g_sChar2.m_cLocation.X == 51 && g_sChar2.m_cLocation.Y == 13)
+        {
+            showWnpc = false;
+            showWnpc2 = true;
+        }
+        if (g_sChar2.m_cLocation.X == 67 && g_sChar2.m_cLocation.Y == 13)
+        {
+            showWnpc2 = false;
+            showWability = true;
+            shownWability = true;
+        }
+        if (static_cast<npc*>(npcPtr[5])->getCol() == 0xB0 && static_cast<npc*>(npcPtr[6])->getCol() == 0xB0 && static_cast<npc*>(npcPtr[7])->getCol() == 0xB0 && static_cast<npc*>(npcPtr[8])->getCol() == 0xB0 && static_cast<npc*>(npcPtr[9])->getCol() == 0xB0 && shownWability == true)
+        {
+            showWability = false;
+            showWobjective = true;
         }
 
-        if (showfcontrols == true)
+        if (showFcontrols == true)
         {
             g_Console.writeToBuffer(2, 7, "Fireboy Movement:", 0x0F);
             g_Console.writeToBuffer(9, 8, "WASD", 0x0F);
         }
-        if (shownpc == true)
+        if (showFnpc == true)
         {
             g_Console.writeToBuffer(35, 3, "This is an NPC", 0x0F);
             g_Console.writeToBuffer(25, 4, "The NPC will run away from Fireboy", 0x0F);
             g_Console.writeToBuffer(30, 5, "Press r to shoot the NPC", 0x0F);
         }
-        if (shownpc2 == true)
+        if (showFnpc2 == true)
         {
             g_Console.writeToBuffer(27, 4, "You can also walk into the NPC to set it ablaze", 0x0F);
         }
-        if (showobjective == true)
+        if (showFability == true)
         {
-            g_Console.writeToBuffer(10, 4, "Your mission is to kill every NPC without getting caught by waterboy", 0x0F);
+            g_Console.writeToBuffer(27, 3, "Press t to use your ability", 0x0F);
+            g_Console.writeToBuffer(22, 4, "then press r to burn multiple NPCs at once!", 0x0F);
+            g_Console.writeToBuffer(16, 5, "It burns NPCs in a small circle around the first NPC shot", 0x0F);
+        }
+        if (showFobjective == true)
+        {
+            g_Console.writeToBuffer(5, 4, "Your mission is to kill every NPC without getting caught by waterboy", 0x0F);
+        }
+        if (showWcontrols == true && shownWcontrols == false)
+        {
+            g_Console.writeToBuffer(2, 16, "Waterboy Movement:", 0x0F);
+            g_Console.writeToBuffer(6, 17, "Arrow Keys", 0x0F);
+        }
+        if (showWnpc == true)
+        {
+            g_Console.writeToBuffer(35, 20, "This is an NPC", 0x0F);
+            g_Console.writeToBuffer(23, 21, "The NPC does not run away from Waterboy", 0x0F);
+            g_Console.writeToBuffer(30, 22, "Press , to drench the NPC", 0x0F);
+            g_Console.writeToBuffer(21, 23, "Drenching an NPC puts out a burning NPC and", 0x0F);
+            g_Console.writeToBuffer(19, 24, "prevents it from catching fire for a few seconds", 0x0F);
+        }
+        if (showWnpc2 == true)
+        {
+            g_Console.writeToBuffer(15, 21, "You can also walk into the NPC to drench it or put it out", 0x0F);
+            g_Console.writeToBuffer(0, 22, "Note: NPCs will move and light up their surroundings when on fire in actual game", 0x0F);
+        }
+        if (showWability == true)
+        {
+            g_Console.writeToBuffer(24, 20, "Press . to use your ability", 0x0F);
+            g_Console.writeToBuffer(18, 21, "then press , to drench multiple NPCs at once!", 0x0F);
+            g_Console.writeToBuffer(5, 22, "It drenches other NPCs that are in a small range around the first NPC", 0x0F);
+        }
+        if (showWobjective == true && shownWability == true)
+        {
+            g_Console.writeToBuffer(3, 20, "Your mission is to put out fireboy and prevent him from killing every NPC", 0x0F);
+            g_Console.writeToBuffer(20, 21, "Press esc to go back to the main menu", 0x0F);
         }
     }
 }
