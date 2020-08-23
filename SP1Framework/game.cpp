@@ -392,6 +392,10 @@ void charAbility()
                 {
                     g_sPjtl.m_cLocation = g_sChar.m_cLocation;
                 }
+                if (doneShoot == pjtlRange - 2)
+                {
+                    doneShoot += 2;
+                }
             }
             else if (lastMove == 2 && Collision(g_sPjtl.m_cLocation, 'L') == false)
             {
@@ -407,6 +411,10 @@ void charAbility()
                 if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)
                 {
                     g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                }
+                if (doneShoot == pjtlRange - 2)
+                {
+                    doneShoot += 2;
                 }
             }
             else if (lastMove == 4 && Collision(g_sPjtl.m_cLocation, 'R') == false)
@@ -429,6 +437,10 @@ void charAbility()
                 {
                     g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                 }
+                if (doneShoot == pjtlRange - 2)
+                {
+                    doneShoot += 2;
+                }
             }
             else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)
             {
@@ -447,7 +459,10 @@ void charAbility()
                 {
                     g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                 }
-
+                if (doneShoot == pjtlRange - 2)
+                {
+                    doneShoot += 2;
+                }
             }
             else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)
             {
