@@ -26,6 +26,10 @@ int mapNum = 0;
 bool mapSel = false;
 bool fA = false;
 bool wA = false;
+bool showfcontrols = true;
+bool shownpc = false;
+bool shownpc2 = false;
+bool showobjective = false;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 char mapArray[81][26];
@@ -708,17 +712,19 @@ void renderMap()
     }
     else if (g_skKeyEvent[K_3].keyReleased && mapSel == false)
     {
+        shownpc = false;
         mapNum = 3;
         mapSel = true;
         // Their spawnpoint
-        g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 7;
-        g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.25;
+        g_sChar.m_cLocation.X = 2;
+        g_sChar.m_cLocation.Y = 5;
         tpProj1();
 
-        g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.2;
-        g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.2;
+        g_sChar2.m_cLocation.X = 2;
+        g_sChar2.m_cLocation.Y = 19;
         tpProj2();
 
+        int n = 0;
         std::ifstream mapFile;
         mapFile.open("TutorialMap.txt", std::ifstream::in);
         for (int y = 0; y < 26; y++)
@@ -728,13 +734,14 @@ void renderMap()
                 char c = mapFile.get();
                 if (c == '2')
                 {
-                    npcPtr[0]->setAlive(true);
-                    npcPtr[0]->setCoords(x, y);
-                    static_cast<npc*>(npcPtr[0])->setCol(0xB0);
+                    npcPtr[n]->setAlive(true);
+                    npcPtr[n]->setCoords(x, y);
+                    static_cast<npc*>(npcPtr[n])->setCol(0xB0);
+                    n++;
                 }
             }
         }
-        for (int n = 1; n < 10; n++)
+        for (int n = 2; n < 10; n++)
         {
             npcPtr[n]->setAlive(false);
             npcPtr[n]->setCoords(0, 0);
@@ -839,6 +846,45 @@ void renderMap()
             }
         }
         mapFile.close();
+        
+        g_Console.writeToBuffer(2, 16, "Waterboy Movement:", 0x0F);
+        g_Console.writeToBuffer(6, 17, "Arrow Keys", 0x0F);
+
+        if (g_sChar.m_cLocation.X == 35 && g_sChar.m_cLocation.Y == 9)
+        {
+            showfcontrols = false;
+            shownpc = true;
+        }
+        if (g_sChar.m_cLocation.X == 51 && g_sChar.m_cLocation.Y == 11)
+        {
+            shownpc = false;
+            shownpc2 = true;
+        }
+        if (npcPtr[0]->getAlive() == false && npcPtr[1]->getAlive() == false)
+        {
+            shownpc2 = false;
+            showobjective = true;
+        }
+
+        if (showfcontrols == true)
+        {
+            g_Console.writeToBuffer(2, 7, "Fireboy Movement:", 0x0F);
+            g_Console.writeToBuffer(9, 8, "WASD", 0x0F);
+        }
+        if (shownpc == true)
+        {
+            g_Console.writeToBuffer(35, 3, "This is an NPC", 0x0F);
+            g_Console.writeToBuffer(25, 4, "The NPC will run away from Fireboy", 0x0F);
+            g_Console.writeToBuffer(30, 5, "Press r to shoot the NPC", 0x0F);
+        }
+        if (shownpc2 == true)
+        {
+            g_Console.writeToBuffer(27, 4, "You can also walk into the NPC to set it ablaze", 0x0F);
+        }
+        if (showobjective == true)
+        {
+            g_Console.writeToBuffer(10, 4, "Your mission is to kill every NPC without getting caught by waterboy", 0x0F);
+        }
     }
 }
 
