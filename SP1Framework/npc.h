@@ -4,6 +4,7 @@ class npc: public entity
 {
 private:
 	static int noOfNPCs;
+	bool drenched;
 	double secsOnFire;
 	WORD colour;
 
@@ -18,11 +19,13 @@ public:
 
 	// Accessors
 	int getNoOfNPCs(void);
+	bool getDrenched(void);
 	double getSecsOnFire(void);
 	WORD getCol(void);
 
 	// Mutators
 	void setNoOfNPCs(int number);
+	void setDrenched(bool drench);
 	void setSecsOnFire(double number);
 	void setCol(WORD colour);
 	void move(void);
