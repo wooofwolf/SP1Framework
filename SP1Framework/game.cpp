@@ -17,7 +17,7 @@ double  g_dElapsedTime;
 double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
-int pjtlRange = 7;
+int pjtlRange = 6;
 int doneShoot = 0;
 int abilityRange = 3;
 int rOrC;
@@ -472,7 +472,7 @@ void charAbility()
         }
         doneShoot++;
     }
-    else if (doneShoot == (pjtlRange + 1))
+    else if (doneShoot > pjtlRange)
     {
         tpProj1();
         tpProj2();
