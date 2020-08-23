@@ -21,6 +21,7 @@ int pjtlRange = 7;
 int doneShoot = 0;
 int abilityRange = 3;
 int rOrC;
+int tOrP;
 int mapNum = 0;
 bool mapSel = false;
 bool fA = false;
@@ -30,7 +31,9 @@ SMouseEvent g_mouseEvent;
 char mapArray[81][26];
 // NPC related stopwatch
 CStopWatch fireWatch;
-double secsPassed = 0;
+CStopWatch waterWatch;
+double fsecsPassed = 0;
+double wsecsPassed = 0;
 
 // Game specific variables here
 SGameChar   g_sChar;
@@ -355,6 +358,7 @@ void charAbility()
         if (g_skKeyEvent[K_R].keyReleased)
         {
             rOrC = 1;
+            tOrP = 1;
             doneShoot++;
         }
         if (g_skKeyEvent[K_T].keyReleased)
@@ -365,6 +369,7 @@ void charAbility()
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
             rOrC = 0;
+            tOrP = 0;
             doneShoot++;
         }
         if (g_skKeyEvent[K_PERIOD].keyReleased)
@@ -416,7 +421,6 @@ void charAbility()
                 if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)
                 {
                     g_sPjtl2.m_cLocation.Y -= 1;
-                    
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
@@ -459,11 +463,11 @@ void charAbility()
         tpProj1();
         tpProj2();
         doneShoot = 0;
-        if (fA == true)
+        if (fA == true && tOrP == 1)
         {
             fA = false;
         }
-        if (wA == true)
+        if (wA == true && tOrP == 0)
         {
             wA = false;
         }
@@ -474,9 +478,9 @@ void moveNPC(int n)
 {
     if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
     {
-        secsPassed += fireWatch.getElapsedTime();
+        fsecsPassed += fireWatch.getElapsedTime();
 
-        if (secsPassed > 0.33)
+        if (fsecsPassed > 0.33)
         {
             // Randomly runs
             int randomInt = rand() % 4 + 1;
@@ -515,12 +519,22 @@ void moveNPC(int n)
             {
                 npcPtr[n]->setAlive(false);
             }
-            secsPassed = 0;
+            fsecsPassed = 0;
         }
     }
 
     else if (npcPtr[n]->getAlive() == true)
     {
+        if (static_cast<npc*>(npcPtr[n])->getDrenched() == true)
+        {
+            wsecsPassed += waterWatch.getElapsedTime();
+            if (wsecsPassed >= 5)
+            {
+                static_cast<npc*>(npcPtr[n])->setDrenched(false);
+                static_cast<npc*>(npcPtr[n])->setCol(0xB0);
+                wsecsPassed = 0;
+            }
+        }
         // check if player is in range of NPC
         if ((pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2) * 2) <= 25)
         {
@@ -576,7 +590,7 @@ void processUserInput()
 
 void updateNPC(int n)
 {
-    if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0)
+    if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0 && static_cast<npc*>(npcPtr[n])->getDrenched() == false)
     {
         static_cast<npc*>(npcPtr[n])->setSecsOnFire(5);
         static_cast<npc*>(npcPtr[n])->setCol(0x4C);
@@ -584,11 +598,13 @@ void updateNPC(int n)
         fireWatch.startTimer();
     }
 
-    else if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
+    if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
     {
         static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
-        static_cast<npc*>(npcPtr[n])->setCol(0xB0);
+        static_cast<npc*>(npcPtr[n])->setCol(0x90);
+        static_cast<npc*>(npcPtr[n])->setDrenched(true);
 
+        waterWatch.startTimer();
         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
     }
 }
@@ -1025,6 +1041,3 @@ bool Collision(COORD position, char direction)
         return false;
     }
 }
-
-
-

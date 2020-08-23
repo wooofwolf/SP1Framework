@@ -10,6 +10,7 @@ npc::npc()
 	setAlive(true);
 
 	colour = 0xB0;
+	drenched = false;
 	secsOnFire = 0;
 	noOfNPCs++;
 }
@@ -20,6 +21,7 @@ npc::npc(int x, int y)
 	setAlive(true);
 
 	colour = 0xB0;
+	drenched = false;
 	secsOnFire = 0;
 	noOfNPCs++;
 }
@@ -30,6 +32,7 @@ npc::npc(COORD location)
 	setAlive(true);
 
 	colour = 0xB0;
+	drenched = false;
 	secsOnFire = 0;
 	noOfNPCs++;
 }
@@ -42,6 +45,11 @@ npc::~npc()
 int npc::getNoOfNPCs(void)
 {
 	return noOfNPCs;
+}
+
+bool npc::getDrenched(void)
+{
+	return drenched;
 }
 
 double npc::getSecsOnFire(void)
@@ -57,6 +65,11 @@ WORD npc::getCol(void)
 void npc::setNoOfNPCs(int number)
 {
 	noOfNPCs = number;
+}
+
+void npc::setDrenched(bool drench)
+{
+	drenched = drench;
 }
 
 void npc::setSecsOnFire(double number)
