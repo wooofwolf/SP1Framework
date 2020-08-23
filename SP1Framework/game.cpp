@@ -442,9 +442,8 @@ void charAbility()
             {
                 g_sPjtl2.m_cLocation.Y -= 1;
                 for (int n = 0; n < 10; n++)
-
                 {
-                    if ((g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
+                    if ((g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y-1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
                     {
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
@@ -456,7 +455,7 @@ void charAbility()
 
                 for (int n = 0; n < 10; n++)
                 {
-                    if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
+                    if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X-1))
                     {
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
@@ -470,7 +469,7 @@ void charAbility()
             {
                 g_sPjtl2.m_cLocation.X -= 1;
                 for (int n = 0; n < 10; n++)
-                if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
+                if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y+1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
                 {
                     g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
 
@@ -480,7 +479,7 @@ void charAbility()
             {
                 g_sPjtl2.m_cLocation.Y += 1;
                 for (int n = 0; n < 10; n++)
-                if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
+                if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X+1))
                 {
 
                     g_sPjtl2.m_cLocation.Y += 1;
@@ -663,7 +662,7 @@ void updateNPC(int n)
         fireWatch.startTimer();
     }
 
-    if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 || static_cast<npc*>(npcPtr[n])->getCol() == 0x4C))
+    if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && (static_cast<npc*>(npcPtr[n])->getSecsOnFire() >= 0 || static_cast<npc*>(npcPtr[n])->getCol() == 0x4C))
     {
         static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
         static_cast<npc*>(npcPtr[n])->setCol(0x90);
