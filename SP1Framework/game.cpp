@@ -616,7 +616,7 @@ void updateNPC(int n)
         fireWatch.startTimer();
     }
 
-    if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
+    if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() >= 0)
     {
         static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
         static_cast<npc*>(npcPtr[n])->setCol(0x90);
