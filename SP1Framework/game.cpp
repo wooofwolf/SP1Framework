@@ -456,13 +456,14 @@ void charAbility()
                 g_sPjtl2.m_cLocation.Y -= 1;
                 for (int n = 0; n < 10; n++)
                 {
-                    if ((g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y - 1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
+                    if ((g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
                     {
                         doneShoot = pjtlRange;
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
                         wbwin = true;
+                        doneShoot = pjtlRange;
                     }
                 }
                 if (doneShoot == pjtlRange - 2)
@@ -475,13 +476,14 @@ void charAbility()
                 g_sPjtl2.m_cLocation.X -= 1;
                 for (int n = 0; n < 10; n++)
                 {
-                    if (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X - 1)
+                    if (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)
                     {
                         doneShoot = pjtlRange;
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
                         wbwin = true;
+                        doneShoot = pjtlRange;
                     }
                 }
             }
@@ -490,13 +492,14 @@ void charAbility()
                 g_sPjtl2.m_cLocation.Y += 1;
                 for (int n = 0; n < 10; n++)
                 {
-                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y + 1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)
+                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)
                     {
                         doneShoot = pjtlRange;
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) 
                     {
                         wbwin = true;
+                        doneShoot = pjtlRange;
                     }
                 }
                 if (doneShoot == pjtlRange - 2)
@@ -509,13 +512,14 @@ void charAbility()
                 g_sPjtl2.m_cLocation.X += 1;
                 for (int n = 0; n < 10; n++)
                 {
-                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X + 1)
+                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)
                     {
                         doneShoot = pjtlRange;
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
                         wbwin = true;
+                        doneShoot = pjtlRange;
                     }
                 }
             }
@@ -934,15 +938,6 @@ void renderMap()
                     }
                 }
             }
-        }
-        if (fbwin == true)
-        {
-            g_Console.writeToBuffer(3, 10, "FIRE BOY WINS", 0x1A);
-            fbwin = false;
-        }
-        if (wbwin == true) {
-            g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
-            wbwin = false;
         }
     }
     else if (mapNum == 2 && mapSel == true)
