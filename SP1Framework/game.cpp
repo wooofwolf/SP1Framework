@@ -52,10 +52,10 @@ double fsecsPassed = 0;
 double wsecsPassed = 0;
 
 // Game specific variables here
-SGameChar   g_sChar;
 SGameChar   g_sPjtl;
-SGameChar   g_sChar2;
 SGameChar   g_sPjtl2;
+SGameChar   g_sChar;
+SGameChar   g_sChar2;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 entity* npcPtr[10];
 
@@ -1099,30 +1099,30 @@ void renderMap()
 void renderCharacter()
 {
     // Draw the location of the character
+    g_Console.writeToBuffer(g_sPjtl.m_cLocation, ' ', 0x4F);
+    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, ' ', 0x90);
     g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0x4F);
-    g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0x4F);
     g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
-    g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x90);
 
     if (fA == false)
     {
+        g_Console.writeToBuffer(g_sPjtl.m_cLocation, ' ', 0x4F);
         g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0x4F);
-        g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0x4F);
     }
     else if (fA == true)
     {
+        g_Console.writeToBuffer(g_sPjtl.m_cLocation, ' ', 0xCF);
         g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0xCF);
-        g_Console.writeToBuffer(g_sPjtl.m_cLocation, 'F', 0xCF);
     }
     if (wA == false)
     {
+        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, ' ', 0x90);
         g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
-        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0x90);
     }
     else if (wA == true)
     {
+        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, ' ', 0xB0);
         g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0xB0);
-        g_Console.writeToBuffer(g_sPjtl2.m_cLocation, 'W', 0xB0);
     }
 }
 
