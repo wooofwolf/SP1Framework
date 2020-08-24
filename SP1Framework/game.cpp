@@ -465,6 +465,7 @@ void charAbility()
                     {
                         FBLives--;
                         doneShoot = pjtlRange;
+                        break;
                     }
                 }
                 if (doneShoot == pjtlRange - 2)
@@ -485,6 +486,7 @@ void charAbility()
                     {
                         FBLives--;
                         doneShoot = pjtlRange;
+                        break;
                     }
                 }
             }
@@ -501,6 +503,7 @@ void charAbility()
                     {
                         FBLives--;
                         doneShoot = pjtlRange;
+                        break;
                     }
                 }
                 if (doneShoot == pjtlRange - 2)
@@ -521,6 +524,7 @@ void charAbility()
                     {
                         FBLives--;
                         doneShoot = pjtlRange;
+                        break;
                     }
                 }
             }
@@ -950,7 +954,7 @@ void renderMap()
         {
             g_Console.writeToBuffer(3, 10, "FiRE BOY WINS", 0x1A);
         }
-        if (wbwin == true)
+        if (FBLives == 0)
         {
             g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
         }
