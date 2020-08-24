@@ -291,7 +291,7 @@ void updateGame()       // gameplay logic
         for (int n = 0; n < 10; n++)
         {
             moveNPC(n);
-            
+
             if (dead == 10)
             {
                 fbwin = true;
@@ -658,6 +658,8 @@ void processUserInput()
         {
             mapNum = 0;
             mapSel = false;
+            fbwin = false;
+            wbwin = false;
         }
         else
         {
@@ -938,6 +940,15 @@ void renderMap()
                     }
                 }
             }
+        }
+
+        if (fbwin == true)
+        {
+            g_Console.writeToBuffer(3, 10, "FiRE BOY WINS", 0x1A);
+        }
+        if (wbwin == true)
+        {
+            g_Console.writeToBuffer(3, 10, "FiRE BOY WINS", 0x1A);
         }
     }
     else if (mapNum == 2 && mapSel == true)
