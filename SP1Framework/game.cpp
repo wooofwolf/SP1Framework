@@ -460,63 +460,29 @@ void charAbility()
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
                 }
-                if (doneShoot == pjtlRange - 2)
-                {
-                    doneShoot += 2;
-                }
-            }
-            else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)
-            {
-                g_sPjtl2.m_cLocation.X -= 1;
-                for (int n = 0; n < 10; n++)
-                if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y+1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
-                {
-                    g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
-
-                }
             }
             else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)
             {
                 g_sPjtl2.m_cLocation.Y += 1;
                 for (int n = 0; n < 10; n++)
-                if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X+1))
                 {
-
-                    g_sPjtl2.m_cLocation.Y += 1;
-                    for (int n = 0; n < 10; n++)
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
                     {
-                        if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
-                        {
-                            g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
-                        }
+                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
-
-                    g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
-
-                }
-                if (doneShoot == pjtlRange - 2)
-                {
-                    doneShoot += 2;
                 }
             }
             else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)
             {
                 g_sPjtl2.m_cLocation.X += 1;
+                
                 for (int n = 0; n < 10; n++)
-                if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
                 {
-                    g_sPjtl2.m_cLocation.X += 1;
-                    for (int n = 0; n < 10; n++)
+                    if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
                     {
-                        if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
-                        {
-                            g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
-                        }
+                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
                     }
                 }
-           
-
-             
             }
 
         }
