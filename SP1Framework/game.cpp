@@ -301,21 +301,14 @@ void updateGame()       // gameplay logic
             
         }
     }
-    else if (fbwin == true) {
-       
-        clearScreen();
-        g_Console.writeToBuffer(3, 3, "                                     _____            _ _   _             ", 0xB6);
-        g_Console.writeToBuffer(3, 4, "    /\\                              |_   _|          (_) | (_)            ", 0xB6);
-        g_Console.writeToBuffer(3, 5, "   /  \\   _ __ ___ __ _ _ __   ___    | |  __ _ _ __  _| |_ _  ___  _ __  ", 0xBC);
-        g_Console.writeToBuffer(3, 6, "  / /\\ \\ | '__/ __/ _` | '_ \\ / _ \\   | | / _` | '_ \\| | __| |/ _ \\| '_ \\ ", 0xBC);
-        g_Console.writeToBuffer(3, 7, " / ____ \\| | | (_| (_| | | | |  __/  _| || (_| | | | | | |_| | (_) | | | |", 0xBC);
-        g_Console.writeToBuffer(3, 8, "/_/    \\_\\_|  \\___\\__,_|_| |_|\\___| |_____\\__, |_| |_|_|\\__|_|\\___/|_| |_|", 0xB4);
-        g_Console.writeToBuffer(3, 9, "                                           __/ |                          ", 0xB4);
-        g_Console.writeToBuffer(3, 10, "                                          |___/                           ", 0xB4);
+    if (fbwin == true)
+    {
+        
+        g_Console.writeToBuffer(3, 10, "FIRE BOY WINS", 0x1A);
         processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     }
-    else if (wbwin == true) {
-        g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0xB4);
+    if (wbwin == true) {
+        g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
         processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     }
 }
