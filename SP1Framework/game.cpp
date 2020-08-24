@@ -511,11 +511,11 @@ void charAbility()
     }
 }
 
-void setDrench(int nd)
+void drenchNpc(int sd)
 {
-    static_cast<npc*>(npcPtr[nd])->setSecsOnFire(0);
-    static_cast<npc*>(npcPtr[nd])->setCol(0x90);
-    static_cast<npc*>(npcPtr[nd])->setDrenched(true);
+    static_cast<npc*>(npcPtr[sd])->setSecsOnFire(0);
+    static_cast<npc*>(npcPtr[sd])->setCol(0x90);
+    static_cast<npc*>(npcPtr[sd])->setDrenched(true);
 
     waterWatch.startTimer();
 }
@@ -676,33 +676,33 @@ void updateNPC(int n)
     // NPC drench
     if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && (static_cast<npc*>(npcPtr[n])->getSecsOnFire() >= 0 || static_cast<npc*>(npcPtr[n])->getCol() == 0x4C))
     {
-        setDrench(n);
-        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+        drenchNpc(n);
     }
     // Water Boy ability
     if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && wA == true && tOrP == 0)
     {
+        for (int y = 0; y < 26; y++)
+        {
+            for (int x = 0; x < 81; x++)
+            {
+                if ((pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n]->getAlive() == true)
+                {
+                    for (int w = 0; w < 10; w++)
+                    {
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
+                    }
+                }
+            }
+        }
         for (int nw = 0; nw < 10; nw++)
         {
-            // top 1
-            if (npcPtr[nw]->getCoords().X == npcPtr[n]->getCoords().X && npcPtr[nw]->getCoords().Y - 1 == npcPtr[n]->getCoords().X)
+            if ((pow(npcPtr[nw]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[nw]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)
             {
-                setDrench(nw);
-            }
-            // right 1
-            else if (npcPtr[nw]->getCoords().X - 1 == npcPtr[n]->getCoords().X && npcPtr[nw]->getCoords().Y == npcPtr[n]->getCoords().Y)
-            {
-                setDrench(nw);
-            }
-            // down 1
-            else if (npcPtr[nw]->getCoords().X == npcPtr[n]->getCoords().X && npcPtr[nw]->getCoords().Y + 1 == npcPtr[n]->getCoords().Y)
-            {
-                setDrench(nw);
-            }
-            // left 1
-            else if (npcPtr[nw]->getCoords().X + 1 == npcPtr[n]->getCoords().X && npcPtr[nw]->getCoords().Y == npcPtr[n]->getCoords().Y)
-            {
-                setDrench(nw);
+                drenchNpc(nw);
             }
         }
     }
