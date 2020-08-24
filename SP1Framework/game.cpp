@@ -15,7 +15,6 @@
 int FBLives = 3;
 int dead = 0;
 bool fbwin = false;
-bool wbwin = false;
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 int lastMove;
@@ -283,7 +282,7 @@ void splashScreenWait()    // waits for time to pass in splash screen
 
 void updateGame()       // gameplay logic
 {
-    if (fbwin == false && wbwin == false)
+    if (fbwin == false && FBLives > 0)
     {
         moveCharacter();    // moves the character, collision detection, physics, etc
         charAbility();
@@ -523,9 +522,6 @@ void charAbility()
             }
         }
         doneShoot++;
-        if (FBLives == 0) {
-            wbwin = true;
-        }
     }
     else if (doneShoot > pjtlRange)
     {
@@ -653,12 +649,12 @@ void processUserInput()
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
     {
-        if (mapNum == 1 || mapNum == 2 || mapNum == 3 || fbwin == true || wbwin == true)
+        if (mapNum == 1 || mapNum == 2 || mapNum == 3 || fbwin == true || FBLives == 0)
         {
             mapNum = 0;
             mapSel = false;
             fbwin = false;
-            wbwin = false;
+            FBLives = 3;
         }
         else
         {
