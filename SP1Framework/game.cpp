@@ -293,6 +293,7 @@ void updateGame()       // gameplay logic
             fbwin = true;
         }
     }
+    processUserInput();
 }
 
 void moveCharacter()
