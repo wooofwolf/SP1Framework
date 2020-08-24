@@ -283,7 +283,6 @@ void splashScreenWait()    // waits for time to pass in splash screen
 
 void updateGame()       // gameplay logic
 {
-
     if (fbwin == false && wbwin == false)
     {
         processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
@@ -300,16 +299,6 @@ void updateGame()       // gameplay logic
             }
             
         }
-    }
-    if (fbwin == true)
-    {
-        
-        g_Console.writeToBuffer(3, 10, "FIRE BOY WINS", 0x1A);
-        processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
-    }
-    if (wbwin == true) {
-        g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
-        processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     }
 }
 
@@ -946,6 +935,15 @@ void renderMap()
                     }
                 }
             }
+        }
+        if (fbwin == true)
+        {
+            g_Console.writeToBuffer(3, 10, "FIRE BOY WINS", 0x1A);
+            processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+        }
+        if (wbwin == true) {
+            g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
+            processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
         }
     }
     else if (mapNum == 2 && mapSel == true)
