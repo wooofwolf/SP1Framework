@@ -948,7 +948,7 @@ void renderMap()
         }
         if (wbwin == true)
         {
-            g_Console.writeToBuffer(3, 10, "FiRE BOY WINS", 0x1A);
+            g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
         }
     }
     else if (mapNum == 2 && mapSel == true)
