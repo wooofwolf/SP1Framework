@@ -659,6 +659,34 @@ void updateNPC(int n)
 
         fireWatch.startTimer();
     }
+    // NPC Ability
+    if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && fA == true && tOrP == 1)
+    {
+        for (int n1 = 0; n1 < 10; n1++)
+        {
+            if ((pow(npcPtr[n1]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[n1]->getCoords().Y - npcPtr[n]->getCoords().Y, 2)) <= 9)
+            {
+                static_cast<npc*>(npcPtr[n1])->setSecsOnFire(5);
+                static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
+
+                fireWatch.startTimer();
+            }
+        }
+    }
+
+    //Fire Boy ability
+    if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && fA == true && tOrP == 1)
+    {
+        for (int n1 = 0; n1 < 10; n1++)
+        {
+            if ((pow(npcPtr[n1]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[n1]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) <= 9))
+            {
+                static_cast<npc*>(npcPtr[n1])->setSecsOnFire(5);
+                static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
+                fireWatch.startTimer();
+            }
+        }
+    }
 
     // NPC drench
     if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && (static_cast<npc*>(npcPtr[n])->getSecsOnFire() >= 0 || static_cast<npc*>(npcPtr[n])->getCol() == 0x4C))
