@@ -790,10 +790,8 @@ void renderGame()
     if (mapNum == 1 || mapNum == 3)
     {
         renderCharacter(); // renders the character into the buffer
-        for (int n = 0; n < 10; n++)
-        {
-            renderNPC(n);
-        }
+        renderNPC();
+        
     }
 }
 
@@ -1132,24 +1130,27 @@ void renderCharacter()
     }
 }
 
-void renderNPC(int n)
+void renderNPC()
 {
-    updateNPC(n);
-    
-    if (npcPtr[n]->getAlive() == true)
+    for (int n = 0; n < 10; n++)
     {
-        if (pow(npcPtr[n]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npcPtr[n]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
+        updateNPC(n);
+
+        if (npcPtr[n]->getAlive() == true)
         {
-            g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
+            if (pow(npcPtr[n]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npcPtr[n]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
+            {
+                g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
+            }
+            if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
+            {
+                g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
+            }
         }
-        if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
+        else
         {
-            g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
+            g_Console.writeToBuffer(npcPtr[n]->getCoords(), ' ', 0x00);
         }
-    }
-    else
-    {
-        g_Console.writeToBuffer(npcPtr[n]->getCoords(), ' ', 0x00);
     }
 }
 
