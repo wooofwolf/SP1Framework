@@ -705,6 +705,20 @@ void updateNPC(int n)
     //Fire Boy ability
     if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && fA == true && tOrP == 1)
     {
+        for (int y = 0; y < 26; y++)
+        {
+            for (int x = 0; x < 81; x++)
+            {
+                if (pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) <= 9)
+                {
+                    for (int e = 0; e < 10; e++)
+                    {
+                        g_Console.writeToBuffer(x, y, ' ', 0x4C);
+                    }
+                }
+            }
+        }
+
         for (int n1 = 0; n1 < 10; n1++)
         {
             if ((pow(npcPtr[n1]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[n1]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) <= 9))
