@@ -21,7 +21,6 @@ int lastMove;
 int lastMove2;
 int pjtlRange = 6;
 int doneShoot = 0;
-int abilityRange = 3;
 int rOrC;
 int tOrP;
 int mapNum = 0;
