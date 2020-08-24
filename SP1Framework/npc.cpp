@@ -62,6 +62,11 @@ WORD npc::getCol(void)
 	return colour;
 }
 
+double npc::getsecsPassed(void)
+{
+	return fireWatch.getElapsedTime();
+}
+
 void npc::setNoOfNPCs(int number)
 {
 	noOfNPCs = number;
@@ -85,4 +90,9 @@ void npc::setCol(WORD colour)
 void npc::move(void)
 {
 	// NPC movement in game.cpp
+}
+
+void npc::startTimer(void)
+{
+	fireWatch.startTimer();
 }

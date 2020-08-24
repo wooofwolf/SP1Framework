@@ -44,11 +44,10 @@ SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 char mapArray[81][26];
 // NPC related stopwatch
-CStopWatch fireWatch;
 CStopWatch waterWatch;
 CStopWatch explosionTimer;
 double esecsPassed = 0;
-double fsecsPassed = 0;
+double fsecsPassed[10] = { 0 };
 double wsecsPassed = 0;
 
 // Game specific variables here
@@ -287,7 +286,7 @@ void updateGame()       // gameplay logic
     {
         moveCharacter();    // moves the character, collision detection, physics, etc
         charAbility();
-
+        moveNPC();          // moves NPC
         if (dead == 10)
         {
             fbwin = true;
@@ -545,97 +544,100 @@ void drenchNpc(int sd)
     waterWatch.startTimer();
 }
 
-void moveNPC(int n)
+void moveNPC()
 {
-    if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
+    for (int n = 0; n < 10; n++)
     {
-        fsecsPassed += fireWatch.getElapsedTime();
-
-        if (fsecsPassed > 0.33)
+        if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
         {
-            // Randomly runs
-            int randomInt = rand() % 4 + 1;
-            if (randomInt == 1) // Up
+            fsecsPassed[n] += static_cast<npc*>(npcPtr[n])->getsecsPassed();
+
+            if (fsecsPassed[n] > 0.33)
             {
-                if (npcPtr[n]->getCoords().Y - 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'U') == false)
+                // Randomly runs
+                int randomInt = rand() % 4 + 1;
+                if (randomInt == 1) // Up
                 {
-                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                    if (npcPtr[n]->getCoords().Y - 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'U') == false)
+                    {
+                        npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                    }
+                }
+                else if (randomInt == 2) // Down
+                {
+                    if (npcPtr[n]->getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1 && Collision(npcPtr[n]->getCoords(), 'D') == false)
+                    {
+                        npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
+                    }
+                }
+                else if (randomInt == 3) // Left
+                {
+                    if (npcPtr[n]->getCoords().X - 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'L') == false)
+                    {
+                        npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
+                    }
+                }
+                else // Right
+                {
+                    if (npcPtr[n]->getCoords().X + 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'R') == false)
+                    {
+                        npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
+                    }
+                }
+                static_cast<npc*>(npcPtr[n])->setSecsOnFire(static_cast<npc*>(npcPtr[n])->getSecsOnFire() - 0.33);
+                if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0)
+                {
+                    npcPtr[n]->setAlive(false);
+                    dead++;
+                }
+                fsecsPassed[n] = 0;
+            }
+        }
+
+        else if (npcPtr[n]->getAlive() == true)
+        {
+            if (static_cast<npc*>(npcPtr[n])->getDrenched() == true)
+            {
+                wsecsPassed += waterWatch.getElapsedTime();
+                if (wsecsPassed >= 5)
+                {
+                    static_cast<npc*>(npcPtr[n])->setDrenched(false);
+                    static_cast<npc*>(npcPtr[n])->setCol(0xB0);
+                    wsecsPassed = 0;
                 }
             }
-            else if (randomInt == 2) // Down
+            // check if player is in range of NPC
+            if ((pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2) * 2) <= 25)
             {
-                if (npcPtr[n]->getCoords().Y + 1 <= g_Console.getMaxConsoleSize().Y - 1 && Collision(npcPtr[n]->getCoords(), 'D') == false)
-                {
-                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-                }
-            }
-            else if (randomInt == 3) // Left
-            {
-                if (npcPtr[n]->getCoords().X - 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'L') == false)
-                {
-                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
-                }
-            }
-            else // Right
-            {
-                if (npcPtr[n]->getCoords().X + 1 >= 0 && Collision(npcPtr[n]->getCoords(), 'R') == false)
+
+                int npc1L, npc1R, npc1U, npc1D;
+
+                npc1L = npcPtr[n]->getCoords().X - 1;
+                npc1R = npcPtr[n]->getCoords().X + 1;
+                npc1U = npcPtr[n]->getCoords().Y - 1;
+                npc1D = npcPtr[n]->getCoords().Y + 1;
+
+                npc1L = (pow(g_sChar.m_cLocation.X - npc1L, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
+                npc1R = (pow(g_sChar.m_cLocation.X - npc1R, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
+                npc1U = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
+                npc1D = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
+
+                if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && Collision(npcPtr[n]->getCoords(), 'R') == false)
                 {
                     npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
                 }
-            }
-            static_cast<npc*>(npcPtr[n])->setSecsOnFire(static_cast<npc*>(npcPtr[n])->getSecsOnFire() - 0.33);
-            if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0)
-            {
-                npcPtr[n]->setAlive(false);
-                dead++;
-            }
-            fsecsPassed = 0;
-        }
-    }
-
-    else if (npcPtr[n]->getAlive() == true)
-    {
-        if (static_cast<npc*>(npcPtr[n])->getDrenched() == true)
-        {
-            wsecsPassed += waterWatch.getElapsedTime();
-            if (wsecsPassed >= 5)
-            {
-                static_cast<npc*>(npcPtr[n])->setDrenched(false);
-                static_cast<npc*>(npcPtr[n])->setCol(0xB0);
-                wsecsPassed = 0;
-            }
-        }
-        // check if player is in range of NPC
-        if ((pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2) * 2) <= 25)
-        {
-
-            int npc1L, npc1R, npc1U, npc1D;
-
-            npc1L = npcPtr[n]->getCoords().X - 1;
-            npc1R = npcPtr[n]->getCoords().X + 1;
-            npc1U = npcPtr[n]->getCoords().Y - 1;
-            npc1D = npcPtr[n]->getCoords().Y + 1;
-
-            npc1L = (pow(g_sChar.m_cLocation.X - npc1L, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
-            npc1R = (pow(g_sChar.m_cLocation.X - npc1R, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
-            npc1U = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
-            npc1D = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
-
-            if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && Collision(npcPtr[n]->getCoords(), 'R') == false)
-            {
-                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
-            }
-            else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && Collision(npcPtr[n]->getCoords(), 'L') == false)
-            {
-                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
-            }
-            else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && Collision(npcPtr[n]->getCoords(), 'D') == false)
-            {
-                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-            }
-            else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && Collision(npcPtr[n]->getCoords(), 'U') == false)
-            {
-                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && Collision(npcPtr[n]->getCoords(), 'L') == false)
+                {
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
+                }
+                else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && Collision(npcPtr[n]->getCoords(), 'D') == false)
+                {
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
+                }
+                else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && Collision(npcPtr[n]->getCoords(), 'U') == false)
+                {
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                }
             }
         }
     }
@@ -668,7 +670,7 @@ void updateNPC(int n)
         static_cast<npc*>(npcPtr[n])->setSecsOnFire(5);
         static_cast<npc*>(npcPtr[n])->setCol(0x4C);
 
-        fireWatch.startTimer();
+        static_cast<npc*>(npcPtr[n])->startTimer();
     }
     //Fire Boy ability
     if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && fA == true && tOrP == 1)
@@ -694,7 +696,8 @@ void updateNPC(int n)
             {
                 static_cast<npc*>(npcPtr[n1])->setSecsOnFire(5);
                 static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
-                fireWatch.startTimer();
+                
+                static_cast<npc*>(npcPtr[n])->startTimer();
             }
         }
     }
@@ -732,9 +735,6 @@ void updateNPC(int n)
             }
         }
     }
-    
-    // Moves NPC
-    moveNPC(n);
 }
 
 //--------------------------------------------------------------
