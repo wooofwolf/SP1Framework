@@ -288,17 +288,11 @@ void updateGame()       // gameplay logic
         moveCharacter();    // moves the character, collision detection, physics, etc
         charAbility();
 
-        for (int n = 0; n < 10; n++)
+        if (dead == 10)
         {
-            moveNPC(n);
-
-            if (dead == 10)
-            {
-                fbwin = true;
-            }
+            fbwin = true;
         }
     }
-    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
 }
 
 void moveCharacter()
@@ -737,6 +731,9 @@ void updateNPC(int n)
             }
         }
     }
+    
+    // Moves NPC
+    moveNPC(n);
 }
 
 //--------------------------------------------------------------
@@ -1136,10 +1133,8 @@ void renderCharacter()
 
 void renderNPC(int n)
 {
-    for (int n = 0; n < 10; n++)
-    {
-        updateNPC(n);
-    }
+    updateNPC(n);
+    
     if (npcPtr[n]->getAlive() == true)
     {
         if (pow(npcPtr[n]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npcPtr[n]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
