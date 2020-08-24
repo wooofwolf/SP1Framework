@@ -400,7 +400,7 @@ void charAbility()
                 g_sPjtl.m_cLocation.Y -= 1;
                 if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)
                 {
-                    doneShoot == pjtlRange;
+                    doneShoot = pjtlRange;
                 }
                 if (doneShoot == pjtlRange - 2)
                 {
@@ -412,7 +412,7 @@ void charAbility()
                 g_sPjtl.m_cLocation.X -= 1;
                 if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)
                 {
-                    doneShoot == pjtlRange;
+                    doneShoot = pjtlRange;
                 }
             }
             else if (lastMove == 3 && Collision(g_sPjtl.m_cLocation, 'D') == false)
@@ -420,7 +420,7 @@ void charAbility()
                 g_sPjtl.m_cLocation.Y += 1;
                 if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)
                 {
-                    doneShoot == pjtlRange;
+                    doneShoot = pjtlRange;
                 }
                 if (doneShoot == pjtlRange - 2)
                 {
@@ -432,7 +432,7 @@ void charAbility()
                 g_sPjtl.m_cLocation.X += 1;
                 if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)
                 {
-                    doneShoot == pjtlRange;
+                    doneShoot = pjtlRange;
                 }
             }
         }
@@ -447,7 +447,7 @@ void charAbility()
                 {
                     if ((g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y - 1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
                     {
-                        doneShoot == pjtlRange;
+                        doneShoot = pjtlRange;
                     }
                 }
                 if (doneShoot == pjtlRange - 2)
@@ -462,7 +462,7 @@ void charAbility()
                 {
                     if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X - 1))
                     {
-                        doneShoot == pjtlRange;
+                        doneShoot = pjtlRange;
                     }
                 }
             }
@@ -473,7 +473,7 @@ void charAbility()
                 {
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y + 1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
                     {
-                        doneShoot == pjtlRange;
+                        doneShoot = pjtlRange;
                     }
                 }
                 if (doneShoot == pjtlRange - 2)
@@ -488,7 +488,7 @@ void charAbility()
                 {
                     if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X + 1))
                     {
-                        doneShoot == pjtlRange;
+                        doneShoot = pjtlRange;
                     }
                 }
             }
@@ -1262,4 +1262,5 @@ bool Collision(COORD position, char direction)
         }
         return false;
     }
+    return true;
 }
