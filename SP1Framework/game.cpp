@@ -285,7 +285,6 @@ void updateGame()       // gameplay logic
 {
     if (fbwin == false && wbwin == false)
     {
-        processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
         moveCharacter();    // moves the character, collision detection, physics, etc
         charAbility();
 
@@ -297,9 +296,9 @@ void updateGame()       // gameplay logic
             {
                 fbwin = true;
             }
-            
         }
     }
+    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
 }
 
 void moveCharacter()
@@ -651,7 +650,7 @@ void processUserInput()
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
     {
-        if (mapNum == 1 || mapNum == 2 || mapNum == 3)
+        if (mapNum == 1 || mapNum == 2 || mapNum == 3 || fbwin == true || wbwin == true)
         {
             mapNum = 0;
             mapSel = false;
@@ -939,11 +938,11 @@ void renderMap()
         if (fbwin == true)
         {
             g_Console.writeToBuffer(3, 10, "FIRE BOY WINS", 0x1A);
-            processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+            fbwin = false;
         }
         if (wbwin == true) {
             g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
-            processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+            wbwin = false;
         }
     }
     else if (mapNum == 2 && mapSel == true)
