@@ -9,6 +9,7 @@ private:
 	double secsOnFire;
 	WORD colour;
 	CStopWatch fireWatch;
+	CStopWatch waterWatch;
 
 public:
 	// Constructors
@@ -24,7 +25,8 @@ public:
 	bool getDrenched(void);
 	double getSecsOnFire(void);
 	WORD getCol(void);
-	double getsecsPassed(void);
+	double getFsecsPassed(void);
+	double getWsecsPassed(void);
 
 	// Mutators
 	void setNoOfNPCs(int number);
@@ -32,6 +34,7 @@ public:
 	void setSecsOnFire(double number);
 	void setCol(WORD colour);
 	void move(void);
-	void startTimer(void);
+	void startFTimer(void);
+	void startWTimer(void);
 };
 

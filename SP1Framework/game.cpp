@@ -43,11 +43,10 @@ SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 char mapArray[81][26];
 // NPC related stopwatch
-CStopWatch waterWatch;
 CStopWatch explosionTimer;
 double esecsPassed = 0;
 double fsecsPassed[10] = { 0 };
-double wsecsPassed = 0;
+double wsecsPassed[10] = { 0 };
 
 // Game specific variables here
 SGameChar   g_sPjtl;
@@ -544,7 +543,7 @@ void drenchNpc(int sd)
     static_cast<npc*>(npcPtr[sd])->setCol(0x90);
     static_cast<npc*>(npcPtr[sd])->setDrenched(true);
 
-    waterWatch.startTimer();
+    static_cast<npc*>(npcPtr[sd])->startWTimer();
 }
 
 void moveNPC()
@@ -553,7 +552,7 @@ void moveNPC()
     {
         if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
         {
-            fsecsPassed[n] += static_cast<npc*>(npcPtr[n])->getsecsPassed();
+            fsecsPassed[n] += static_cast<npc*>(npcPtr[n])->getFsecsPassed();
 
             if (fsecsPassed[n] > 0.33)
             {
@@ -601,12 +600,12 @@ void moveNPC()
         {
             if (static_cast<npc*>(npcPtr[n])->getDrenched() == true)
             {
-                wsecsPassed += waterWatch.getElapsedTime();
-                if (wsecsPassed >= 5)
+                wsecsPassed[n] += static_cast<npc*>(npcPtr[n])->getWsecsPassed();
+                if (wsecsPassed[n] >= 5)
                 {
                     static_cast<npc*>(npcPtr[n])->setDrenched(false);
                     static_cast<npc*>(npcPtr[n])->setCol(0xB0);
-                    wsecsPassed = 0;
+                    wsecsPassed[n] = 0;
                 }
             }
             // check if player is in range of NPC
@@ -673,7 +672,7 @@ void updateNPC(int n)
         static_cast<npc*>(npcPtr[n])->setSecsOnFire(5);
         static_cast<npc*>(npcPtr[n])->setCol(0x4C);
 
-        static_cast<npc*>(npcPtr[n])->startTimer();
+        static_cast<npc*>(npcPtr[n])->startFTimer();
     }
     //Fire Boy ability
     if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && fA == true && tOrP == 1)
@@ -700,7 +699,7 @@ void updateNPC(int n)
                 static_cast<npc*>(npcPtr[n1])->setSecsOnFire(5);
                 static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
                 
-                static_cast<npc*>(npcPtr[n])->startTimer();
+                static_cast<npc*>(npcPtr[n])->startFTimer();
             }
         }
     }

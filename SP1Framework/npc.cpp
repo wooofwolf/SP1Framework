@@ -62,9 +62,14 @@ WORD npc::getCol(void)
 	return colour;
 }
 
-double npc::getsecsPassed(void)
+double npc::getFsecsPassed(void)
 {
 	return fireWatch.getElapsedTime();
+}
+
+double npc::getWsecsPassed(void)
+{
+	return waterWatch.getElapsedTime();
 }
 
 void npc::setNoOfNPCs(int number)
@@ -92,7 +97,12 @@ void npc::move(void)
 	// NPC movement in game.cpp
 }
 
-void npc::startTimer(void)
+void npc::startFTimer(void)
 {
 	fireWatch.startTimer();
+}
+
+void npc::startWTimer(void)
+{
+	waterWatch.startTimer();
 }
