@@ -72,9 +72,8 @@ void updateGame();          // gameplay logic
 void moveCharacter();       // moves the character, collision detection, physics, etc
 void tpProj1();      // tp projectile to character
 void tpProj2();      // tp projectile2 to character2
-void tpPToNpc();
 void charAbility();
-void wbAbility(int x, int y);
+void setDrench(int nd);
 void moveNPC(int n);             // checks how far the player is from npc, npc moves if player is close.
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
 void updateNPC(int n);           // checks if the NPC gets caught on fire
