@@ -659,21 +659,6 @@ void updateNPC(int n)
 
         fireWatch.startTimer();
     }
-    // NPC Ability
-    if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && fA == true && tOrP == 1)
-    {
-        for (int n1 = 0; n1 < 10; n1++)
-        {
-            if ((pow(npcPtr[n1]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[n1]->getCoords().Y - npcPtr[n]->getCoords().Y, 2)) <= 9)
-            {
-                static_cast<npc*>(npcPtr[n1])->setSecsOnFire(5);
-                static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
-
-                fireWatch.startTimer();
-            }
-        }
-    }
-
     //Fire Boy ability
     if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && fA == true && tOrP == 1)
     {
@@ -681,19 +666,22 @@ void updateNPC(int n)
         {
             for (int x = 0; x < 81; x++)
             {
-                if (pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) <= 9)
+                if ((pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n]->getAlive() == true)
                 {
                     for (int e = 0; e < 10; e++)
                     {
+                        g_Console.writeToBuffer(x, y, ' ', 0x4C);
+                        g_Console.writeToBuffer(x, y, ' ', 0x4C);
+                        g_Console.writeToBuffer(x, y, ' ', 0x4C);
+                        g_Console.writeToBuffer(x, y, ' ', 0x4C);
                         g_Console.writeToBuffer(x, y, ' ', 0x4C);
                     }
                 }
             }
         }
-
         for (int n1 = 0; n1 < 10; n1++)
         {
-            if ((pow(npcPtr[n1]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[n1]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) <= 9))
+            if ((pow(npcPtr[n1]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[n1]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n1]->getAlive() == true && static_cast<npc*>(npcPtr[n1])->getDrenched() == false && static_cast<npc*>(npcPtr[n1])->getSecsOnFire() <= 0)
             {
                 static_cast<npc*>(npcPtr[n1])->setSecsOnFire(5);
                 static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
