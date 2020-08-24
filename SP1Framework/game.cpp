@@ -720,11 +720,10 @@ void updateNPC(int n)
                 {
                     for (int w = 0; w < 10; w++)
                     {
-                        g_Console.writeToBuffer(x, y, ' ', 0x90);
-                        g_Console.writeToBuffer(x, y, ' ', 0x90);
-                        g_Console.writeToBuffer(x, y, ' ', 0x90);
-                        g_Console.writeToBuffer(x, y, ' ', 0x90);
-                        g_Console.writeToBuffer(x, y, ' ', 0x90);
+                        for (int t = 1; t < 6; t++)
+                        {
+                            g_Console.writeToBuffer(x, y, ' ', 0x90);
+                        }
                     }
                 }
             }
