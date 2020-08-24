@@ -12,6 +12,7 @@
 #include <time.h>
 #include <fstream>
 
+int FBLives = 3;
 int dead = 0;
 bool fbwin = false;
 bool wbwin = false;
@@ -463,7 +464,7 @@ void charAbility()
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
-                        wbwin = true;
+                        FBLives--;
                     }
                 }
                 if (doneShoot == pjtlRange - 2)
@@ -482,7 +483,7 @@ void charAbility()
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
-                        wbwin = true;
+                        FBLives--;
                     }
                 }
             }
@@ -497,7 +498,7 @@ void charAbility()
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) 
                     {
-                        wbwin = true;
+                        FBLives--;
                     }
                 }
                 if (doneShoot == pjtlRange - 2)
@@ -516,12 +517,15 @@ void charAbility()
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
-                        wbwin = true;
+                        FBLives--;
                     }
                 }
             }
         }
         doneShoot++;
+        if (FBLives == 0) {
+            wbwin = true;
+        }
     }
     else if (doneShoot > pjtlRange)
     {
@@ -941,7 +945,7 @@ void renderMap()
             g_Console.writeToBuffer(3, 10, "FIRE BOY WINS", 0x1A);
             processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
         }
-        if (wbwin == true) {
+        if (FBLives == 0) {
             g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
             processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
         }
