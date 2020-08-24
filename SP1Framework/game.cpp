@@ -463,7 +463,7 @@ void charAbility()
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
-                        wbwin = true;
+                        FBLives--;
                         doneShoot = pjtlRange;
                     }
                 }
@@ -483,7 +483,7 @@ void charAbility()
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
-                        wbwin = true;
+                        FBLives--;
                         doneShoot = pjtlRange;
                     }
                 }
@@ -499,7 +499,7 @@ void charAbility()
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) 
                     {
-                        wbwin = true;
+                        FBLives--;
                         doneShoot = pjtlRange;
                     }
                 }
@@ -519,7 +519,7 @@ void charAbility()
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
-                        wbwin = true;
+                        FBLives--;
                         doneShoot = pjtlRange;
                     }
                 }
