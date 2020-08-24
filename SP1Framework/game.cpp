@@ -46,6 +46,8 @@ char mapArray[81][26];
 // NPC related stopwatch
 CStopWatch fireWatch;
 CStopWatch waterWatch;
+CStopWatch explosionTimer;
+double esecsPassed = 0;
 double fsecsPassed = 0;
 double wsecsPassed = 0;
 
@@ -428,7 +430,7 @@ void charAbility()
                 g_sPjtl.m_cLocation.Y -= 1;
                 if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)
                 {
-                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                    doneShoot = pjtlRange;
                 }
                 if (doneShoot == pjtlRange - 2)
                 {
@@ -440,7 +442,7 @@ void charAbility()
                 g_sPjtl.m_cLocation.X -= 1;
                 if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)
                 {
-                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                    doneShoot = pjtlRange;
                 }
             }
             else if (lastMove == 3 && Collision(g_sPjtl.m_cLocation, 'D') == false)
@@ -448,7 +450,7 @@ void charAbility()
                 g_sPjtl.m_cLocation.Y += 1;
                 if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)
                 {
-                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                    doneShoot = pjtlRange;
                 }
                 if (doneShoot == pjtlRange - 2)
                 {
@@ -460,7 +462,7 @@ void charAbility()
                 g_sPjtl.m_cLocation.X += 1;
                 if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)
                 {
-                    g_sPjtl.m_cLocation = g_sChar.m_cLocation;
+                    doneShoot = pjtlRange;
                 }
             }
         }
@@ -475,7 +477,7 @@ void charAbility()
                 {
                     if ((g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y - 1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
                     {
-                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                        doneShoot = pjtlRange;
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
@@ -494,7 +496,7 @@ void charAbility()
                 {
                     if (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X - 1)
                     {
-                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                        doneShoot = pjtlRange;
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
@@ -509,7 +511,7 @@ void charAbility()
                 {
                     if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y + 1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)
                     {
-                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                        doneShoot = pjtlRange;
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) 
                     {
@@ -528,7 +530,7 @@ void charAbility()
                 {
                     if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X + 1)
                     {
-                        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                        doneShoot = pjtlRange;
                     }
                     if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
                     {
@@ -541,9 +543,6 @@ void charAbility()
     }
     else if (doneShoot > pjtlRange)
     {
-        tpProj1();
-        tpProj2();
-        doneShoot = 0;
         if (fA == true && tOrP == 1)
         {
             fA = false;
@@ -552,7 +551,19 @@ void charAbility()
         {
             wA = false;
         }
+        tpProj1();
+        tpProj2();
+        doneShoot = 0;
     }
+}
+
+void drenchNpc(int sd)
+{
+    static_cast<npc*>(npcPtr[sd])->setSecsOnFire(0);
+    static_cast<npc*>(npcPtr[sd])->setCol(0x90);
+    static_cast<npc*>(npcPtr[sd])->setDrenched(true);
+
+    waterWatch.startTimer();
 }
 
 void moveNPC(int n)
@@ -680,16 +691,67 @@ void updateNPC(int n)
 
         fireWatch.startTimer();
     }
+    //Fire Boy ability
+    if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && fA == true && tOrP == 1)
+    {
+        explosionTimer.startTimer();
+        for (int y = 0; y < 26; y++)
+        {
+            for (int x = 0; x < 81; x++)
+            {
+                if ((pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n]->getAlive() == true)
+                {
+                    esecsPassed += explosionTimer.getElapsedTime();
+                    if (esecsPassed < 1)
+                    {
+                        g_Console.writeToBuffer(x, y, ' ', 0x4C);
+                    }
+                }
+            }
+        }
+        for (int n1 = 0; n1 < 10; n1++)
+        {
+            if ((pow(npcPtr[n1]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[n1]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n1]->getAlive() == true && static_cast<npc*>(npcPtr[n1])->getDrenched() == false && static_cast<npc*>(npcPtr[n1])->getSecsOnFire() <= 0)
+            {
+                static_cast<npc*>(npcPtr[n1])->setSecsOnFire(5);
+                static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
+                fireWatch.startTimer();
+            }
+        }
+    }
 
     // NPC drench
     if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && (static_cast<npc*>(npcPtr[n])->getSecsOnFire() >= 0 || static_cast<npc*>(npcPtr[n])->getCol() == 0x4C))
     {
-        static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
-        static_cast<npc*>(npcPtr[n])->setCol(0x90);
-        static_cast<npc*>(npcPtr[n])->setDrenched(true);
-
-        waterWatch.startTimer();
-        g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+        drenchNpc(n);
+    }
+    // Water Boy ability
+    if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && wA == true && tOrP == 0)
+    {
+        for (int y = 0; y < 26; y++)
+        {
+            for (int x = 0; x < 81; x++)
+            {
+                if ((pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n]->getAlive() == true)
+                {
+                    for (int w = 0; w < 10; w++)
+                    {
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
+                    }
+                }
+            }
+        }
+        for (int nw = 0; nw < 10; nw++)
+        {
+            if ((pow(npcPtr[nw]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[nw]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)
+            {
+                drenchNpc(nw);
+            }
+        }
     }
 }
 
