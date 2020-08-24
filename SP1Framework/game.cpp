@@ -450,7 +450,6 @@ void charAbility()
         // Water boy Shooting
         else if (rOrC == 0)
         {
-
             if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)
             {
                 g_sPjtl2.m_cLocation.Y -= 1;
@@ -567,8 +566,6 @@ void moveNPC(int n)
                 {
                     npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
                 }
-
-
             }
             else if (randomInt == 2) // Down
             {
