@@ -529,6 +529,10 @@ void wbAbility(int x, int y)
 {
     int hitX = x;
     int hitY = x;
+    for (int n = 0; n < 10; n++)
+    {
+
+    }
 }
 
 void moveNPC(int n)
