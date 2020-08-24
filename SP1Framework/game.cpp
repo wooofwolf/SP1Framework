@@ -12,7 +12,9 @@
 #include <time.h>
 #include <fstream>
 
-
+int dead = 0;
+bool fbwin = false;
+bool wbwin = false;
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 int lastMove;
@@ -279,12 +281,40 @@ void splashScreenWait()    // waits for time to pass in splash screen
 
 void updateGame()       // gameplay logic
 {
-    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
-    moveCharacter();    // moves the character, collision detection, physics, etc
-    charAbility();
-    for (int n = 0; n < 10; n++)
+
+    if (fbwin == false && wbwin == false)
     {
-        moveNPC(n);
+        processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+        moveCharacter();    // moves the character, collision detection, physics, etc
+        charAbility();
+
+        for (int n = 0; n < 10; n++)
+        {
+            moveNPC(n);
+            
+            if (dead == 10)
+            {
+                fbwin = true;
+            }
+            
+        }
+    }
+    else if (fbwin == true) {
+       
+        clearScreen();
+        g_Console.writeToBuffer(3, 3, "                                     _____            _ _   _             ", 0xB6);
+        g_Console.writeToBuffer(3, 4, "    /\\                              |_   _|          (_) | (_)            ", 0xB6);
+        g_Console.writeToBuffer(3, 5, "   /  \\   _ __ ___ __ _ _ __   ___    | |  __ _ _ __  _| |_ _  ___  _ __  ", 0xBC);
+        g_Console.writeToBuffer(3, 6, "  / /\\ \\ | '__/ __/ _` | '_ \\ / _ \\   | | / _` | '_ \\| | __| |/ _ \\| '_ \\ ", 0xBC);
+        g_Console.writeToBuffer(3, 7, " / ____ \\| | | (_| (_| | | | |  __/  _| || (_| | | | | | |_| | (_) | | | |", 0xBC);
+        g_Console.writeToBuffer(3, 8, "/_/    \\_\\_|  \\___\\__,_|_| |_|\\___| |_____\\__, |_| |_|_|\\__|_|\\___/|_| |_|", 0xB4);
+        g_Console.writeToBuffer(3, 9, "                                           __/ |                          ", 0xB4);
+        g_Console.writeToBuffer(3, 10, "                                          |___/                           ", 0xB4);
+        processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+    }
+    else if (wbwin == true) {
+        g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0xB4);
+        processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     }
 }
 
@@ -443,9 +473,13 @@ void charAbility()
                 g_sPjtl2.m_cLocation.Y -= 1;
                 for (int n = 0; n < 10; n++)
                 {
-                    if ((g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y - 1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
+                    if ((g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y - 1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
                     {
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                    }
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
+                    {
+                        wbwin = true;
                     }
                 }
                 if (doneShoot == pjtlRange - 2)
@@ -458,9 +492,13 @@ void charAbility()
                 g_sPjtl2.m_cLocation.X -= 1;
                 for (int n = 0; n < 10; n++)
                 {
-                    if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X - 1))
+                    if (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X - 1)
                     {
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                    }
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
+                    {
+                        wbwin = true;
                     }
                 }
             }
@@ -469,9 +507,13 @@ void charAbility()
                 g_sPjtl2.m_cLocation.Y += 1;
                 for (int n = 0; n < 10; n++)
                 {
-                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y + 1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
+                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y + 1 && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)
                     {
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                    }
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) 
+                    {
+                        wbwin = true;
                     }
                 }
                 if (doneShoot == pjtlRange - 2)
@@ -484,9 +526,13 @@ void charAbility()
                 g_sPjtl2.m_cLocation.X += 1;
                 for (int n = 0; n < 10; n++)
                 {
-                    if (g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X && g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y || (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X + 1))
+                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X + 1)
                     {
                         g_sPjtl2.m_cLocation = g_sChar2.m_cLocation;
+                    }
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
+                    {
+                        wbwin = true;
                     }
                 }
             }
@@ -553,6 +599,7 @@ void moveNPC(int n)
             if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0)
             {
                 npcPtr[n]->setAlive(false);
+                dead++;
             }
             fsecsPassed = 0;
         }
@@ -1201,3 +1248,4 @@ bool Collision(COORD position, char direction)
         return false;
     }
 }
+
