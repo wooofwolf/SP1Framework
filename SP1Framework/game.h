@@ -72,6 +72,7 @@ void updateGame();          // gameplay logic
 void moveCharacter();       // moves the character, collision detection, physics, etc
 void tpProj1();      // tp projectile to character
 void tpProj2();      // tp projectile2 to character2
+void tpPToNpc();
 void charAbility();
 void wbAbility(int x, int y);
 void moveNPC(int n);             // checks how far the player is from npc, npc moves if player is close.

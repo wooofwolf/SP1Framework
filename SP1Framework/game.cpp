@@ -362,6 +362,15 @@ void tpProj2()
     g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
 }
 
+void tpPToNpc()
+{
+    for (int n = 0; n < 10; n++)
+    {
+        g_sPjtl2.m_cLocation.X = npcPtr[n]->getCoords().X;
+        g_sPjtl2.m_cLocation.Y = npcPtr[n]->getCoords().Y;
+    }
+}
+
 void charAbility()
 {
     if (doneShoot == 0)
@@ -531,7 +540,26 @@ void wbAbility(int x, int y)
     int hitY = x;
     for (int n = 0; n < 10; n++)
     {
-
+        // top 1
+        if (npcPtr[n]->getCoords().X == hitX && npcPtr[n]->getCoords().Y - 1 == hitY)
+        {
+            tpPToNpc();
+        }
+        // right 1
+        else if (npcPtr[n]->getCoords().X - 1 == hitX && npcPtr[n]->getCoords().Y == hitY)
+        {
+            tpPToNpc();
+        }
+        // down 1
+        else if (npcPtr[n]->getCoords().X == hitX && npcPtr[n]->getCoords().Y + 1 == hitY)
+        {
+            tpPToNpc();
+        }
+        // left 1
+        else if (npcPtr[n]->getCoords().X + 1 == hitX && npcPtr[n]->getCoords().Y == hitY)
+        {
+            tpPToNpc();
+        }
     }
 }
 
