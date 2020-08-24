@@ -44,6 +44,8 @@ char mapArray[81][26];
 // NPC related stopwatch
 CStopWatch fireWatch;
 CStopWatch waterWatch;
+CStopWatch explosionTimer;
+double esecsPassed = 0;
 double fsecsPassed = 0;
 double wsecsPassed = 0;
 
@@ -645,18 +647,16 @@ void updateNPC(int n)
     //Fire Boy ability
     if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && fA == true && tOrP == 1)
     {
+        explosionTimer.startTimer();
         for (int y = 0; y < 26; y++)
         {
             for (int x = 0; x < 81; x++)
             {
                 if ((pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n]->getAlive() == true)
                 {
-                    for (int e = 0; e < 10; e++)
+                    esecsPassed += explosionTimer.getElapsedTime();
+                    if (esecsPassed < 1)
                     {
-                        g_Console.writeToBuffer(x, y, ' ', 0x4C);
-                        g_Console.writeToBuffer(x, y, ' ', 0x4C);
-                        g_Console.writeToBuffer(x, y, ' ', 0x4C);
-                        g_Console.writeToBuffer(x, y, ' ', 0x4C);
                         g_Console.writeToBuffer(x, y, ' ', 0x4C);
                     }
                 }
