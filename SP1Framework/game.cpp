@@ -289,17 +289,12 @@ void updateGame()       // gameplay logic
         moveCharacter();    // moves the character, collision detection, physics, etc
         charAbility();
 
-        for (int n = 0; n < 10; n++)
+        if (dead == 10)
         {
-            moveNPC(n);
-
-            if (dead == 10)
-            {
-                fbwin = true;
-            }
+            fbwin = true;
         }
     }
-    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+    processUserInput();
 }
 
 void moveCharacter()
@@ -451,7 +446,6 @@ void charAbility()
         // Water boy Shooting
         else if (rOrC == 0)
         {
-
             if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)
             {
                 g_sPjtl2.m_cLocation.Y -= 1;
@@ -575,8 +569,6 @@ void moveNPC(int n)
                 {
                     npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
                 }
-
-
             }
             else if (randomInt == 2) // Down
             {
@@ -748,6 +740,9 @@ void updateNPC(int n)
             }
         }
     }
+    
+    // Moves NPC
+    moveNPC(n);
 }
 
 //--------------------------------------------------------------
@@ -803,10 +798,8 @@ void renderGame()
     if (mapNum == 1 || mapNum == 3)
     {
         renderCharacter(); // renders the character into the buffer
-        for (int n = 0; n < 10; n++)
-        {
-            renderNPC(n);
-        }
+        renderNPC();
+        
     }
 }
 
@@ -1145,26 +1138,27 @@ void renderCharacter()
     }
 }
 
-void renderNPC(int n)
+void renderNPC()
 {
     for (int n = 0; n < 10; n++)
     {
         updateNPC(n);
-    }
-    if (npcPtr[n]->getAlive() == true)
-    {
-        if (pow(npcPtr[n]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npcPtr[n]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
+
+        if (npcPtr[n]->getAlive() == true)
         {
-            g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
+            if (pow(npcPtr[n]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(npcPtr[n]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(npcPtr[n]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36)
+            {
+                g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
+            }
+            if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
+            {
+                g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
+            }
         }
-        if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
+        else
         {
-            g_Console.writeToBuffer(npcPtr[n]->getCoords(), 'N', static_cast<npc*>(npcPtr[n])->getCol());
+            g_Console.writeToBuffer(npcPtr[n]->getCoords(), ' ', 0x00);
         }
-    }
-    else
-    {
-        g_Console.writeToBuffer(npcPtr[n]->getCoords(), ' ', 0x00);
     }
 }
 
