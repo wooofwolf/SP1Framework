@@ -822,10 +822,9 @@ void renderGame()
 void renderMap()
 {
     /* SET SPAWN */
-    // Map 1
+    // Map
     if (g_skKeyEvent[K_1].keyReleased && mapSel == false)
     {
-        fileName = "Zav Map.txt";
         mapNum = 1;
         mapSel = true;
 
@@ -941,16 +940,42 @@ void renderMap()
 
         if (whichMap == 1)
         {
-            mapFile.open(fileName, std::ifstream::in);
+            fileName = "Zav Map.txt";
+        }
+        else if (whichMap == 2)
+        {
+            fileName = "Map 2.txt";
+        }
 
-            for (int y = 0; y < 26; y++)
+        mapFile.open(fileName, std::ifstream::in);
+
+        for (int y = 0; y < 26; y++)
+        {
+            for (int x = 0; x < 81; x++)
             {
-                for (int x = 0; x < 81; x++)
-                {
-                    char c = mapFile.get();
-                    mapArray[x][y] = c;
+                char c = mapFile.get();
+                mapArray[x][y] = c;
 
-                    if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
+                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
+                {
+                    if (c == '1')
+                    {
+                        g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                    }
+                    else if (c == '0' || c == '2')
+                    {
+                        g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                    }
+                }
+
+                else
+                {
+                    g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
+                }
+
+                for (int n = 0; n < 10; n++)
+                {
+                    if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
                     {
                         if (c == '1')
                         {
@@ -961,32 +986,8 @@ void renderMap()
                             g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
                         }
                     }
-
-                    else
-                    {
-                        g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
-                    }
-
-                    for (int n = 0; n < 10; n++)
-                    {
-                        if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
-                        {
-                            if (c == '1')
-                            {
-                                g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
-                            }
-                            else if (c == '0' || c == '2')
-                            {
-                                g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
-                            }
-                        }
-                    }
                 }
             }
-        }
-        else if (whichMap == 2)
-        {
-            // mapFile.open(fileName, std::ifstream::in);
         }
         
         g_Console.writeToBuffer(20, 24, "Fireboy lives:" + std::to_string(FBLives), 0x0C);
@@ -1007,7 +1008,7 @@ void renderMap()
     // Settings
     else if (mapNum == 2 && mapSel == true)
     {
-        g_Console.writeToBuffer(3, 3, "Map Selection: ", 0xB0);
+        g_Console.writeToBuffer(3, 3, "Map Selection: " + std::to_string(whichMap), 0xB0);
         if (g_skKeyEvent[K_LEFT].keyReleased)
         {
             if (whichMap > 1)
