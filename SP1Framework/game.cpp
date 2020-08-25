@@ -57,7 +57,7 @@ EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 entity* npcPtr[10];
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+Console g_Console(80, 25, "Arcane Ignition");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -674,31 +674,34 @@ void updateNPC(int n)
 
         static_cast<npc*>(npcPtr[n])->startFTimer();
     }
+
     //Fire Boy ability
+    // Checks if the ability button was pressed when fire boy's projectile was fired
     if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && fA == true && tOrP == 1)
     {
         explosionTimer.startTimer();
         for (int y = 0; y < 26; y++)
         {
             for (int x = 0; x < 81; x++)
-            {
+
+            {   //Checking if the NPCs are in range of one another
                 if ((pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n]->getAlive() == true)
                 {
                     esecsPassed += explosionTimer.getElapsedTime();
                     if (esecsPassed < 1)
-                    {
+                    {   //Changes the colour for NPCs who start burning because of the ability
                         g_Console.writeToBuffer(x, y, ' ', 0x4C);
                     }
                 }
             }
         }
         for (int n1 = 0; n1 < 10; n1++)
-        {
+        {   //Using a circle of radius of 3 to check if a burning NPC is near a non-burning NPC
             if ((pow(npcPtr[n1]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[n1]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n1]->getAlive() == true && static_cast<npc*>(npcPtr[n1])->getDrenched() == false && static_cast<npc*>(npcPtr[n1])->getSecsOnFire() <= 0)
-            {
+            {   //Setting how long NPCs stay burning for and the colour they change to when on fire
                 static_cast<npc*>(npcPtr[n1])->setSecsOnFire(5);
                 static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
-                
+                //Starts the timer for burning NPCs
                 static_cast<npc*>(npcPtr[n])->startFTimer();
             }
         }
