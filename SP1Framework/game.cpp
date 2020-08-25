@@ -12,6 +12,9 @@
 #include <time.h>
 #include <fstream>
 
+// Customizable Options
+std::string fileName;
+
 int FBLives = 3;
 int dead = 0;
 bool fbwin = false;
@@ -280,6 +283,7 @@ void splashScreenWait()    // waits for time to pass in splash screen
 
 void updateGame()       // gameplay logic
 {
+    // Start of game
     if (fbwin == false && FBLives > 0)
     {
         moveCharacter();    // moves the character, collision detection, physics, etc
@@ -296,99 +300,103 @@ void updateGame()       // gameplay logic
 void moveCharacter()
 {
     // Updating the location of the character based on the key release
-    // providing a beep sound whenver we shift the character
+    // Fire Boy moving up
     if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
     {
-        //Beep(1440, 30);
         g_sChar.m_cLocation.Y--;
         tpProj1();
         lastMove = 1;
     }
+    // Fire Boy moving left
     if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
     {
-        //Beep(1440, 30);
         g_sChar.m_cLocation.X--;
         tpProj1();
         lastMove = 2;
     }
+    // Fire Boy moving down
     if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
     {
-        //Beep(1440, 30);
         g_sChar.m_cLocation.Y++;
         tpProj1();
         lastMove = 3;
     }
+    // Fire Boy moving right
     if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar.m_cLocation, 'R') == false)
     {
-        //Beep(1440, 30);
         g_sChar.m_cLocation.X++;
         tpProj1();
         lastMove = 4;
     }
+    // Water Boy moving up
     if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false)
     {
-        //Beep(1440, 30);
         g_sChar2.m_cLocation.Y--;
         tpProj2();
         lastMove2 = 1;
     }
+    // Water Boy moving left
     if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0 && Collision(g_sChar2.m_cLocation, 'L') == false)
     {
-        //Beep(1440, 30);
         g_sChar2.m_cLocation.X--;
         tpProj2();
         lastMove2 = 2;
     }
+    // Water Boy moving down
     if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar2.m_cLocation, 'D') == false)
     {
-        //Beep(1440, 30);
         g_sChar2.m_cLocation.Y++;
         tpProj2();
         lastMove2 = 3;
     }
+    // Water Boy moving right
     if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar2.m_cLocation, 'R') == false)
     {
-        //Beep(1440, 30);
         g_sChar2.m_cLocation.X++;
         tpProj2();
         lastMove2 = 4;
     }
 }
 
+// Making projectile go to Fire Boy
 void tpProj1()
 {
     g_sPjtl.m_cLocation.X = g_sChar.m_cLocation.X;
     g_sPjtl.m_cLocation.Y = g_sChar.m_cLocation.Y;
 }
 
+// Making projectile go to Water Boy
 void tpProj2()
 {
     g_sPjtl2.m_cLocation.X = g_sChar2.m_cLocation.X;
     g_sPjtl2.m_cLocation.Y = g_sChar2.m_cLocation.Y;
 }
 
+// Keys for their projectile and skill and projectile animation 
 void charAbility()
 {
     if (doneShoot == 0)
     {
-        // Fire boy
+        // Fire boy projectile
         if (g_skKeyEvent[K_R].keyReleased)
         {
             rOrC = 1;
             tOrP = 1;
             doneShoot++;
         }
+        // Fire boy ability
         if (g_skKeyEvent[K_T].keyReleased)
         {
             fA = true;
         }
-        // Water boy
+        // Water boy projectile
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
             rOrC = 0;
             tOrP = 0;
             doneShoot++;
         }
+        // Water boy ability
         if (g_skKeyEvent[K_PERIOD].keyReleased)
         {
             wA = true;
@@ -523,20 +531,25 @@ void charAbility()
     }
     else if (doneShoot > pjtlRange)
     {
+        // after Fire Boy shoots with ability on
         if (fA == true && tOrP == 1)
         {
             fA = false;
         }
+        // after Water Boy shoots with ability on
         if (wA == true && tOrP == 0)
         {
             wA = false;
         }
+        // teleporting projectile to owners
         tpProj1();
         tpProj2();
+        // reset animation
         doneShoot = 0;
     }
 }
 
+// Drenching NPCs
 void drenchNpc(int sd)
 {
     static_cast<npc*>(npcPtr[sd])->setSecsOnFire(0);
@@ -645,18 +658,22 @@ void moveNPC()
     }
 }
 
+// Events when player hits the escape key
 void processUserInput()
 {
-    // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
     {
+        // If in a map than go to menu
         if (mapNum == 1 || mapNum == 2 || mapNum == 3 || fbwin == true || FBLives == 0)
         {
+            // Reset everything
             mapNum = 0;
             mapSel = false;
             fbwin = false;
             FBLives = 3;
+            dead = 0;
         }
+        // If in menu than quit
         else
         {
             g_bQuitGame = true;
@@ -664,6 +681,7 @@ void processUserInput()
     }
 }
 
+// Making NPCs on fire or drench with Fire Boy and Water Boy abilities animation
 void updateNPC(int n)
 {
     // NPC on Fire
@@ -785,6 +803,7 @@ void renderSplashScreen()  // renders the splash screen
     g_Console.writeToBuffer(c, "Instructions", 0x09);*/
 }
 
+// Loading the choosen map, Fire Boy, Water boy and NPCs
 void renderGame()
 {
     renderMap();        // renders the map to the buffer first
@@ -796,13 +815,18 @@ void renderGame()
     }
 }
 
+// Pressing keys to choose a option in menu
 void renderMap()
 {
+    /* SET SPAWN */
+    // Map 1
     if (g_skKeyEvent[K_1].keyReleased && mapSel == false)
     {
+        fileName = "Zav Map.txt";
         mapNum = 1;
         mapSel = true;
-        // Set their spawn below
+
+        // Set players spawn below
         g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 44;
         g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.05;
         tpProj1();
@@ -810,9 +834,10 @@ void renderMap()
         g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
         tpProj2();
 
+        // Set npcs spawn below
         int n = 0;
         std::ifstream mapFile;
-        mapFile.open("Zav Map.txt", std::ifstream::in);
+        mapFile.open(fileName, std::ifstream::in);
         for (int y = 0; y < 26; y++)
         {
             for (int x = 0; x < 81; x++)
@@ -822,39 +847,49 @@ void renderMap()
                 {
                     npcPtr[n]->setAlive(true);
                     npcPtr[n]->setCoords(x, y);
+                    static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
+                    static_cast<npc*>(npcPtr[n])->setDrenched(false);
                     static_cast<npc*>(npcPtr[n])->setCol(0xB0);
                     n++;
                 }
             }
         }
     }
+
+    // Settings
     if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
     {
         mapNum = 2;
         mapSel = true;
     }
+
+    // Tutorial
     else if (g_skKeyEvent[K_3].keyReleased && mapSel == false)
     {
+        fileName = "TutorialMap.txt";
+        mapNum = 3;
+        mapSel = true;
+
+        // Tutorial related bools
         shownWability = false;
         shownWcontrols = false;
         showWcontrols = false;
         showWobjective = false;
         showFobjective = false;
         showFcontrols = true;
-        mapNum = 3;
-        mapSel = true;
-        // Their spawnpoint
+
+        // Set players spawn below
         g_sChar.m_cLocation.X = 2;
         g_sChar.m_cLocation.Y = 5;
         tpProj1();
-
         g_sChar2.m_cLocation.X = 2;
         g_sChar2.m_cLocation.Y = 19;
         tpProj2();
 
+        // Set npcs spawn below
         int n = 0;
         std::ifstream mapFile;
-        mapFile.open("TutorialMap.txt", std::ifstream::in);
+        mapFile.open(fileName, std::ifstream::in);
         for (int y = 0; y < 26; y++)
         {
             for (int x = 0; x < 81; x++)
@@ -864,6 +899,8 @@ void renderMap()
                 {
                     npcPtr[n]->setAlive(true);
                     npcPtr[n]->setCoords(x, y);
+                    static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
+                    static_cast<npc*>(npcPtr[n])->setDrenched(false);
                     static_cast<npc*>(npcPtr[n])->setCol(0xB0);
                     n++;
                 }
@@ -874,6 +911,9 @@ void renderMap()
             static_cast<npc*>(npcPtr[n])->setCol(0x4C);
         }
     }
+
+    /* SET MAP */
+    // Main Menu
     if (mapNum == 0 && mapSel == false)
     {
         g_Console.writeToBuffer(3, 3, "                                     _____            _ _   _             ", 0xB6);
@@ -889,11 +929,13 @@ void renderMap()
         g_Console.writeToBuffer(26, 16, "Press 3 to play tutorial", 0xB4);
         g_Console.writeToBuffer(25, 17, "Press Esc to quit the game", 0xB4);
     }
+
+    // Map 1
     else if (mapNum == 1 && mapSel == true)
     {
         g_Console.clearBuffer();
         std::ifstream mapFile;
-        mapFile.open("Zav Map.txt", std::ifstream::in);
+        mapFile.open(fileName, std::ifstream::in);
 
         for (int y = 0; y < 26; y++)
         {
@@ -936,6 +978,7 @@ void renderMap()
             }
         }
 
+        // Win conditions
         if (fbwin == true)
         {
             g_Console.writeToBuffer(3, 10, "FiRE BOY WINS", 0x1A);
@@ -945,16 +988,19 @@ void renderMap()
             g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
         }
     }
+
+    // Settings
     else if (mapNum == 2 && mapSel == true)
     {
-        // Settings
+        
     }
+
+    // Tutorial
     else if (mapNum == 3 && mapSel == true)
     {
         g_Console.clearBuffer();
-        // Tutorial
         std::ifstream mapFile;
-        mapFile.open("TutorialMap.txt", std::ifstream::in);
+        mapFile.open(fileName, std::ifstream::in);
 
         for (int y = 0; y < 26; y++)
         {
@@ -998,7 +1044,7 @@ void renderMap()
         }
         mapFile.close();
 
-        // Fire boy tutorial
+        // Fireboy tutorial check
         if (g_sChar.m_cLocation.X == 35 && g_sChar.m_cLocation.Y == 9)
         {
             showFcontrols = false;
@@ -1014,7 +1060,7 @@ void renderMap()
             showFnpc2 = false;
             showFability = true;
         }
-        // Water boy tutorial
+        // Waterboy tutorial check
         if (npcPtr[0]->getAlive() == false && npcPtr[1]->getAlive() == false && npcPtr[2]->getAlive() == false && npcPtr[3]->getAlive() == false && npcPtr[4]->getAlive() == false)
         {
             showFability = false;
@@ -1044,6 +1090,7 @@ void renderMap()
             showWobjective = true;
         }
 
+        // Fireboy tutorial
         if (showFcontrols == true)
         {
             g_Console.writeToBuffer(2, 7, "Fireboy Movement:", 0x0F);
@@ -1069,6 +1116,7 @@ void renderMap()
         {
             g_Console.writeToBuffer(5, 4, "Your mission is to kill every NPC without getting caught by waterboy", 0x0F);
         }
+        // Waterboy tutorial
         if (showWcontrols == true && shownWcontrols == false)
         {
             g_Console.writeToBuffer(2, 16, "Waterboy Movement:", 0x0F);
@@ -1101,6 +1149,7 @@ void renderMap()
     }
 }
 
+// Changing the colours of Fire boy and Water boy
 void renderCharacter()
 {
     // Draw the location of the character

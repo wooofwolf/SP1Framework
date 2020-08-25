@@ -1,5 +1,4 @@
 #include "npc.h"
-#include "fireboy.h"
 #include <math.h>
 
 int npc::noOfNPCs = 0;
