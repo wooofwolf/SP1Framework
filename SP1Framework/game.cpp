@@ -12,6 +12,9 @@
 #include <time.h>
 #include <fstream>
 
+// Customizable Options
+std::string fileName;
+
 int FBLives = 3;
 int dead = 0;
 bool fbwin = false;
@@ -803,6 +806,7 @@ void renderMap()
     // Map 1
     if (g_skKeyEvent[K_1].keyReleased && mapSel == false)
     {
+        fileName = "Zav Map.txt";
         mapNum = 1;
         mapSel = true;
 
@@ -817,7 +821,7 @@ void renderMap()
         // Set npcs spawn below
         int n = 0;
         std::ifstream mapFile;
-        mapFile.open("Zav Map.txt", std::ifstream::in);
+        mapFile.open(fileName, std::ifstream::in);
         for (int y = 0; y < 26; y++)
         {
             for (int x = 0; x < 81; x++)
@@ -846,6 +850,10 @@ void renderMap()
     // Tutorial
     else if (g_skKeyEvent[K_3].keyReleased && mapSel == false)
     {
+        fileName = "TutorialMap.txt";
+        mapNum = 3;
+        mapSel = true;
+
         // Tutorial related bools
         shownWability = false;
         shownWcontrols = false;
@@ -853,8 +861,6 @@ void renderMap()
         showWobjective = false;
         showFobjective = false;
         showFcontrols = true;
-        mapNum = 3;
-        mapSel = true;
 
         // Set players spawn below
         g_sChar.m_cLocation.X = 2;
@@ -867,7 +873,7 @@ void renderMap()
         // Set npcs spawn below
         int n = 0;
         std::ifstream mapFile;
-        mapFile.open("TutorialMap.txt", std::ifstream::in);
+        mapFile.open(fileName, std::ifstream::in);
         for (int y = 0; y < 26; y++)
         {
             for (int x = 0; x < 81; x++)
@@ -913,7 +919,7 @@ void renderMap()
     {
         g_Console.clearBuffer();
         std::ifstream mapFile;
-        mapFile.open("Zav Map.txt", std::ifstream::in);
+        mapFile.open(fileName, std::ifstream::in);
 
         for (int y = 0; y < 26; y++)
         {
@@ -978,7 +984,7 @@ void renderMap()
     {
         g_Console.clearBuffer();
         std::ifstream mapFile;
-        mapFile.open("TutorialMap.txt", std::ifstream::in);
+        mapFile.open(fileName, std::ifstream::in);
 
         for (int y = 0; y < 26; y++)
         {
