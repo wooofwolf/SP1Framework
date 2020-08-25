@@ -820,6 +820,15 @@ void renderGame()
 // Pressing keys to choose a option in menu
 void renderMap()
 {
+    if (whichMap == 1)
+    {
+        fileName = "Zav Map.txt";
+    }
+    else if (whichMap == 2)
+    {
+        fileName = "Map 2.txt";
+    }
+
     /* SET SPAWN */
     // Map
     if (g_skKeyEvent[K_1].keyReleased && mapSel == false)
