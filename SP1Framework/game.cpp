@@ -1002,7 +1002,7 @@ void renderMap()
     // Settings
     else if (mapNum == 2 && mapSel == true)
     {
-        g_Console.writeToBuffer(3, 3, "Map Selection: ", 0xB0);
+        g_Console.writeToBuffer(3, 3, "Map Selection: " + std::to_string(whichMap), 0xB0);
         if (g_skKeyEvent[K_LEFT].keyReleased)
         {
             if (whichMap > 1)
