@@ -1206,21 +1206,21 @@ void renderNPC()
 
 void renderFramerate()
 {
-    COORD c;
+    // COORD c;
     // displays the framerate
-    std::ostringstream ss;
+    /*std::ostringstream ss;
     ss << std::fixed << std::setprecision(3);
     ss << 1.0 / g_dDeltaTime << "fps";
     c.X = g_Console.getConsoleSize().X - 9;
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str());
+    g_Console.writeToBuffer(c, ss.str());*/
 
     // displays the elapsed time
-    ss.str("");
+    /*ss.str("");
     ss << g_dElapsedTime << "secs";
     c.X = 0;
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str(), 0x59);
+    g_Console.writeToBuffer(c, ss.str(), 0x59);*/
 }
 
 // this is an example of how you would use the input events
