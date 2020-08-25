@@ -13,7 +13,7 @@
 #include <fstream>
 
 // Customizable Options
-std::string fileName;
+std::string fileName = "Zav Map.txt";
 
 
 int FBLives = 3;
