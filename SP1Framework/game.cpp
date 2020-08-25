@@ -999,7 +999,7 @@ void renderMap()
             g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
         }
     }
-
+        
     // Settings
     else if (mapNum == 2 && mapSel == true)
     {
