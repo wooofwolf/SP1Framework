@@ -407,122 +407,122 @@ void charAbility()
         // Fire boy Shooting
         if (rOrC == 1)
         {
-            if (lastMove == 1 && Collision(g_sPjtl.m_cLocation, 'U') == false) {
-                g_sPjtl.m_cLocation.Y -= 1;
-                if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)
+            if (lastMove == 1 && Collision(g_sPjtl.m_cLocation, 'U') == false) { // checks which direction was last inputted and sees if there will be collision
+                g_sPjtl.m_cLocation.Y -= 1; // if not then shoot
+                if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X) //if the projectile position is = to  Waterboy's position
                 {
-                    doneShoot = pjtlRange;
+                    doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
                 }
-                if (doneShoot == pjtlRange - 2)
+                if (doneShoot == pjtlRange - 2) // checks if the projectile goes out into the darkness for shooting upwards
                 {
-                    doneShoot += 2;
-                }
-            }
-            else if (lastMove == 2 && Collision(g_sPjtl.m_cLocation, 'L') == false)
-            {
-                g_sPjtl.m_cLocation.X -= 1;
-                if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)
-                {
-                    doneShoot = pjtlRange;
+                    doneShoot += 2;//reduces the range 
                 }
             }
-            else if (lastMove == 3 && Collision(g_sPjtl.m_cLocation, 'D') == false)
+            else if (lastMove == 2 && Collision(g_sPjtl.m_cLocation, 'L') == false)// checks which direction was last inputted and sees if there will be collision
             {
-                g_sPjtl.m_cLocation.Y += 1;
-                if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)
+                g_sPjtl.m_cLocation.X -= 1;// if not then shoot
+                if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)//if the projectile position is = to  Waterboy's position
                 {
-                    doneShoot = pjtlRange;
-                }
-                if (doneShoot == pjtlRange - 2)
-                {
-                    doneShoot += 2;
+                    doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
                 }
             }
-            else if (lastMove == 4 && Collision(g_sPjtl.m_cLocation, 'R') == false)
+            else if (lastMove == 3 && Collision(g_sPjtl.m_cLocation, 'D') == false)// checks which direction was last inputted and sees if there will be collision
             {
-                g_sPjtl.m_cLocation.X += 1;
-                if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)
+                g_sPjtl.m_cLocation.Y += 1;// if not then shoot
+                if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)//if the projectile position is = to  Waterboy's position
                 {
-                    doneShoot = pjtlRange;
+                    doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
+                }
+                if (doneShoot == pjtlRange - 2)// checks if the projectile goes out into the darkness for shooting downwards
+                {
+                    doneShoot += 2;//reduces the range 
+                }
+            }
+            else if (lastMove == 4 && Collision(g_sPjtl.m_cLocation, 'R') == false)// checks which direction was last inputted and sees if there will be collision
+            {
+                g_sPjtl.m_cLocation.X += 1;// if not then shoot
+                if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)//if the projectile position is = to  Waterboy's position
+                {
+                    doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
                 }
             }
         }
         // Water boy Shooting
         else if (rOrC == 0)
         {
-            if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)
+            if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)// checks which direction was last inputted and sees if there will be collision
             {
-                g_sPjtl2.m_cLocation.Y -= 1;
-                for (int n = 0; n < 10; n++)
+                g_sPjtl2.m_cLocation.Y -= 1;// if not then shoot 
+                for (int n = 0; n < 10; n++) // for loop for NPC
                 {
-                    if ((g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X))
+                    if ((g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)) // checks if NPC gets shot by the projectile
                     {
-                        doneShoot = pjtlRange;
+                        doneShoot = pjtlRange;//finishes animation and returns projectile to Waterboy position
                     }
-                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)//checks if fireboy has been hit by waterboys projectile
                     {
-                        FBLives--;
-                        doneShoot = pjtlRange;
-                        break;
+                        FBLives--; // if he does he loses 1 life
+                        doneShoot = pjtlRange;//finishes the projectile animation
+                        break;//breaks out of the for loop
                     }
                 }
-                if (doneShoot == pjtlRange - 2)
+                if (doneShoot == pjtlRange - 2) //checks if projectile will go out of the vision
                 {
-                    doneShoot += 2;
+                    doneShoot += 2;//reduces the range 
                 }
             }
-            else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)
+            else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)// checks which direction was last inputted and sees if there will be collision
             {
-                g_sPjtl2.m_cLocation.X -= 1;
-                for (int n = 0; n < 10; n++)
+                g_sPjtl2.m_cLocation.X -= 1;// if not then shoot
+                for (int n = 0; n < 10; n++) // for loop for NPC
                 {
-                    if (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)
+                    if (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)// checks if NPC gets shot by the projectile
                     {
-                        doneShoot = pjtlRange;
+                        doneShoot = pjtlRange;//finishes the projectile animation
                     }
-                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)//checks if fireboy has been hit by waterboys projectile
                     {
-                        FBLives--;
-                        doneShoot = pjtlRange;
-                        break;
+                        FBLives--;// if he does he loses 1 life
+                        doneShoot = pjtlRange;//finishes the projectile animation
+                        break;//breaks out of the for loop
                     }
                 }
             }
-            else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)
+            else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)// checks which direction was last inputted and sees if there will be collision
             {
-                g_sPjtl2.m_cLocation.Y += 1;
-                for (int n = 0; n < 10; n++)
+                g_sPjtl2.m_cLocation.Y += 1;// if not then shoot
+                for (int n = 0; n < 10; n++) // for loop for NPC
                 {
-                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)
+                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)// checks if NPC gets shot by the projectile
                     {
-                        doneShoot = pjtlRange;
+                        doneShoot = pjtlRange;//finishes the projectile animation
                     }
-                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) 
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) //checks if fireboy has been hit by waterboys projectile
                     {
-                        FBLives--;
-                        doneShoot = pjtlRange;
-                        break;
+                        FBLives--;// if he does he loses 1 life
+                        doneShoot = pjtlRange;//finishes the projectile animation
+                        break;//breaks out of the for loop
                     }
                 }
-                if (doneShoot == pjtlRange - 2)
+                if (doneShoot == pjtlRange - 2)//checks if projectile will go out of the vision
                 {
-                    doneShoot += 2;
+                    doneShoot += 2;//reduces the range  
                 }
             }
-            else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)
+            else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)// checks which direction was last inputted and sees if there will be collision
             {
-                g_sPjtl2.m_cLocation.X += 1;
+                g_sPjtl2.m_cLocation.X += 1;// if not then shoot
                 for (int n = 0; n < 10; n++)
                 {
-                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)
+                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)// checks if NPC gets shot by the projectile
                     {
-                        doneShoot = pjtlRange;
+                        doneShoot = pjtlRange;//finishes the projectile animation
                     }
-                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)
+                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)//checks if fireboy has been hit by waterboys projectile
                     {
-                        FBLives--;
-                        doneShoot = pjtlRange;
-                        break;
+                        FBLives--;// if he does he loses 1 life
+                        doneShoot = pjtlRange;//finishes the projectile animation
+                        break;//breaks out of the for loop
                     }
                 }
             }
@@ -1206,21 +1206,21 @@ void renderNPC()
 
 void renderFramerate()
 {
-    COORD c;
+    // COORD c;
     // displays the framerate
-    std::ostringstream ss;
+    /*std::ostringstream ss;
     ss << std::fixed << std::setprecision(3);
     ss << 1.0 / g_dDeltaTime << "fps";
     c.X = g_Console.getConsoleSize().X - 9;
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str());
+    g_Console.writeToBuffer(c, ss.str());*/
 
     // displays the elapsed time
-    ss.str("");
+    /*ss.str("");
     ss << g_dElapsedTime << "secs";
     c.X = 0;
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str(), 0x59);
+    g_Console.writeToBuffer(c, ss.str(), 0x59);*/
 }
 
 // this is an example of how you would use the input events
