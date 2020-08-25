@@ -989,10 +989,9 @@ void renderMap()
             // mapFile.open(fileName, std::ifstream::in);
         }
         
-            g_Console.writeToBuffer(20, 24, "Fireboy lives:", 0x0C);
-            g_Console.writeToBuffer(34, 24, std::to_string(FBLives), 0x0C);
-            g_Console.writeToBuffer(38, 24, "Number of NPCs left:", 0x0C);
-            g_Console.writeToBuffer(58, 24, std::to_string(10 - dead), 0x0c);
+        g_Console.writeToBuffer(20, 24, "Fireboy lives:" + std::to_string(FBLives), 0x0C);
+        g_Console.writeToBuffer(38, 24, "Number of NPCs left:" + std::to_string(10 - dead), 0x0C);
+            
         
         // Win conditions
         if (fbwin == true)
@@ -1001,7 +1000,7 @@ void renderMap()
         }
         if (FBLives == 0)
         {
-            g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
+            g_Console.writeToBuffer(62, 10, "WATER BOY WINS", 0x1A);
         }
     }
 
