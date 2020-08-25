@@ -656,6 +656,7 @@ void processUserInput()
             mapSel = false;
             fbwin = false;
             FBLives = 3;
+            dead = 0;
         }
         else
         {
