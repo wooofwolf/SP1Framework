@@ -15,6 +15,7 @@
 // Customizable Options
 std::string fileName;
 
+
 int FBLives = 3;
 int dead = 0;
 bool fbwin = false;
@@ -958,6 +959,7 @@ void renderMap()
 
                 else
                 {
+
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
                 }
 
@@ -977,7 +979,12 @@ void renderMap()
                 }
             }
         }
-
+        
+            g_Console.writeToBuffer(20, 24, "Fireboy lives:", 0x0C);
+            g_Console.writeToBuffer(34, 24, std::to_string(FBLives), 0x0C);
+            g_Console.writeToBuffer(38, 24, "Number of NPCs left:", 0x0C);
+            g_Console.writeToBuffer(58, 24, std::to_string(10 - dead), 0x0c);
+        
         // Win conditions
         if (fbwin == true)
         {
@@ -1206,21 +1213,21 @@ void renderNPC()
 
 void renderFramerate()
 {
-    COORD c;
-    // displays the framerate
-    std::ostringstream ss;
-    ss << std::fixed << std::setprecision(3);
-    ss << 1.0 / g_dDeltaTime << "fps";
-    c.X = g_Console.getConsoleSize().X - 9;
-    c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str());
+    //COORD c;
+    //// displays the framerate
+    //std::ostringstream ss;
+    //ss << std::fixed << std::setprecision(3);
+    //ss << 1.0 / g_dDeltaTime << "fps";
+    //c.X = g_Console.getConsoleSize().X - 9;
+    //c.Y = 0;
+    //g_Console.writeToBuffer(c, ss.str());
 
     // displays the elapsed time
-    ss.str("");
+   /* ss.str("");
     ss << g_dElapsedTime << "secs";
     c.X = 0;
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str(), 0x59);
+    g_Console.writeToBuffer(c, ss.str(), 0x59);*/
 }
 
 // this is an example of how you would use the input events
