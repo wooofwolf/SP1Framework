@@ -815,12 +815,14 @@ void renderGame()
 // Pressing keys to choose a option in menu
 void renderMap()
 {
-    // If selecting map 1
+    /* SET SPAWN */
+    // Map 1
     if (g_skKeyEvent[K_1].keyReleased && mapSel == false)
     {
         mapNum = 1;
         mapSel = true;
-        // Set their spawn below
+
+        // Set players spawn below
         g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 44;
         g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.05;
         tpProj1();
@@ -828,6 +830,7 @@ void renderMap()
         g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
         tpProj2();
 
+        // Set npcs spawn below
         int n = 0;
         std::ifstream mapFile;
         mapFile.open("Zav Map.txt", std::ifstream::in);
@@ -840,21 +843,26 @@ void renderMap()
                 {
                     npcPtr[n]->setAlive(true);
                     npcPtr[n]->setCoords(x, y);
+                    static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
+                    static_cast<npc*>(npcPtr[n])->setDrenched(false);
                     static_cast<npc*>(npcPtr[n])->setCol(0xB0);
                     n++;
                 }
             }
         }
     }
-    // If selecting setting
+
+    // Settings
     if (g_skKeyEvent[K_2].keyReleased && mapSel == false)
     {
         mapNum = 2;
         mapSel = true;
     }
-    // If selecting tutorial
+
+    // Tutorial
     else if (g_skKeyEvent[K_3].keyReleased && mapSel == false)
     {
+        // Tutorial related bools
         shownWability = false;
         shownWcontrols = false;
         showWcontrols = false;
@@ -863,15 +871,16 @@ void renderMap()
         showFcontrols = true;
         mapNum = 3;
         mapSel = true;
-        // Their spawnpoint
+
+        // Set players spawn below
         g_sChar.m_cLocation.X = 2;
         g_sChar.m_cLocation.Y = 5;
         tpProj1();
-
         g_sChar2.m_cLocation.X = 2;
         g_sChar2.m_cLocation.Y = 19;
         tpProj2();
 
+        // Set npcs spawn below
         int n = 0;
         std::ifstream mapFile;
         mapFile.open("TutorialMap.txt", std::ifstream::in);
@@ -884,6 +893,8 @@ void renderMap()
                 {
                     npcPtr[n]->setAlive(true);
                     npcPtr[n]->setCoords(x, y);
+                    static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
+                    static_cast<npc*>(npcPtr[n])->setDrenched(false);
                     static_cast<npc*>(npcPtr[n])->setCol(0xB0);
                     n++;
                 }
@@ -894,7 +905,9 @@ void renderMap()
             static_cast<npc*>(npcPtr[n])->setCol(0x4C);
         }
     }
-    // Load menu
+
+    /* SET MAP */
+    // Main Menu
     if (mapNum == 0 && mapSel == false)
     {
         g_Console.writeToBuffer(3, 3, "                                     _____            _ _   _             ", 0xB6);
@@ -910,7 +923,8 @@ void renderMap()
         g_Console.writeToBuffer(26, 16, "Press 3 to play tutorial", 0xB4);
         g_Console.writeToBuffer(25, 17, "Press Esc to quit the game", 0xB4);
     }
-    // Load map 1
+
+    // Map 1
     else if (mapNum == 1 && mapSel == true)
     {
         g_Console.clearBuffer();
@@ -958,6 +972,7 @@ void renderMap()
             }
         }
 
+        // Win conditions
         if (fbwin == true)
         {
             g_Console.writeToBuffer(3, 10, "FiRE BOY WINS", 0x1A);
@@ -967,16 +982,17 @@ void renderMap()
             g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
         }
     }
-    // Load settings
+
+    // Settings
     else if (mapNum == 2 && mapSel == true)
     {
-        // Settings
+        
     }
-    // Load tutorial
+
+    // Tutorial
     else if (mapNum == 3 && mapSel == true)
     {
         g_Console.clearBuffer();
-        // Tutorial
         std::ifstream mapFile;
         mapFile.open("TutorialMap.txt", std::ifstream::in);
 
@@ -1022,7 +1038,7 @@ void renderMap()
         }
         mapFile.close();
 
-        // Fire boy tutorial
+        // Fireboy tutorial check
         if (g_sChar.m_cLocation.X == 35 && g_sChar.m_cLocation.Y == 9)
         {
             showFcontrols = false;
@@ -1038,7 +1054,7 @@ void renderMap()
             showFnpc2 = false;
             showFability = true;
         }
-        // Water boy tutorial
+        // Waterboy tutorial check
         if (npcPtr[0]->getAlive() == false && npcPtr[1]->getAlive() == false && npcPtr[2]->getAlive() == false && npcPtr[3]->getAlive() == false && npcPtr[4]->getAlive() == false)
         {
             showFability = false;
@@ -1068,6 +1084,7 @@ void renderMap()
             showWobjective = true;
         }
 
+        // Fireboy tutorial
         if (showFcontrols == true)
         {
             g_Console.writeToBuffer(2, 7, "Fireboy Movement:", 0x0F);
@@ -1093,6 +1110,7 @@ void renderMap()
         {
             g_Console.writeToBuffer(5, 4, "Your mission is to kill every NPC without getting caught by waterboy", 0x0F);
         }
+        // Waterboy tutorial
         if (showWcontrols == true && shownWcontrols == false)
         {
             g_Console.writeToBuffer(2, 16, "Waterboy Movement:", 0x0F);
