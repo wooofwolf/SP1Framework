@@ -292,7 +292,7 @@ void updateGame()       // gameplay logic
         moveCharacter();    // moves the character, collision detection, physics, etc
         charAbility();
         moveNPC();          // moves NPC
-        if (dead == 10)
+        if (dead == 5 && mapNum == 1)
         {
             fbwin = true;
         }
@@ -690,7 +690,7 @@ void updateNPC(int n)
     // NPC on Fire
     if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0 && static_cast<npc*>(npcPtr[n])->getDrenched() == false)
     {
-        static_cast<npc*>(npcPtr[n])->setSecsOnFire(5);
+        static_cast<npc*>(npcPtr[n])->setSecsOnFire(2);
         static_cast<npc*>(npcPtr[n])->setCol(0x4C);
 
         static_cast<npc*>(npcPtr[n])->startFTimer();
@@ -717,7 +717,7 @@ void updateNPC(int n)
         {
             if ((pow(npcPtr[n1]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[n1]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n1]->getAlive() == true && static_cast<npc*>(npcPtr[n1])->getDrenched() == false && static_cast<npc*>(npcPtr[n1])->getSecsOnFire() <= 0)
             {
-                static_cast<npc*>(npcPtr[n1])->setSecsOnFire(5);
+                static_cast<npc*>(npcPtr[n1])->setSecsOnFire(2);
                 static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
                 
                 static_cast<npc*>(npcPtr[n])->startFTimer();
@@ -868,7 +868,6 @@ void renderMap()
     // Tutorial
     else if (g_skKeyEvent[K_3].keyReleased && mapSel == false)
     {
-        fileName = "TutorialMap.txt";
         mapNum = 3;
         mapSel = true;
 
@@ -891,7 +890,7 @@ void renderMap()
         // Set npcs spawn below
         int n = 0;
         std::ifstream mapFile;
-        mapFile.open(fileName, std::ifstream::in);
+        mapFile.open("TutorialMap.txt", std::ifstream::in);
         for (int y = 0; y < 26; y++)
         {
             for (int x = 0; x < 81; x++)
@@ -991,7 +990,7 @@ void renderMap()
         }
         
         g_Console.writeToBuffer(20, 24, "Fireboy lives:" + std::to_string(FBLives), 0x0C);
-        g_Console.writeToBuffer(38, 24, "Number of NPCs left:" + std::to_string(10 - dead), 0x0C);
+        g_Console.writeToBuffer(38, 24, "Number of NPCs left:" + std::to_string(5 - dead), 0x0C);
             
         
         // Win conditions
@@ -1030,7 +1029,7 @@ void renderMap()
     {
         g_Console.clearBuffer();
         std::ifstream mapFile;
-        mapFile.open(fileName, std::ifstream::in);
+        mapFile.open("TutorialMap.txt", std::ifstream::in);
 
         for (int y = 0; y < 26; y++)
         {
