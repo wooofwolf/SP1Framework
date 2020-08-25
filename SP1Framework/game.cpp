@@ -26,6 +26,8 @@ int pjtlRange = 6;
 int doneShoot = 0;
 int rOrC;
 int tOrP;
+int whichMap = 1;
+int totalMaps = 2;
 int mapNum = 0;
 bool mapSel = false;
 bool fA = false;
@@ -935,35 +937,19 @@ void renderMap()
     {
         g_Console.clearBuffer();
         std::ifstream mapFile;
-        mapFile.open(fileName, std::ifstream::in);
 
-        for (int y = 0; y < 26; y++)
+        if (whichMap == 1)
         {
-            for (int x = 0; x < 81; x++)
+            mapFile.open(fileName, std::ifstream::in);
+
+            for (int y = 0; y < 26; y++)
             {
-                char c = mapFile.get();
-                mapArray[x][y] = c;
-
-                if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
+                for (int x = 0; x < 81; x++)
                 {
-                    if (c == '1')
-                    {
-                        g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
-                    }
-                    else if (c == '0' || c == '2')
-                    {
-                        g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
-                    }
-                }
+                    char c = mapFile.get();
+                    mapArray[x][y] = c;
 
-                else
-                {
-                    g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
-                }
-
-                for (int n = 0; n < 10; n++)
-                {
-                    if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
+                    if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                     {
                         if (c == '1')
                         {
@@ -974,8 +960,32 @@ void renderMap()
                             g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
                         }
                     }
+
+                    else
+                    {
+                        g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
+                    }
+
+                    for (int n = 0; n < 10; n++)
+                    {
+                        if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
+                        {
+                            if (c == '1')
+                            {
+                                g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                            }
+                            else if (c == '0' || c == '2')
+                            {
+                                g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                            }
+                        }
+                    }
                 }
             }
+        }
+        else if (whichMap == 2)
+        {
+            // mapFile.open(fileName, std::ifstream::in);
         }
 
         // Win conditions
@@ -992,7 +1002,20 @@ void renderMap()
     // Settings
     else if (mapNum == 2 && mapSel == true)
     {
-        
+        if (g_skKeyEvent[K_LEFT].keyReleased)
+        {
+            if (whichMap > 1)
+            {
+                whichMap--;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyReleased)
+        {
+            if (whichMap < totalMaps)
+            {
+                whichMap++;
+            }
+        }
     }
 
     // Tutorial
