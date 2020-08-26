@@ -24,7 +24,7 @@ double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
 int pjtlRange = 6;
-double pjtlSpeed = 0.07;
+double pjtlSpeed = 0.05;
 int doneShoot = 0;
 int rOrC;
 int tOrP;
@@ -49,6 +49,7 @@ bool showWobjective = false;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 char mapArray[81][26];
+// Projectile timer
 CStopWatch pjtlTimer;
 double pSecsPassed = 0;
 // NPC related stopwatch
@@ -772,6 +773,7 @@ void updateNPC(int n)
     // Water Boy ability
     if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && wA == true && tOrP == 0)
     {
+        wA = false;
         for (int y = 0; y < 26; y++)
         {
             for (int x = 0; x < 81; x++)
@@ -780,10 +782,7 @@ void updateNPC(int n)
                 {
                     for (int w = 0; w < 10; w++)
                     {
-                        for (int t = 1; t < 6; t++)
-                        {
-                            g_Console.writeToBuffer(x, y, ' ', 0x90);
-                        }
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
                     }
                 }
             }
