@@ -85,6 +85,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="npc.cpp" />
     <ClCompile Include="trap.cpp" />
+    <ClCompile Include="WBtrap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entity.h" />
@@ -93,6 +94,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="npc.h" />
     <ClInclude Include="trap.h" />
+    <ClInclude Include="WBtrap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
