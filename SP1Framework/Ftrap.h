@@ -4,6 +4,7 @@ class Ftrap: public trap
 {
 private:
 	static int noOfFTraps;
+	CStopWatch FTwatch;
 
 public:
 	// Constructors
@@ -16,6 +17,7 @@ public:
 	// Accessors
 	int getNoOfFTraps(void);
 	// Mutators
-	// None for now
+	void startFTWatch(void);
+	double getFTSecsPassed(void);
 };
 

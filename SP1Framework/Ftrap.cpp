@@ -32,3 +32,13 @@ int Ftrap::getNoOfFTraps(void)
 {
 	return noOfFTraps;
 }
+
+void Ftrap::startFTWatch(void)
+{
+	FTwatch.startTimer();
+}
+
+double Ftrap::getFTSecsPassed(void)
+{
+	return FTwatch.getElapsedTime();
+}

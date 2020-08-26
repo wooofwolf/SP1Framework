@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include "Framework/timer.h"
 class entity
 {
 private:
