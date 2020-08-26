@@ -754,10 +754,6 @@ void moveNPC()
                                     npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
                                 }
                             }
-                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
-                            {
-                                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
-                            }
                         }
                     }
                 }
@@ -810,10 +806,6 @@ void moveNPC()
                                     npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
                                 }
                             }
-                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
-                            {
-                                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-                            }
                         }
                     }
 
@@ -831,11 +823,6 @@ void moveNPC()
                                 {
                                     npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
                                 }
-                            }
-
-                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
-                            {
-                                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
                             }
                         }
 
