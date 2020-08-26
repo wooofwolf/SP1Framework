@@ -627,226 +627,34 @@ void moveNPC()
             // check if player is in range of NPC
             if ((pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2) * 2) <= 25)
             {
-                int npcU, npcD, npcL, npcR;
-                // Check every movement option
-                npcU = pow(pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y - 1, 2), 0.5);
-                npcD = pow(pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y + 1, 2), 0.5);
-                npcL = pow(pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X - 1, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2), 0.5);
-                npcR = pow(pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X + 1, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y , 2), 0.5);
-                // Check which movement option is the best
-                if (Collision(npcPtr[n]->getCoords(), 'U') == false) // Up is not blocked
+
+                int npc1L, npc1R, npc1U, npc1D;
+
+                npc1L = npcPtr[n]->getCoords().X - 1;
+                npc1R = npcPtr[n]->getCoords().X + 1;
+                npc1U = npcPtr[n]->getCoords().Y - 1;
+                npc1D = npcPtr[n]->getCoords().Y + 1;
+
+                npc1L = (pow(g_sChar.m_cLocation.X - npc1L, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
+                npc1R = (pow(g_sChar.m_cLocation.X - npc1R, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
+                npc1U = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
+                npc1D = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
+
+                if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && Collision(npcPtr[n]->getCoords(), 'R') == false)
                 {
-                    if (Collision(npcPtr[n]->getCoords(), 'D') == false) // Down is not blocked
-                    {
-                        if (Collision(npcPtr[n]->getCoords(), 'L') == false) // Left is not blocked
-                        {
-                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
-                            {
-                                if (npcU <= npcD && npcU <= npcL && npcU <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
-                                }
-                                else if (npcD <= npcU && npcD <= npcL && npcD <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-                                }
-                                else if (npcL <= npcU && npcL <= npcD && npcL <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
-                                }
-                                else if (npcR <= npcU && npcR <= npcD && npcR <= npcL)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
-                                }
-                            }
-
-                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
-                            {
-                                if (npcU <= npcD && npcU <= npcL && npcU <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
-                                }
-                                else if (npcD <= npcU && npcD <= npcL && npcD <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-                                }
-                                else if (npcL <= npcU && npcL <= npcD && npcL <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
-                                }
-                            }
-                        }
-
-                        else if (Collision(npcPtr[n]->getCoords(), 'L') == true) // Left is blocked
-                        {
-                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
-                            {
-                                if (npcU <= npcD && npcU <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
-                                }
-                                else if (npcD <= npcU && npcD <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-                                }
-                                else if (npcR <= npcU && npcR <= npcD)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
-                                }
-                            }
-                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
-                            {
-                                if (npcU <= npcD)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
-                                }
-                                else if (npcD <= npcU)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-                                }
-                            }
-                        }
-                    }
-
-                    else if (Collision(npcPtr[n]->getCoords(), 'D') == true) // Down is blocked
-                    {
-                        if (Collision(npcPtr[n]->getCoords(), 'L') == false) // Left is not blocked
-                        {
-                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
-                            {
-                                if (npcU <= npcL && npcU <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
-                                }
-                                else if (npcL <= npcU && npcL <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
-                                }
-                                else if (npcR <= npcU && npcR <= npcL)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
-                                }
-                            }
-
-                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
-                            {
-                                if (npcU <= npcL)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
-                                }
-                                else if (npcL <= npcU)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
-                                }
-                            }
-                        }
-
-                        else if (Collision(npcPtr[n]->getCoords(), 'L') == true) // Left is blocked
-                        {
-                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
-                            {
-                                if (npcU <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
-                                }
-                                else if (npcR <= npcU)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
-                                }
-                            }
-                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
-                            {
-                                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
-                            }
-                        }
-                    }
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
                 }
-
-                else if (Collision(npcPtr[n]->getCoords(), 'U') == true) // Up is blocked
+                else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && Collision(npcPtr[n]->getCoords(), 'L') == false)
                 {
-                    if (Collision(npcPtr[n]->getCoords(), 'D') == false) // Down is not blocked
-                    {
-                        if (Collision(npcPtr[n]->getCoords(), 'L') == false) // Left is not blocked
-                        {
-                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
-                            {
-                                if (npcD <= npcL && npcD <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-                                }
-                                else if (npcL <= npcD && npcL <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
-                                }
-                                else if (npcR <= npcD && npcR <= npcL)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
-                                }
-                            }
-
-                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
-                            {
-                                if (npcD <= npcL)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-                                }
-                                else if (npcL <= npcD)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
-                                }
-                            }
-                        }
-
-                        else if (Collision(npcPtr[n]->getCoords(), 'L') == true) // Left is blocked
-                        {
-                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
-                            {
-                                if (npcD <= npcU && npcD <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-                                }
-                                else if (npcR <= npcU && npcR <= npcD)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
-                                }
-                            }
-                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
-                            {
-                                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-                            }
-                        }
-                    }
-
-                    else if (Collision(npcPtr[n]->getCoords(), 'D') == true) // Down is blocked
-                    {
-                        if (Collision(npcPtr[n]->getCoords(), 'L') == false) // Left is not blocked
-                        {
-                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
-                            {
-                                if (npcL <= npcR)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
-                                }
-                                else if (npcR <= npcL)
-                                {
-                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
-                                }
-                            }
-
-                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
-                            {
-                                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
-                            }
-                        }
-
-                        else if (Collision(npcPtr[n]->getCoords(), 'L') == true) // Left is blocked
-                        {
-                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
-                            {
-                                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
-                            }
-                        }
-                    }
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
+                }
+                else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && Collision(npcPtr[n]->getCoords(), 'D') == false)
+                {
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
+                }
+                else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && Collision(npcPtr[n]->getCoords(), 'U') == false)
+                {
+                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
                 }
             }
         }
@@ -1121,9 +929,18 @@ void renderMap()
     // Main Menu
     if (mapNum == 0 && mapSel == false)
     {
-        g_Console.clearBuffer();
-        std::ifstream mapFile;
-        mapFile.open("MainMenu.txt", std::ifstream::in);
+        g_Console.writeToBuffer(3, 3, "                                     _____            _ _   _             ", 0xB6);
+        g_Console.writeToBuffer(3, 4, "    /\\                              |_   _|          (_) | (_)            ", 0xB6);
+        g_Console.writeToBuffer(3, 5, "   /  \\   _ __ ___ __ _ _ __   ___    | |  __ _ _ __  _| |_ _  ___  _ __  ", 0xBC);
+        g_Console.writeToBuffer(3, 6, "  / /\\ \\ | '__/ __/ _` | '_ \\ / _ \\   | | / _` | '_ \\| | __| |/ _ \\| '_ \\ ", 0xBC);
+        g_Console.writeToBuffer(3, 7, " / ____ \\| | | (_| (_| | | | |  __/  _| || (_| | | | | | |_| | (_) | | | |", 0xBC);
+        g_Console.writeToBuffer(3, 8, "/_/    \\_\\_|  \\___\\__,_|_| |_|\\___| |_____\\__, |_| |_|_|\\__|_|\\___/|_| |_|", 0xB4);
+        g_Console.writeToBuffer(3, 9, "                                           __/ |                          ", 0xB4);
+        g_Console.writeToBuffer(3, 10, "                                          |___/                           ", 0xB4);
+        g_Console.writeToBuffer(27, 14, "Press 1 to play map 1", 0xB4);
+        g_Console.writeToBuffer(26, 15, "Press 2 to open settings", 0xB4);
+        g_Console.writeToBuffer(26, 16, "Press 3 to play tutorial", 0xB4);
+        g_Console.writeToBuffer(25, 17, "Press Esc to quit the game", 0xB4);
     }
 
     // Map 1
@@ -1573,6 +1390,5 @@ bool Collision(COORD position, char direction)
         }
         return false;
     }
-    return false;
 }
 
