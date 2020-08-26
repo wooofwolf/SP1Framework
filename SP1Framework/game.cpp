@@ -17,7 +17,6 @@
 // Customizable Options
 std::string fileName = "Zav Map.txt";
 
-
 int FBLives = 3;
 int dead = 0;
 bool fbwin = false;
