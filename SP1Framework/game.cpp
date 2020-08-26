@@ -23,41 +23,17 @@ double  g_dElapsedTime;
 double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
-int pjtlRange = 6;
-double pjtlSpeed = 0.05;
-int wbARange = 9;
 int doneShoot = 0;
-int fOrS;
-int rOrC;
 int tOrP;
 int whichMap = 1;
-int totalMaps = 2;
 int mapNum = 0;
 bool mapSel = false;
 bool fA = false;
 bool wA = false;
-bool wT = true;
-bool showFcontrols = true;
-bool showFnpc = false;
-bool showFnpc2 = false;
-bool showFability = false;
-bool showFobjective = false;
-bool showWcontrols = false;
-bool shownWcontrols = false;
-bool showWnpc = false;
-bool showWnpc2 = false;
-bool showWability = false;
-bool shownWability = false;
-bool showWobjective = false;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 char mapArray[81][26];
-// Projectile timer
-CStopWatch pjtlTimer;
-double pSecsPassed = 0;
 // NPC related stopwatch
-CStopWatch explosionTimer;
-double esecsPassed = 0;
 double fsecsPassed[10] = { 0 };
 double wsecsPassed[10] = { 0 };
 
@@ -66,6 +42,7 @@ SGameChar   g_sPjtl;
 SGameChar   g_sPjtl2;
 SGameChar   g_sChar;
 SGameChar   g_sChar2;
+SGameChar   FTrap;
 SGameChar   g_sWBTrap;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 entity* npcPtr[10];
@@ -412,6 +389,13 @@ void tpProj2()
 // Keys for their projectile and skill and projectile animation 
 void charAbility()
 {
+    int rOrC;
+    int pjtlRange = 6;
+    double pjtlSpeed = 0.05;
+    // Projectile timer
+    CStopWatch pjtlTimer;
+    double pSecsPassed = 0;
+
     if (doneShoot == 0)
     {
         // Fire boy projectile
@@ -427,6 +411,12 @@ void charAbility()
         {
             fA = true;
         }
+        // Fire boy Trap
+        if (g_skKeyEvent[K_F].keyReleased)
+        {
+
+        }
+
         // Water boy projectile
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
@@ -918,6 +908,9 @@ void processUserInput()
 // Making NPCs on fire or drench with Fire Boy and Water Boy abilities animation
 void updateNPC(int n)
 {
+    CStopWatch explosionTimer;
+    double esecsPassed = 0;
+    int wbARange = 9;
     // NPC on Fire
     if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0 && static_cast<npc*>(npcPtr[n])->getDrenched() == false)
     {
@@ -1053,6 +1046,20 @@ void renderGame()
 // Pressing keys to choose a option in menu
 void renderMap()
 {
+    int totalMaps = 2;
+    bool showFcontrols = true;
+    bool showFnpc = false;
+    bool showFnpc2 = false;
+    bool showFability = false;
+    bool showFobjective = false;
+    bool showWcontrols = false;
+    bool shownWcontrols = false;
+    bool showWnpc = false;
+    bool showWnpc2 = false;
+    bool showWability = false;
+    bool shownWability = false;
+    bool showWobjective = false;
+
     if (whichMap == 1)
     {
         fileName = "Zav Map.txt";
@@ -1497,96 +1504,95 @@ void renderFramerate()
 void renderInputEvents()
 {
     // keyboard events
-    //COORD startPos = { 50, 2 };
-    //std::ostringstream ss;
-    //std::string key;
-    //for (int i = 0; i < K_COUNT; ++i)
-    //{
-    //    ss.str("");
-    //    switch (i)
-    //    {
-    //    case K_W: key = "W";
-    //        break;
-    //    case K_A: key = "A";
-    //        break;
-    //    case K_S: key = "S";
-    //        break;
-    //    case K_D: key = "D";
-    //        break;
-    //    case K_R: key = "R";
-    //        break;
-    //    case K_T: key = "T";
-    //        break;
-    //    case K_F: key = "F";
-    //        break;
-    //    case K_UP: key = "UP";
-    //        break;
-    //    case K_DOWN: key = "DOWN";
-    //        break;
-    //    case K_LEFT: key = "LEFT";
-    //        break;
-    //    case K_RIGHT: key = "RIGHT";
-    //        break;
-    //    case K_COMMA: key = ",";
-    //        break;
-    //    case K_PERIOD: key = ".";
-    //        break;
-    //    case K_DIVIDE: key = "/";
-    //        break;
-    //    case K_SPACE: key = "SPACE";
-    //        break;
-    //    default: continue;
-    //    }
-    //    if (g_skKeyEvent[i].keyDown)
-    //        ss << key << " pressed";
-    //    else if (g_skKeyEvent[i].keyReleased)
-    //        ss << key << " released";
-    //    else
-    //        ss << key << " not pressed";
+    /*COORD startPos = { 50, 2 };
+    std::ostringstream ss;
+    std::string key;
+    for (int i = 0; i < K_COUNT; ++i)
+    {
+        ss.str("");
+        switch (i)
+        {
+        case K_W: key = "W";
+            break;
+        case K_A: key = "A";
+            break;
+        case K_S: key = "S";
+            break;
+        case K_D: key = "D";
+            break;
+        case K_R: key = "R";
+            break;
+        case K_T: key = "T";
+            break;
+        case K_F: key = "F";
+            break;
+        case K_UP: key = "UP";
+            break;
+        case K_DOWN: key = "DOWN";
+            break;
+        case K_LEFT: key = "LEFT";
+            break;
+        case K_RIGHT: key = "RIGHT";
+            break;
+        case K_COMMA: key = ",";
+            break;
+        case K_PERIOD: key = ".";
+            break;
+        case K_DIVIDE: key = "/";
+            break;
+        case K_SPACE: key = "SPACE";
+            break;
+        default: continue;
+        }
+        if (g_skKeyEvent[i].keyDown)
+            ss << key << " pressed";
+        else if (g_skKeyEvent[i].keyReleased)
+            ss << key << " released";
+        else
+            ss << key << " not pressed";
 
-    //    COORD c = { startPos.X, startPos.Y + i };
-    //    g_Console.writeToBuffer(c, ss.str(), 0x17);
-    //}
+        COORD c = { startPos.X, startPos.Y + i };
+        g_Console.writeToBuffer(c, ss.str(), 0x17);
+    }*/
 
-    //// mouse events    
-    //ss.str("");
-    ///*ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";*/
-    //g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
-    //ss.str("");
-    ///* switch (g_mouseEvent.eventFlags)
-    // {
-    // case 0:
-    //     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-    //     {
-    //         ss.str("Left Button Pressed");
-    //         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
-    //     }
-    //     else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
-    //     {
-    //         ss.str("Right Button Pressed");
-    //         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
-    //     }
-    //     else
-    //     {
-    //         ss.str("Some Button Pressed");
-    //         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
-    //     }
-    //     break;
-    // case DOUBLE_CLICK:
-    //     ss.str("Double Clicked");
-    //     g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
-    //     break;
-    // case MOUSE_WHEELED:
-    //     if (g_mouseEvent.buttonState & 0xFF000000)
-    //         ss.str("Mouse wheeled down");
-    //     else
-    //         ss.str("Mouse wheeled up");
-    //     g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
-    //     break;*/
-    //     /* default:
-    //          break;
-    //      }*/
-
+    // mouse events    
+    /*ss.str("");
+    ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
+    g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
+    ss.str("");
+    switch (g_mouseEvent.eventFlags)
+    {
+    case 0:
+        if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+        {
+            ss.str("Left Button Pressed");
+            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
+        }
+        else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
+        {
+            ss.str("Right Button Pressed");
+            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
+        }
+        else
+        {
+            ss.str("Some Button Pressed");
+            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
+        }
+        break;
+    case DOUBLE_CLICK:
+        ss.str("Double Clicked");
+        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
+        break;
+    case MOUSE_WHEELED:
+        if (g_mouseEvent.buttonState & 0xFF000000)
+            ss.str("Mouse wheeled down");
+        else
+            ss.str("Mouse wheeled up");
+        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
+        break;
+    default:
+        break;
+    }*/
 }
 
 bool Collision(COORD position, char direction)
