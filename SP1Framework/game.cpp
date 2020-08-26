@@ -26,6 +26,7 @@ double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
 int doneShoot = 0;
+int rOrC;
 int tOrP;
 int whichMap = 1;
 int mapNum = 0;
@@ -411,7 +412,6 @@ void tpProj2()
 // Keys for their projectile and skill and projectile animation 
 void charAbility()
 {
-    int rOrC;
     int pjtlRange = 6;
     double pjtlSpeed = 0.05;
     // Projectile timer
