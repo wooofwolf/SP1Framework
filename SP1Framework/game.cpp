@@ -34,7 +34,9 @@ bool mapSel = false;
 bool fA = false;
 bool wA = false;
 int FT = 0;
+int trapID;
 bool FTrapTriggered = false;
+double FTsecs[3] = { 0 };
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 char mapArray[81][26];
@@ -337,6 +339,18 @@ void moveCharacter()
             lastMove = 4;
         }
     }
+
+    if (FTrapTriggered == true)
+    {
+        FTsecs[trapID] += static_cast<Ftrap*>(FtrapPtr[trapID])->getFTSecsPassed();
+        if (FTsecs[trapID] >= 3)
+        {
+            FTrapTriggered = false;
+            FtrapPtr[trapID]->setAlive(false);
+            FTsecs[trapID] = 0;
+        }
+    }
+
     // Water Boy moving up
     if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false && FTrapTriggered == false)
     {
@@ -346,9 +360,14 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 1;
         }
-        if (g_sChar2.m_cLocation.X == FtrapPtr[0]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[0]->getCoords().Y)
+        for (int t = 0; t < 3; t++)
         {
-            FTrapTriggered = true;
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
         }
     }
     // Water Boy moving left
@@ -360,9 +379,14 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 2;
         }
-        if (g_sChar2.m_cLocation.X == FtrapPtr[0]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[0]->getCoords().Y)
+        for (int t = 0; t < 3; t++)
         {
-            FTrapTriggered = true;
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
         }
     }
     // Water Boy moving down
@@ -374,9 +398,14 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 3;
         }
-        if (g_sChar2.m_cLocation.X == FtrapPtr[0]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[0]->getCoords().Y)
+        for (int t = 0; t < 3; t++)
         {
-            FTrapTriggered = true;
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
         }
     }
     // Water Boy moving right
@@ -388,9 +417,14 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 4;
         }
-        if (g_sChar2.m_cLocation.X == FtrapPtr[0]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[0]->getCoords().Y)
+        for (int t = 0; t < 3; t++)
         {
-            FTrapTriggered = true;
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
         }
     }
 }
