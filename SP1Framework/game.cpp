@@ -1144,9 +1144,18 @@ void renderMap()
     // Main Menu
     if (mapNum == 0 && mapSel == false)
     {
-        g_Console.clearBuffer();
-        std::ifstream mapFile;
-        mapFile.open("MainMenu.txt", std::ifstream::in);
+        g_Console.writeToBuffer(3, 3, "                                     _____            _ _   _             ", 0xB6);
+        g_Console.writeToBuffer(3, 4, "    /\\                              |_   _|          (_) | (_)            ", 0xB6);
+        g_Console.writeToBuffer(3, 5, "   /  \\   _ __ ___ __ _ _ __   ___    | |  __ _ _ __  _| |_ _  ___  _ __  ", 0xBC);
+        g_Console.writeToBuffer(3, 6, "  / /\\ \\ | '__/ __/ _` | '_ \\ / _ \\   | | / _` | '_ \\| | __| |/ _ \\| '_ \\ ", 0xBC);
+        g_Console.writeToBuffer(3, 7, " / ____ \\| | | (_| (_| | | | |  __/  _| || (_| | | | | | |_| | (_) | | | |", 0xBC);
+        g_Console.writeToBuffer(3, 8, "/_/    \\_\\_|  \\___\\__,_|_| |_|\\___| |_____\\__, |_| |_|_|\\__|_|\\___/|_| |_|", 0xB4);
+        g_Console.writeToBuffer(3, 9, "                                           __/ |                          ", 0xB4);
+        g_Console.writeToBuffer(3, 10, "                                          |___/                           ", 0xB4);
+        g_Console.writeToBuffer(27, 14, "Press 1 to play map 1", 0xB4);
+        g_Console.writeToBuffer(26, 15, "Press 2 to open settings", 0xB4);
+        g_Console.writeToBuffer(26, 16, "Press 3 to play tutorial", 0xB4);
+        g_Console.writeToBuffer(25, 17, "Press Esc to quit the game", 0xB4);
     }
 
     // Map 1
