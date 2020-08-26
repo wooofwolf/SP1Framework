@@ -33,12 +33,7 @@ bool wA = false;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 char mapArray[81][26];
-// Projectile timer
-CStopWatch pjtlTimer;
-double pSecsPassed = 0;
 // NPC related stopwatch
-CStopWatch explosionTimer;
-double esecsPassed = 0;
 double fsecsPassed[10] = { 0 };
 double wsecsPassed[10] = { 0 };
 
@@ -395,6 +390,9 @@ void charAbility()
     int rOrC;
     int pjtlRange = 6;
     double pjtlSpeed = 0.05;
+    // Projectile timer
+    CStopWatch pjtlTimer;
+    double pSecsPassed = 0;
 
     if (doneShoot == 0)
     {
@@ -893,6 +891,8 @@ void processUserInput()
 // Making NPCs on fire or drench with Fire Boy and Water Boy abilities animation
 void updateNPC(int n)
 {
+    CStopWatch explosionTimer;
+    double esecsPassed = 0;
     int wbARange = 9;
     // NPC on Fire
     if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0 && static_cast<npc*>(npcPtr[n])->getDrenched() == false)
