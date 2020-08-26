@@ -1485,95 +1485,95 @@ void renderFramerate()
 void renderInputEvents()
 {
     // keyboard events
-    /*COORD startPos = { 50, 2 };
-    std::ostringstream ss;
-    std::string key;
-    for (int i = 0; i < K_COUNT; ++i)
-    {
-        ss.str("");
-        switch (i)
-        {
-        case K_W: key = "W";
-            break;
-        case K_A: key = "A";
-            break;
-        case K_S: key = "S";
-            break;
-        case K_D: key = "D";
-            break;
-        case K_R: key = "R";
-            break;
-        case K_T: key = "T";
-            break;
-        case K_F: key = "F";
-            break;
-        case K_UP: key = "UP";
-            break;
-        case K_DOWN: key = "DOWN";
-            break;
-        case K_LEFT: key = "LEFT";
-            break;
-        case K_RIGHT: key = "RIGHT";
-            break;
-        case K_COMMA: key = ",";
-            break;
-        case K_PERIOD: key = ".";
-            break;
-        case K_DIVIDE: key = "/";
-            break;
-        case K_SPACE: key = "SPACE";
-            break;
-        default: continue;
-        }
-        if (g_skKeyEvent[i].keyDown)
-            ss << key << " pressed";
-        else if (g_skKeyEvent[i].keyReleased)
-            ss << key << " released";
-        else
-            ss << key << " not pressed";
+    //COORD startPos = { 50, 2 };
+    //std::ostringstream ss;
+    //std::string key;
+    //for (int i = 0; i < K_COUNT; ++i)
+    //{
+    //    ss.str("");
+    //    switch (i)
+    //    {
+    //    case K_W: key = "W";
+    //        break;
+    //    case K_A: key = "A";
+    //        break;
+    //    case K_S: key = "S";
+    //        break;
+    //    case K_D: key = "D";
+    //        break;
+    //    case K_R: key = "R";
+    //        break;
+    //    case K_T: key = "T";
+    //        break;
+    //    case K_F: key = "F";
+    //        break;
+    //    case K_UP: key = "UP";
+    //        break;
+    //    case K_DOWN: key = "DOWN";
+    //        break;
+    //    case K_LEFT: key = "LEFT";
+    //        break;
+    //    case K_RIGHT: key = "RIGHT";
+    //        break;
+    //    case K_COMMA: key = ",";
+    //        break;
+    //    case K_PERIOD: key = ".";
+    //        break;
+    //    case K_DIVIDE: key = "/";
+    //        break;
+    //    case K_SPACE: key = "SPACE";
+    //        break;
+    //    default: continue;
+    //    }
+    //    if (g_skKeyEvent[i].keyDown)
+    //        ss << key << " pressed";
+    //    else if (g_skKeyEvent[i].keyReleased)
+    //        ss << key << " released";
+    //    else
+    //        ss << key << " not pressed";
 
-        COORD c = { startPos.X, startPos.Y + i };
-        g_Console.writeToBuffer(c, ss.str(), 0x17);*/
-    }
+    //    COORD c = { startPos.X, startPos.Y + i };
+    //    g_Console.writeToBuffer(c, ss.str(), 0x17);
+    //}
 
-    // mouse events    
-    ss.str("");
-    /*ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";*/
-    g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
-    ss.str("");
-    /* switch (g_mouseEvent.eventFlags)
-     {
-     case 0:
-         if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-         {
-             ss.str("Left Button Pressed");
-             g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
-         }
-         else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
-         {
-             ss.str("Right Button Pressed");
-             g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
-         }
-         else
-         {
-             ss.str("Some Button Pressed");
-             g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
-         }
-         break;
-     case DOUBLE_CLICK:
-         ss.str("Double Clicked");
-         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
-         break;
-     case MOUSE_WHEELED:
-         if (g_mouseEvent.buttonState & 0xFF000000)
-             ss.str("Mouse wheeled down");
-         else
-             ss.str("Mouse wheeled up");
-         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
-         break;*/
-         /* default:
-              break;
-          }*/
+    //// mouse events    
+    //ss.str("");
+    ///*ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";*/
+    //g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
+    //ss.str("");
+    ///* switch (g_mouseEvent.eventFlags)
+    // {
+    // case 0:
+    //     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    //     {
+    //         ss.str("Left Button Pressed");
+    //         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
+    //     }
+    //     else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
+    //     {
+    //         ss.str("Right Button Pressed");
+    //         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
+    //     }
+    //     else
+    //     {
+    //         ss.str("Some Button Pressed");
+    //         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
+    //     }
+    //     break;
+    // case DOUBLE_CLICK:
+    //     ss.str("Double Clicked");
+    //     g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
+    //     break;
+    // case MOUSE_WHEELED:
+    //     if (g_mouseEvent.buttonState & 0xFF000000)
+    //         ss.str("Mouse wheeled down");
+    //     else
+    //         ss.str("Mouse wheeled up");
+    //     g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
+    //     break;*/
+    //     /* default:
+    //          break;
+    //      }*/
 
 }
 
