@@ -43,6 +43,7 @@ SGameChar   g_sPjtl;
 SGameChar   g_sPjtl2;
 SGameChar   g_sChar;
 SGameChar   g_sChar2;
+SGameChar   FTrap;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 entity* npcPtr[10];
 
@@ -409,6 +410,12 @@ void charAbility()
         {
             fA = true;
         }
+        // Fire boy Trap
+        if (g_skKeyEvent[K_F].keyReleased)
+        {
+
+        }
+
         // Water boy projectile
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
