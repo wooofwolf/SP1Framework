@@ -1171,8 +1171,8 @@ void renderMap()
             }
         }
         
-        g_Console.writeToBuffer(20, 24, "Fireboy lives:" + std::to_string(FBLives), 0x0C);
-        g_Console.writeToBuffer(38, 24, "Number of NPCs left:" + std::to_string(5 - dead), 0x0C);
+        g_Console.writeToBuffer(20, 0, "Fireboy lives:" + std::to_string(FBLives), 0x07);
+        g_Console.writeToBuffer(38, 0, "Number of NPCs left:" + std::to_string(5 - dead), 0x07);
             
         
         // Win conditions
