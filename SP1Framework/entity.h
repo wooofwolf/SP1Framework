@@ -7,9 +7,6 @@ private:
 	bool alive;
 
 public:
-	// Pure Virtual Function
-	virtual void move(void) = 0;
-
 	// Constructors
 	entity();
 	entity(int x, int y);

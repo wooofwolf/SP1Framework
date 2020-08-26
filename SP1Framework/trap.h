@@ -16,6 +16,6 @@ public:
 	// Accessors
 	// Nth yet
 	// Mutators
-	void move(void);
+	// Nth too
 };
 

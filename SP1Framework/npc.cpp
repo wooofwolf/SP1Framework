@@ -91,11 +91,6 @@ void npc::setCol(WORD colour)
 	this->colour = colour;
 }
 
-void npc::move(void)
-{
-	// NPC movement in game.cpp
-}
-
 void npc::startFTimer(void)
 {
 	fireWatch.startTimer();
