@@ -25,6 +25,7 @@ int lastMove;
 int lastMove2;
 int pjtlRange = 6;
 double pjtlSpeed = 0.05;
+int wbARange = 9;
 int doneShoot = 0;
 int rOrC;
 int tOrP;
@@ -957,7 +958,7 @@ void updateNPC(int n)
         {
             for (int x = 0; x < 81; x++)
             {
-                if ((pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n]->getAlive() == true)
+                if ((pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) * 2 <= wbARange) && npcPtr[n]->getAlive() == true)
                 {
                     for (int w = 0; w < 10; w++)
                     {
@@ -968,7 +969,7 @@ void updateNPC(int n)
         }
         for (int nw = 0; nw < 10; nw++)
         {
-            if ((pow(npcPtr[nw]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[nw]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)
+            if ((pow(npcPtr[nw]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[nw]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= wbARange) && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)
             {
                 drenchNpc(nw);
             }
