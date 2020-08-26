@@ -212,12 +212,14 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case 68: key = K_D; break;
     case 0x52: key = K_R; break;
     case 0x54: key = K_T; break;
+    case 0x46: key = K_F; break;
     case VK_UP: key = K_UP; break;
     case VK_DOWN: key = K_DOWN; break;
     case VK_LEFT: key = K_LEFT; break;
     case VK_RIGHT: key = K_RIGHT; break;
     case VK_OEM_COMMA: key = K_COMMA; break;
     case VK_OEM_PERIOD: key = K_PERIOD; break;
+    case VK_OEM_2: key = K_DIVIDE; break;
     case 0x31: key = K_1; break;
     case 0x32: key = K_2; break;
     case 0x33: key = K_3; break;
@@ -1483,10 +1485,10 @@ void renderFramerate()
 void renderInputEvents()
 {
     // keyboard events
-    COORD startPos = { 50, 2 };
+    /*COORD startPos = { 50, 2 };
     std::ostringstream ss;
     std::string key;
-    /*for (int i = 0; i < K_COUNT; ++i)
+    for (int i = 0; i < K_COUNT; ++i)
     {
         ss.str("");
         switch (i)
@@ -1503,6 +1505,8 @@ void renderInputEvents()
             break;
         case K_T: key = "T";
             break;
+        case K_F: key = "F";
+            break;
         case K_UP: key = "UP";
             break;
         case K_DOWN: key = "DOWN";
@@ -1514,6 +1518,8 @@ void renderInputEvents()
         case K_COMMA: key = ",";
             break;
         case K_PERIOD: key = ".";
+            break;
+        case K_DIVIDE: key = "/";
             break;
         case K_SPACE: key = "SPACE";
             break;
@@ -1527,8 +1533,8 @@ void renderInputEvents()
             ss << key << " not pressed";
 
         COORD c = { startPos.X, startPos.Y + i };
-        g_Console.writeToBuffer(c, ss.str(), 0x17);
-    }*/
+        g_Console.writeToBuffer(c, ss.str(), 0x17);*/
+    }
 
     // mouse events    
     ss.str("");
