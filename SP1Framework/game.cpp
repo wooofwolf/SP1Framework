@@ -27,6 +27,7 @@ int pjtlRange = 6;
 double pjtlSpeed = 0.05;
 int wbARange = 9;
 int doneShoot = 0;
+int fOrS;
 int rOrC;
 int tOrP;
 int whichMap = 1;
@@ -35,6 +36,7 @@ int mapNum = 0;
 bool mapSel = false;
 bool fA = false;
 bool wA = false;
+bool wT = true;
 bool showFcontrols = true;
 bool showFnpc = false;
 bool showFnpc2 = false;
@@ -64,6 +66,7 @@ SGameChar   g_sPjtl;
 SGameChar   g_sPjtl2;
 SGameChar   g_sChar;
 SGameChar   g_sChar2;
+SGameChar   g_sWBTrap;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 entity* npcPtr[10];
 
@@ -437,6 +440,11 @@ void charAbility()
         {
             wA = true;
         }
+        if (g_skKeyEvent[K_DIVIDE].keyReleased) 
+        {
+            fOrS = 0;
+            wT = true;
+        }
     }
     else if (doneShoot > 0 && doneShoot <= pjtlRange)
     {
@@ -587,6 +595,10 @@ void charAbility()
         tpProj2();
         // reset animation
         doneShoot = 0;
+    }
+    if (wT == true)
+    {
+
     }
 }
 
