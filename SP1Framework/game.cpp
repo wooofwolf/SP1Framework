@@ -35,8 +35,10 @@ int Wbtrap = 0;
 bool mapSel = false;
 bool fA = false;
 bool wA = false;
+bool WBTraptriggered = false;
 int FT = 0;
 int trapID;
+int TrappedID;
 bool FTrapTriggered = false;
 double FTsecs[3] = { 0 };
 SKeyEvent g_skKeyEvent[K_COUNT];
@@ -360,50 +362,127 @@ void moveCharacter()
         }
     }
 
-    bool WBTraptriggered = false;
-    if (WBTraptriggered == false) {
-        // Updating the location of the character based on the key release
-        // Fire Boy moving up
-        if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
+   
+    // Updating the location of the character based on the key release
+    // Fire Boy moving up
+    if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
+    {
+        g_sChar.m_cLocation.Y--;
+        if (doneShoot == 0)
         {
-            g_sChar.m_cLocation.Y--;
-            if (doneShoot == 0)
-            {
-                tpProj1();
-                lastMove = 1;
-            }
+            tpProj1();
+            lastMove = 1;
+
         }
-        // Fire Boy moving left
-        if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
+
+        for (int t = 0; t < 3; t++)
         {
-            g_sChar.m_cLocation.X--;
-            if (doneShoot == 0)
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
             {
-                tpProj1();
-                lastMove = 2;
+                WBTraptriggered = true;
+                TrappedID = t;
             }
-        }
-        // Fire Boy moving down
-        if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
-        {
-            g_sChar.m_cLocation.Y++;
-            if (doneShoot == 0)
-            {
-                tpProj1();
-                lastMove = 3;
-            }
-        }
-        // Fire Boy moving right
-        if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar.m_cLocation, 'R') == false)
-        {
-            g_sChar.m_cLocation.X++;
-            if (doneShoot == 0)
-            {
-                tpProj1();
-                lastMove = 4;
-            }
+
         }
     }
+    // Fire Boy moving left
+    if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
+    {
+        g_sChar.m_cLocation.X--;
+        if (doneShoot == 0)
+        {
+            tpProj1();
+            lastMove = 2;
+        }
+
+        for (int t = 0; t < 3; t++)
+        {
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            {
+                WBTraptriggered = true;
+                TrappedID = t;
+                
+            }
+
+        }
+    }
+    // Fire Boy moving down
+    if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
+    {
+        g_sChar.m_cLocation.Y++;
+        if (doneShoot == 0)
+        {
+            tpProj1();
+            lastMove = 3;
+        }
+
+        for (int t = 0; t < 3; t++)
+        {
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            {
+                WBTraptriggered = true;
+                TrappedID = t;
+            }
+
+        }
+    }
+    // Fire Boy moving right
+    if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar.m_cLocation, 'R') == false)
+    {
+        g_sChar.m_cLocation.X++;
+        if (doneShoot == 0)
+        {
+            tpProj1();
+            lastMove = 4;
+
+        }
+
+        for (int t = 0; t < 3; t++)
+        {
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            {
+                WBTraptriggered = true;
+                TrappedID = t;
+            }
+
+        }
+    }
+    if (WBTraptriggered == true)
+    {
+        FBLives--;
+        
+        for (int t = 0; t < 3; t++) {
+            for (int n = 0; n < 10; n++)
+            {
+                if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25)
+                {
+                    for (int y = 0; y < 26; y++)
+                    {
+                        for (int x = 0; x < 81; x++)
+                        {
+                            if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[n]->getAlive() == true)
+                            {
+                                for (int w = 0; w < 10; w++)
+                                {
+                                    g_Console.writeToBuffer(x, y, ' ', 0x90);
+                                }
+                            }
+                        }   
+                    }
+                    for (int nw = 0; nw < 10; nw++)
+                    {
+                        if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)
+                        {
+                            drenchNpc(nw);
+                        }
+                    }
+                }
+            }
+        }
+        WBTraptriggered = false;
+        WBTraps[TrappedID]->setAlive(false);
+    }
+    
     // Water Boy moving up
     if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false && FTrapTriggered == false)
     {
@@ -479,17 +558,7 @@ void moveCharacter()
                 trapID = t;
             }
         }
-    }
-}
-    }
-    for(int t = 0; t < 3; t++) 
-    {
-        if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y)
-        {
-            WBTraptriggered = true;
-        }
-
-    }
+    }    
 }
 
 // Making projectile go to Fire Boy
@@ -557,7 +626,7 @@ void charAbility()
         if (g_skKeyEvent[K_DIVIDE].keyReleased)
         {
             if (Wbtrap <= 2) {
-                WBTraps[Wbtrap]->getAlive();
+                WBTraps[Wbtrap]->setAlive(true);
                 WBTraps[Wbtrap]->setCoords(g_sChar2.m_cLocation);
                 Wbtrap++;
             }
@@ -571,7 +640,8 @@ void charAbility()
             // Fire boy Shooting
             if (rOrC == 1)
             {
-                if (lastMove == 1 && Collision(g_sPjtl.m_cLocation, 'U') == false) { // checks which direction was last inputted and sees if there will be collision
+                if (lastMove == 1 && Collision(g_sPjtl.m_cLocation, 'U') == false) 
+                { // checks which direction was last inputted and sees if there will be collision
                     g_sPjtl.m_cLocation.Y -= 1; // if not then shoot
                     if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X) //if the projectile position is = to  Waterboy's position
                     {
@@ -581,25 +651,7 @@ void charAbility()
                     {
                         doneShoot += 2;//reduces the range 
                     }
-                    for (int t = 0; t < 3; t++)
-                    {
-                        if (g_sChar.m_cLocation.X == WBTraps[t]->getCoords().X && g_sChar.m_cLocation.Y == WBTraps[t]->getCoords().Y)
-                        {
-                            FBLives--;
-                            for (int n = 0; n < 10; n++) {
-                                for (int x = 0; x < 81; x++) {
-                                    for (int y = 0; y < 26; y++){
-                                        if ((pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) * 2 <= 25) && npcPtr[n]->getAlive() == true)
-                                        {
-                                            static_cast<npc*>(npcPtr[n])->setDrenched(true);
-                                            static_cast<npc*>(npcPtr[n])->setCol(0xB0);
-                                            wsecsPassed[n] = 0;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                   
                 }
                 else if (lastMove == 2 && Collision(g_sPjtl.m_cLocation, 'L') == false)// checks which direction was last inputted and sees if there will be collision
                 {
