@@ -5,7 +5,6 @@ int Ftrap::noOfFTraps = 0;
 Ftrap::Ftrap()
 {
 	setAlive(false);
-	setCoords(0, 0);
 	noOfFTraps++;
 }
 
