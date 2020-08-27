@@ -1526,7 +1526,7 @@ void renderMap()
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
                 }
 
-                for (int n = 0; n < 10; n++)
+                for (int n = 0; n < 9; n++)
                 {
                     if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
                     {
@@ -1561,7 +1561,7 @@ void renderMap()
             showFability = true;
         }
         // Waterboy tutorial check
-        if (npcPtr[0]->getAlive() == false && npcPtr[1]->getAlive() == false && npcPtr[2]->getAlive() == false && npcPtr[3]->getAlive() == false && npcPtr[4]->getAlive() == false)
+        if (npcPtr[0]->getAlive() == false && npcPtr[1]->getAlive() == false && npcPtr[2]->getAlive() == false && npcPtr[3]->getAlive() == false)
         {
             showFability = false;
             showFobjective = true;
@@ -1584,7 +1584,7 @@ void renderMap()
             showWability = true;
             shownWability = true;
         }
-        if (static_cast<npc*>(npcPtr[5])->getCol() == 0xB0 && static_cast<npc*>(npcPtr[6])->getCol() == 0xB0 && static_cast<npc*>(npcPtr[7])->getCol() == 0xB0 && static_cast<npc*>(npcPtr[8])->getCol() == 0xB0 && static_cast<npc*>(npcPtr[9])->getCol() == 0xB0 && shownWability == true)
+        if (static_cast<npc*>(npcPtr[5])->getCol() == 0xA0 && static_cast<npc*>(npcPtr[6])->getCol() == 0xA0 && static_cast<npc*>(npcPtr[7])->getCol() == 0xA0 && static_cast<npc*>(npcPtr[8])->getCol() == 0xA0 && shownWability == true)
         {
             showWability = false;
             showWobjective = true;
