@@ -323,47 +323,7 @@ void updateGame()       // gameplay logic
 
 void moveCharacter()
 {
-    // Updating the location of the character based on the key release
-    // Fire Boy moving up
-    if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
-    {
-        g_sChar.m_cLocation.Y--;
-        if (doneShoot == 0)
-        {
-            tpProj1();
-            lastMove = 1;
-        }
-    }
-    // Fire Boy moving left
-    if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
-    {
-        g_sChar.m_cLocation.X--;
-        if (doneShoot == 0)
-        {
-            tpProj1();
-            lastMove = 2;
-        }
-    }
-    // Fire Boy moving down
-    if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
-    {
-        g_sChar.m_cLocation.Y++;
-        if (doneShoot == 0)
-        {
-            tpProj1();
-            lastMove = 3;
-        }
-    }
-    // Fire Boy moving right
-    if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar.m_cLocation, 'R') == false)
-    {
-        g_sChar.m_cLocation.X++;
-        if (doneShoot == 0)
-        {
-            tpProj1();
-            lastMove = 4;
-        }
-    }
+
 
     if (FTrapTriggered == true)
     {
@@ -1465,7 +1425,6 @@ void renderMap()
         if (settingsOption == 1)
         {
             g_Console.writeToBuffer(3, 3, "Map Selection: " + std::to_string(whichMap), 0x90);
-            g_Console.writeToBuffer(3, 9, "Map Colour( Wall: " , ", Ground: " , " )", 0xB0);
             if (g_skKeyEvent[K_LEFT].keyReleased)
             {
                 if (whichMap > 1)
@@ -1484,7 +1443,7 @@ void renderMap()
         if ( settingsOption == 2)
         {
             g_Console.writeToBuffer(3, 3, "Map Selection: " + std::to_string(whichMap), 0xB0);
-            g_Console.writeToBuffer(3, 9, "Map Colour( Wall: " , ", Ground: " , " )", 0x90);
+
         }
     }
 
