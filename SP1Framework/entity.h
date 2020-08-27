@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include "Framework/timer.h"
 class entity
 {
 private:
@@ -7,9 +8,6 @@ private:
 	bool alive;
 
 public:
-	// Pure Virtual Function
-	virtual void move(void) = 0;
-
 	// Constructors
 	entity();
 	entity(int x, int y);

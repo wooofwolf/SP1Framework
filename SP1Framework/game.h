@@ -32,12 +32,14 @@ enum EKEYS
     K_D,
     K_R,
     K_T,
+    K_F,
     K_UP,
     K_DOWN,
     K_LEFT,
     K_RIGHT,
     K_COMMA,
     K_PERIOD,
+    K_DIVIDE,
     K_ESCAPE,
     K_1,
     K_2,
@@ -82,6 +84,7 @@ void clearScreen();         // clears the current screen and draw from scratch
 void renderSplashScreen();  // renders the splash screen
 void renderGame();          // renders the game stuff
 void renderMap();           // renders the map to the buffer first
+void renderMapColour();
 void renderCharacter();     // renders the character into the buffer
 void renderNPC();           // renders npc into the buffer
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc

@@ -1,6 +1,5 @@
 #pragma once
 #include "entity.h"
-#include "Framework/timer.h"
 class npc: public entity
 {
 private:
@@ -33,7 +32,6 @@ public:
 	void setDrenched(bool drench);
 	void setSecsOnFire(double number);
 	void setCol(WORD colour);
-	void move(void);
 	void startFTimer(void);
 	void startWTimer(void);
 };

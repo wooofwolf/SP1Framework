@@ -5,6 +5,9 @@
 #include "Framework\console.h"
 #include "entity.h"
 #include "npc.h"
+#include "trap.h"
+#include "Ftrap.h"
+#include "WBtrap.h"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -12,26 +15,19 @@
 #include <time.h>
 #include <fstream>
 
+
 // Customizable Options
 std::string fileName = "Zav Map.txt";
 
-int FBLives = 3;
-int dead = 0;
-bool fbwin = false;
-double  g_dElapsedTime;
-double  g_dDeltaTime;
-int lastMove;
-int lastMove2;
-int pjtlRange = 6;
-int doneShoot = 0;
-int rOrC;
-int tOrP;
-int whichMap = 1;
-int totalMaps = 2;
-int mapNum = 0;
-bool mapSel = false;
-bool fA = false;
-bool wA = false;
+// Map Colours
+int settingsOption = 1;
+int colourOption = 1;
+std::string wallTxt = "White";
+std::string groundTxt = "Blue";
+WORD wall = 0xF6;
+WORD ground = 0x1B;
+
+// Tutorial Related
 bool showFcontrols = true;
 bool showFnpc = false;
 bool showFnpc2 = false;
@@ -44,12 +40,33 @@ bool showWnpc2 = false;
 bool showWability = false;
 bool shownWability = false;
 bool showWobjective = false;
+
+int FBLives = 3;
+int dead = 0;
+bool fbwin = false;
+double  g_dElapsedTime;
+double  g_dDeltaTime;
+int lastMove;
+int lastMove2;
+int doneShoot = 0;
+int rOrC;
+int tOrP;
+int whichMap = 1;
+int mapNum = 0;
+int Wbtrap = 0;
+bool mapSel = false;
+bool fA = false;
+bool wA = false;
+bool WBTraptriggered = false;
+int FT = 0;
+int trapID;
+int TrappedID;
+bool FTrapTriggered = false;
+double FTsecs[3] = { 0 };
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 char mapArray[81][26];
 // NPC related stopwatch
-CStopWatch explosionTimer;
-double esecsPassed = 0;
 double fsecsPassed[10] = { 0 };
 double wsecsPassed[10] = { 0 };
 
@@ -58,8 +75,12 @@ SGameChar   g_sPjtl;
 SGameChar   g_sPjtl2;
 SGameChar   g_sChar;
 SGameChar   g_sChar2;
+SGameChar   FTrap;
+SGameChar   WBTrap;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 entity* npcPtr[10];
+entity* WBTraps[3];
+entity* FtrapPtr[3];
 
 // Console object
 Console g_Console(80, 25, "Arcane Ignition");
@@ -83,6 +104,13 @@ void init(void)
     npcPtr[7] = new npc;
     npcPtr[8] = new npc;
     npcPtr[9] = new npc;
+    FtrapPtr[0] = new Ftrap;
+    FtrapPtr[1] = new Ftrap;
+    FtrapPtr[2] = new Ftrap;
+    WBTraps[0] = new WBtrap;
+    WBTraps[1] = new WBtrap;
+    WBTraps[2] = new WBtrap;
+
 
     // Set precision for floating point output
     g_dElapsedTime = 0.0;
@@ -206,12 +234,14 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case 68: key = K_D; break;
     case 0x52: key = K_R; break;
     case 0x54: key = K_T; break;
+    case 0x46: key = K_F; break;
     case VK_UP: key = K_UP; break;
     case VK_DOWN: key = K_DOWN; break;
     case VK_LEFT: key = K_LEFT; break;
     case VK_RIGHT: key = K_RIGHT; break;
     case VK_OEM_COMMA: key = K_COMMA; break;
     case VK_OEM_PERIOD: key = K_PERIOD; break;
+    case VK_OEM_2: key = K_DIVIDE; break;
     case 0x31: key = K_1; break;
     case 0x32: key = K_2; break;
     case 0x33: key = K_3; break;
@@ -291,7 +321,7 @@ void updateGame()       // gameplay logic
         moveCharacter();    // moves the character, collision detection, physics, etc
         charAbility();
         moveNPC();          // moves NPC
-        if (dead == 10)
+        if (dead == 5 && mapNum == 1)
         {
             fbwin = true;
         }
@@ -301,63 +331,216 @@ void updateGame()       // gameplay logic
 
 void moveCharacter()
 {
+
+
+    if (FTrapTriggered == true)
+    {
+        FTsecs[trapID] += static_cast<Ftrap*>(FtrapPtr[trapID])->getFTSecsPassed();
+        if (FTsecs[trapID] >= 3)
+        {
+            FTrapTriggered = false;
+            FtrapPtr[trapID]->setAlive(false);
+            FTsecs[trapID] = 0;
+        }
+    }
+
+   
     // Updating the location of the character based on the key release
     // Fire Boy moving up
     if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
     {
         g_sChar.m_cLocation.Y--;
-        tpProj1();
-        lastMove = 1;
+        if (doneShoot == 0)
+        {
+            tpProj1();
+            lastMove = 1;
+
+        }
+
+        for (int t = 0; t < 3; t++)
+        {
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            {
+                WBTraptriggered = true;
+                TrappedID = t;
+            }
+
+        }
     }
     // Fire Boy moving left
     if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
     {
         g_sChar.m_cLocation.X--;
-        tpProj1();
-        lastMove = 2;
+        if (doneShoot == 0)
+        {
+            tpProj1();
+            lastMove = 2;
+        }
+
+        for (int t = 0; t < 3; t++)
+        {
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            {
+                WBTraptriggered = true;
+                TrappedID = t;
+                
+            }
+
+        }
     }
     // Fire Boy moving down
     if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
     {
         g_sChar.m_cLocation.Y++;
-        tpProj1();
-        lastMove = 3;
+        if (doneShoot == 0)
+        {
+            tpProj1();
+            lastMove = 3;
+        }
+
+        for (int t = 0; t < 3; t++)
+        {
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            {
+                WBTraptriggered = true;
+                TrappedID = t;
+            }
+
+        }
     }
     // Fire Boy moving right
     if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar.m_cLocation, 'R') == false)
     {
         g_sChar.m_cLocation.X++;
-        tpProj1();
-        lastMove = 4;
+        if (doneShoot == 0)
+        {
+            tpProj1();
+            lastMove = 4;
+
+        }
+
+        for (int t = 0; t < 3; t++)
+        {
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            {
+                WBTraptriggered = true;
+                TrappedID = t;
+            }
+
+        }
     }
+    if (WBTraptriggered == true)
+    {
+        FBLives--;
+        
+        for (int t = 0; t < 3; t++) {
+            for (int n = 0; n < 10; n++)
+            {
+                if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25)
+                {
+                    for (int y = 0; y < 26; y++)
+                    {
+                        for (int x = 0; x < 81; x++)
+                        {
+                            if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[n]->getAlive() == true)
+                            {
+                                for (int w = 0; w < 10; w++)
+                                {
+                                    g_Console.writeToBuffer(x, y, ' ', 0x90);
+                                }
+                            }
+                        }   
+                    }
+                    for (int nw = 0; nw < 10; nw++)
+                    {
+                        if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)
+                        {
+                            drenchNpc(nw);
+                        }
+                    }
+                }
+            }
+        }
+        WBTraptriggered = false;
+        WBTraps[TrappedID]->setAlive(false);
+    }
+    
     // Water Boy moving up
-    if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false)
+    if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false && FTrapTriggered == false)
     {
         g_sChar2.m_cLocation.Y--;
-        tpProj2();
-        lastMove2 = 1;
+        if (doneShoot == 0)
+        {
+            tpProj2();
+            lastMove2 = 1;
+        }
+        for (int t = 0; t < 3; t++)
+        {
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
+        }
     }
     // Water Boy moving left
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0 && Collision(g_sChar2.m_cLocation, 'L') == false)
+    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0 && Collision(g_sChar2.m_cLocation, 'L') == false && FTrapTriggered == false)
     {
         g_sChar2.m_cLocation.X--;
-        tpProj2();
-        lastMove2 = 2;
+        if (doneShoot == 0)
+        {
+            tpProj2();
+            lastMove2 = 2;
+        }
+        for (int t = 0; t < 3; t++)
+        {
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
+        }
     }
     // Water Boy moving down
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar2.m_cLocation, 'D') == false)
+    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar2.m_cLocation, 'D') == false && FTrapTriggered == false)
     {
         g_sChar2.m_cLocation.Y++;
-        tpProj2();
-        lastMove2 = 3;
+        if (doneShoot == 0)
+        {
+            tpProj2();
+            lastMove2 = 3;
+        }
+        for (int t = 0; t < 3; t++)
+        {
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
+        }
     }
     // Water Boy moving right
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar2.m_cLocation, 'R') == false)
+    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar2.m_cLocation, 'R') == false && FTrapTriggered == false)
     {
         g_sChar2.m_cLocation.X++;
-        tpProj2();
-        lastMove2 = 4;
-    }
+        if (doneShoot == 0)
+        {
+            tpProj2();
+            lastMove2 = 4;
+        }
+        for (int t = 0; t < 3; t++)
+        {
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
+        }
+    }    
 }
 
 // Making projectile go to Fire Boy
@@ -377,6 +560,12 @@ void tpProj2()
 // Keys for their projectile and skill and projectile animation 
 void charAbility()
 {
+    int pjtlRange = 6;
+    double pjtlSpeed = 0.05;
+    // Projectile timer
+    CStopWatch pjtlTimer;
+    double pSecsPassed = 0;
+
     if (doneShoot == 0)
     {
         // Fire boy projectile
@@ -385,151 +574,179 @@ void charAbility()
             rOrC = 1;
             tOrP = 1;
             doneShoot++;
+            pjtlTimer.startTimer();
         }
         // Fire boy ability
         if (g_skKeyEvent[K_T].keyReleased)
         {
             fA = true;
         }
+        // Fire boy Trap
+        if (g_skKeyEvent[K_F].keyReleased)
+        {
+            if (FT <= 2)
+            {
+                FtrapPtr[FT]->setAlive(true);
+                FtrapPtr[FT]->setCoords(g_sChar.m_cLocation);
+                FT++;
+            }
+        }
+
         // Water boy projectile
         if (g_skKeyEvent[K_COMMA].keyReleased)
         {
             rOrC = 0;
             tOrP = 0;
             doneShoot++;
+            pjtlTimer.startTimer();
         }
         // Water boy ability
         if (g_skKeyEvent[K_PERIOD].keyReleased)
         {
             wA = true;
         }
+        if (g_skKeyEvent[K_DIVIDE].keyReleased)
+        {
+            if (Wbtrap <= 2) {
+                WBTraps[Wbtrap]->setAlive(true);
+                WBTraps[Wbtrap]->setCoords(g_sChar2.m_cLocation);
+                Wbtrap++;
+            }
+        }
     }
     else if (doneShoot > 0 && doneShoot <= pjtlRange)
     {
-        // Fire boy Shooting
-        if (rOrC == 1)
+        pSecsPassed += pjtlTimer.getElapsedTime();
+        if (pSecsPassed > pjtlSpeed)
         {
-            if (lastMove == 1 && Collision(g_sPjtl.m_cLocation, 'U') == false) { // checks which direction was last inputted and sees if there will be collision
-                g_sPjtl.m_cLocation.Y -= 1; // if not then shoot
-                if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X) //if the projectile position is = to  Waterboy's position
-                {
-                    doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
-                }
-                if (doneShoot == pjtlRange - 2) // checks if the projectile goes out into the darkness for shooting upwards
-                {
-                    doneShoot += 2;//reduces the range 
-                }
-            }
-            else if (lastMove == 2 && Collision(g_sPjtl.m_cLocation, 'L') == false)// checks which direction was last inputted and sees if there will be collision
+            // Fire boy Shooting
+            if (rOrC == 1)
             {
-                g_sPjtl.m_cLocation.X -= 1;// if not then shoot
-                if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)//if the projectile position is = to  Waterboy's position
+                if (lastMove == 1 && Collision(g_sPjtl.m_cLocation, 'U') == false) 
+                { // checks which direction was last inputted and sees if there will be collision
+                    g_sPjtl.m_cLocation.Y -= 1; // if not then shoot
+                    if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X) //if the projectile position is = to  Waterboy's position
+                    {
+                        doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
+                    }
+                    if (doneShoot == pjtlRange - 2) // checks if the projectile goes out into the darkness for shooting upwards
+                    {
+                        doneShoot += 2;//reduces the range 
+                    }
+                   
+                }
+                else if (lastMove == 2 && Collision(g_sPjtl.m_cLocation, 'L') == false)// checks which direction was last inputted and sees if there will be collision
                 {
-                    doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
+                    g_sPjtl.m_cLocation.X -= 1;// if not then shoot
+                    if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)//if the projectile position is = to  Waterboy's position
+                    {
+                        doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
+                    }
+                }
+                else if (lastMove == 3 && Collision(g_sPjtl.m_cLocation, 'D') == false)// checks which direction was last inputted and sees if there will be collision
+                {
+                    g_sPjtl.m_cLocation.Y += 1;// if not then shoot
+                    if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)//if the projectile position is = to  Waterboy's position
+                    {
+                        doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
+                    }
+                    if (doneShoot == pjtlRange - 2)// checks if the projectile goes out into the darkness for shooting downwards
+                    {
+                        doneShoot += 2;//reduces the range 
+                    }
+                }
+                else if (lastMove == 4 && Collision(g_sPjtl.m_cLocation, 'R') == false)// checks which direction was last inputted and sees if there will be collision
+                {
+                    g_sPjtl.m_cLocation.X += 1;// if not then shoot
+                    if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)//if the projectile position is = to  Waterboy's position
+                    {
+                        doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
+                    }
                 }
             }
-            else if (lastMove == 3 && Collision(g_sPjtl.m_cLocation, 'D') == false)// checks which direction was last inputted and sees if there will be collision
+            // Water boy Shooting
+            else if (rOrC == 0)
             {
-                g_sPjtl.m_cLocation.Y += 1;// if not then shoot
-                if (g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y && g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X)//if the projectile position is = to  Waterboy's position
+                if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)// checks which direction was last inputted and sees if there will be collision
                 {
-                    doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
+                    g_sPjtl2.m_cLocation.Y -= 1;// if not then shoot 
+                    for (int n = 0; n < 10; n++) // for loop for NPC
+                    {
+                        if ((g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)) // checks if NPC gets shot by the projectile
+                        {
+                            doneShoot = pjtlRange;//finishes animation and returns projectile to Waterboy position
+                        }
+                        if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)//checks if fireboy has been hit by waterboys projectile
+                        {
+                            FBLives--; // if he does he loses 1 life
+                            doneShoot = pjtlRange;//finishes the projectile animation
+                            break;//breaks out of the for loop
+                        }
+                    }
+                    if (doneShoot == pjtlRange - 2) //checks if projectile will go out of the vision
+                    {
+                        doneShoot += 2;//reduces the range 
+                    }
                 }
-                if (doneShoot == pjtlRange - 2)// checks if the projectile goes out into the darkness for shooting downwards
+                else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)// checks which direction was last inputted and sees if there will be collision
                 {
-                    doneShoot += 2;//reduces the range 
+                    g_sPjtl2.m_cLocation.X -= 1;// if not then shoot
+                    for (int n = 0; n < 10; n++) // for loop for NPC
+                    {
+                        if (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)// checks if NPC gets shot by the projectile
+                        {
+                            doneShoot = pjtlRange;//finishes the projectile animation
+                        }
+                        if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)//checks if fireboy has been hit by waterboys projectile
+                        {
+                            FBLives--;// if he does he loses 1 life
+                            doneShoot = pjtlRange;//finishes the projectile animation
+                            break;//breaks out of the for loop
+                        }
+                    }
+                }
+                else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)// checks which direction was last inputted and sees if there will be collision
+                {
+                    g_sPjtl2.m_cLocation.Y += 1;// if not then shoot
+                    for (int n = 0; n < 10; n++) // for loop for NPC
+                    {
+                        if (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)// checks if NPC gets shot by the projectile
+                        {
+                            doneShoot = pjtlRange;//finishes the projectile animation
+                        }
+                        if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) //checks if fireboy has been hit by waterboys projectile
+                        {
+                            FBLives--;// if he does he loses 1 life
+                            doneShoot = pjtlRange;//finishes the projectile animation
+                            break;//breaks out of the for loop
+                        }
+                    }
+                    if (doneShoot == pjtlRange - 2)//checks if projectile will go out of the vision
+                    {
+                        doneShoot += 2;//reduces the range  
+                    }
+                }
+                else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)// checks which direction was last inputted and sees if there will be collision
+                {
+                    g_sPjtl2.m_cLocation.X += 1;// if not then shoot
+                    for (int n = 0; n < 10; n++)
+                    {
+                        if (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)// checks if NPC gets shot by the projectile
+                        {
+                            doneShoot = pjtlRange;//finishes the projectile animation
+                        }
+                        if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)//checks if fireboy has been hit by waterboys projectile
+                        {
+                            FBLives--;// if he does he loses 1 life
+                            doneShoot = pjtlRange;//finishes the projectile animation
+                            break;//breaks out of the for loop
+                        }
+                    }
                 }
             }
-            else if (lastMove == 4 && Collision(g_sPjtl.m_cLocation, 'R') == false)// checks which direction was last inputted and sees if there will be collision
-            {
-                g_sPjtl.m_cLocation.X += 1;// if not then shoot
-                if (g_sPjtl.m_cLocation.X == g_sChar2.m_cLocation.X && g_sPjtl.m_cLocation.Y == g_sChar2.m_cLocation.Y)//if the projectile position is = to  Waterboy's position
-                {
-                    doneShoot = pjtlRange; //finishes the projectile animation and returns the projectile to fireboy position
-                }
-            }
+            doneShoot++;
+            pSecsPassed = 0;
         }
-        // Water boy Shooting
-        else if (rOrC == 0)
-        {
-            if (lastMove2 == 1 && Collision(g_sPjtl2.m_cLocation, 'U') == false)// checks which direction was last inputted and sees if there will be collision
-            {
-                g_sPjtl2.m_cLocation.Y -= 1;// if not then shoot 
-                for (int n = 0; n < 10; n++) // for loop for NPC
-                {
-                    if ((g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)) // checks if NPC gets shot by the projectile
-                    {
-                        doneShoot = pjtlRange;//finishes animation and returns projectile to Waterboy position
-                    }
-                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)//checks if fireboy has been hit by waterboys projectile
-                    {
-                        FBLives--; // if he does he loses 1 life
-                        doneShoot = pjtlRange;//finishes the projectile animation
-                        break;//breaks out of the for loop
-                    }
-                }
-                if (doneShoot == pjtlRange - 2) //checks if projectile will go out of the vision
-                {
-                    doneShoot += 2;//reduces the range 
-                }
-            }
-            else if (lastMove2 == 2 && Collision(g_sPjtl2.m_cLocation, 'L') == false)// checks which direction was last inputted and sees if there will be collision
-            {
-                g_sPjtl2.m_cLocation.X -= 1;// if not then shoot
-                for (int n = 0; n < 10; n++) // for loop for NPC
-                {
-                    if (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)// checks if NPC gets shot by the projectile
-                    {
-                        doneShoot = pjtlRange;//finishes the projectile animation
-                    }
-                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)//checks if fireboy has been hit by waterboys projectile
-                    {
-                        FBLives--;// if he does he loses 1 life
-                        doneShoot = pjtlRange;//finishes the projectile animation
-                        break;//breaks out of the for loop
-                    }
-                }
-            }
-            else if (lastMove2 == 3 && Collision(g_sPjtl2.m_cLocation, 'D') == false)// checks which direction was last inputted and sees if there will be collision
-            {
-                g_sPjtl2.m_cLocation.Y += 1;// if not then shoot
-                for (int n = 0; n < 10; n++) // for loop for NPC
-                {
-                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)// checks if NPC gets shot by the projectile
-                    {
-                        doneShoot = pjtlRange;//finishes the projectile animation
-                    }
-                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X) //checks if fireboy has been hit by waterboys projectile
-                    {
-                        FBLives--;// if he does he loses 1 life
-                        doneShoot = pjtlRange;//finishes the projectile animation
-                        break;//breaks out of the for loop
-                    }
-                }
-                if (doneShoot == pjtlRange - 2)//checks if projectile will go out of the vision
-                {
-                    doneShoot += 2;//reduces the range  
-                }
-            }
-            else if (lastMove2 == 4 && Collision(g_sPjtl2.m_cLocation, 'R') == false)// checks which direction was last inputted and sees if there will be collision
-            {
-                g_sPjtl2.m_cLocation.X += 1;// if not then shoot
-                for (int n = 0; n < 10; n++)
-                {
-                    if  (g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X)// checks if NPC gets shot by the projectile
-                    {
-                        doneShoot = pjtlRange;//finishes the projectile animation
-                    }
-                    if (g_sPjtl2.m_cLocation.Y == g_sChar.m_cLocation.Y && g_sPjtl2.m_cLocation.X == g_sChar.m_cLocation.X)//checks if fireboy has been hit by waterboys projectile
-                    {
-                        FBLives--;// if he does he loses 1 life
-                        doneShoot = pjtlRange;//finishes the projectile animation
-                        break;//breaks out of the for loop
-                    }
-                }
-            }
-        }
-        doneShoot++;
     }
     else if (doneShoot > pjtlRange)
     {
@@ -549,6 +766,7 @@ void charAbility()
         // reset animation
         doneShoot = 0;
     }
+    
 }
 
 // Drenching NPCs
@@ -626,34 +844,213 @@ void moveNPC()
             // check if player is in range of NPC
             if ((pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2) * 2) <= 25)
             {
-
-                int npc1L, npc1R, npc1U, npc1D;
-
-                npc1L = npcPtr[n]->getCoords().X - 1;
-                npc1R = npcPtr[n]->getCoords().X + 1;
-                npc1U = npcPtr[n]->getCoords().Y - 1;
-                npc1D = npcPtr[n]->getCoords().Y + 1;
-
-                npc1L = (pow(g_sChar.m_cLocation.X - npc1L, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
-                npc1R = (pow(g_sChar.m_cLocation.X - npc1R, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2));
-                npc1U = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1U, 2));
-                npc1D = (pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npc1D, 2));
-
-                if (npc1L < npc1R && npc1L < npc1D && npc1L < npc1U && Collision(npcPtr[n]->getCoords(), 'R') == false)
+                int npcU, npcD, npcL, npcR;
+                // Check every movement option
+                npcU = pow(pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y - 1, 2), 0.5);
+                npcD = pow(pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y + 1, 2), 0.5);
+                npcL = pow(pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X - 1, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y, 2), 0.5);
+                npcR = pow(pow(g_sChar.m_cLocation.X - npcPtr[n]->getCoords().X + 1, 2) + pow(g_sChar.m_cLocation.Y - npcPtr[n]->getCoords().Y , 2), 0.5);
+                // Check which movement option is the best
+                if (Collision(npcPtr[n]->getCoords(), 'U') == false) // Up is not blocked
                 {
-                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
+                    if (Collision(npcPtr[n]->getCoords(), 'D') == false) // Down is not blocked
+                    {
+                        if (Collision(npcPtr[n]->getCoords(), 'L') == false) // Left is not blocked
+                        {
+                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
+                            {
+                                if (npcU <= npcD && npcU <= npcL && npcU <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                                }
+                                else if (npcD <= npcU && npcD <= npcL && npcD <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
+                                }
+                                else if (npcL <= npcU && npcL <= npcD && npcL <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
+                                }
+                                else if (npcR <= npcU && npcR <= npcD && npcR <= npcL)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
+                                }
+                            }
+
+                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
+                            {
+                                if (npcU <= npcD && npcU <= npcL && npcU <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                                }
+                                else if (npcD <= npcU && npcD <= npcL && npcD <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
+                                }
+                                else if (npcL <= npcU && npcL <= npcD && npcL <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
+                                }
+                            }
+                        }
+
+                        else if (Collision(npcPtr[n]->getCoords(), 'L') == true) // Left is blocked
+                        {
+                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
+                            {
+                                if (npcU <= npcD && npcU <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                                }
+                                else if (npcD <= npcU && npcD <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
+                                }
+                                else if (npcR <= npcU && npcR <= npcD)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
+                                }
+                            }
+                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
+                            {
+                                if (npcU <= npcD)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                                }
+                                else if (npcD <= npcU)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
+                                }
+                            }
+                        }
+                    }
+
+                    else if (Collision(npcPtr[n]->getCoords(), 'D') == true) // Down is blocked
+                    {
+                        if (Collision(npcPtr[n]->getCoords(), 'L') == false) // Left is not blocked
+                        {
+                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
+                            {
+                                if (npcU <= npcL && npcU <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                                }
+                                else if (npcL <= npcU && npcL <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
+                                }
+                                else if (npcR <= npcU && npcR <= npcL)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
+                                }
+                            }
+
+                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
+                            {
+                                if (npcU <= npcL)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                                }
+                                else if (npcL <= npcU)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
+                                }
+                            }
+                        }
+
+                        else if (Collision(npcPtr[n]->getCoords(), 'L') == true) // Left is blocked
+                        {
+                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
+                            {
+                                if (npcU <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                                }
+                                else if (npcR <= npcU)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
+                                }
+                            }
+                        }
+                    }
                 }
-                else if (npc1R < npc1L && npc1R < npc1D && npc1R < npc1U && Collision(npcPtr[n]->getCoords(), 'L') == false)
+
+                else if (Collision(npcPtr[n]->getCoords(), 'U') == true) // Up is blocked
                 {
-                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
-                }
-                else if (npc1U < npc1R && npc1U < npc1D && npc1U < npc1L && Collision(npcPtr[n]->getCoords(), 'D') == false)
-                {
-                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
-                }
-                else if (npc1D < npc1R && npc1D < npc1L && npc1D < npc1U && Collision(npcPtr[n]->getCoords(), 'U') == false)
-                {
-                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y - 1);
+                    if (Collision(npcPtr[n]->getCoords(), 'D') == false) // Down is not blocked
+                    {
+                        if (Collision(npcPtr[n]->getCoords(), 'L') == false) // Left is not blocked
+                        {
+                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
+                            {
+                                if (npcD <= npcL && npcD <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
+                                }
+                                else if (npcL <= npcD && npcL <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
+                                }
+                                else if (npcR <= npcD && npcR <= npcL)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
+                                }
+                            }
+
+                            else if (Collision(npcPtr[n]->getCoords(), 'R') == true) // Right is blocked
+                            {
+                                if (npcD <= npcL)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
+                                }
+                                else if (npcL <= npcD)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
+                                }
+                            }
+                        }
+
+                        else if (Collision(npcPtr[n]->getCoords(), 'L') == true) // Left is blocked
+                        {
+                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
+                            {
+                                if (npcD <= npcU && npcD <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X, npcPtr[n]->getCoords().Y + 1);
+                                }
+                                else if (npcR <= npcU && npcR <= npcD)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
+                                }
+                            }
+                        }
+                    }
+
+                    else if (Collision(npcPtr[n]->getCoords(), 'D') == true) // Down is blocked
+                    {
+                        if (Collision(npcPtr[n]->getCoords(), 'L') == false) // Left is not blocked
+                        {
+                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
+                            {
+                                if (npcL <= npcR)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X - 1, npcPtr[n]->getCoords().Y);
+                                }
+                                else if (npcR <= npcL)
+                                {
+                                    npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
+                                }
+                            }
+                        }
+
+                        else if (Collision(npcPtr[n]->getCoords(), 'L') == true) // Left is blocked
+                        {
+                            if (Collision(npcPtr[n]->getCoords(), 'R') == false) // Right is not blocked
+                            {
+                                npcPtr[n]->setCoords(npcPtr[n]->getCoords().X + 1, npcPtr[n]->getCoords().Y);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -671,6 +1068,8 @@ void processUserInput()
             // Reset everything
             mapNum = 0;
             mapSel = false;
+            fA = false;
+            wA = false;
             fbwin = false;
             FBLives = 3;
             dead = 0;
@@ -686,10 +1085,13 @@ void processUserInput()
 // Making NPCs on fire or drench with Fire Boy and Water Boy abilities animation
 void updateNPC(int n)
 {
+    CStopWatch explosionTimer;
+    double esecsPassed = 0;
+    int wbARange = 9;
     // NPC on Fire
     if (g_sPjtl.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl.m_cLocation.Y == npcPtr[n]->getCoords().Y && npcPtr[n]->getAlive() == true && static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0 && static_cast<npc*>(npcPtr[n])->getDrenched() == false)
     {
-        static_cast<npc*>(npcPtr[n])->setSecsOnFire(5);
+        static_cast<npc*>(npcPtr[n])->setSecsOnFire(2);
         static_cast<npc*>(npcPtr[n])->setCol(0x4C);
 
         static_cast<npc*>(npcPtr[n])->startFTimer();
@@ -718,8 +1120,8 @@ void updateNPC(int n)
         for (int n1 = 0; n1 < 10; n1++)
         {   //Using a circle of radius of 3 to check if a burning NPC is near a non-burning NPC
             if ((pow(npcPtr[n1]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[n1]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n1]->getAlive() == true && static_cast<npc*>(npcPtr[n1])->getDrenched() == false && static_cast<npc*>(npcPtr[n1])->getSecsOnFire() <= 0)
-            {   //Setting how long NPCs stay burning for and the colour they change to when on fire
-                static_cast<npc*>(npcPtr[n1])->setSecsOnFire(5);
+            {//Setting how long NPCs stay burning for and the colour they change to when on fire
+                static_cast<npc*>(npcPtr[n1])->setSecsOnFire(2);
                 static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
                 //Starts the timer for burning NPCs
                 static_cast<npc*>(npcPtr[n])->startFTimer();
@@ -735,25 +1137,23 @@ void updateNPC(int n)
     // Water Boy ability
     if (g_sPjtl2.m_cLocation.X == npcPtr[n]->getCoords().X && g_sPjtl2.m_cLocation.Y == npcPtr[n]->getCoords().Y && wA == true && tOrP == 0)
     {
+        wA = false;
         for (int y = 0; y < 26; y++)
         {
             for (int x = 0; x < 81; x++)
             {
-                if ((pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n]->getAlive() == true)
+                if ((pow(x - npcPtr[n]->getCoords().X, 2) + pow(y - npcPtr[n]->getCoords().Y, 2) * 2 <= wbARange) && npcPtr[n]->getAlive() == true)
                 {
                     for (int w = 0; w < 10; w++)
                     {
-                        for (int t = 1; t < 6; t++)
-                        {
-                            g_Console.writeToBuffer(x, y, ' ', 0x90);
-                        }
+                        g_Console.writeToBuffer(x, y, ' ', 0x90);
                     }
                 }
             }
         }
         for (int nw = 0; nw < 10; nw++)
         {
-            if ((pow(npcPtr[nw]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[nw]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)
+            if ((pow(npcPtr[nw]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[nw]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= wbARange) && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)
             {
                 drenchNpc(nw);
             }
@@ -820,9 +1220,12 @@ void renderGame()
     }
 }
 
+
 // Pressing keys to choose a option in menu
 void renderMap()
 {
+    int totalMaps = 2;
+
     if (whichMap == 1)
     {
         fileName = "Zav Map.txt";
@@ -879,7 +1282,6 @@ void renderMap()
     // Tutorial
     else if (g_skKeyEvent[K_3].keyReleased && mapSel == false)
     {
-        fileName = "TutorialMap.txt";
         mapNum = 3;
         mapSel = true;
 
@@ -902,7 +1304,7 @@ void renderMap()
         // Set npcs spawn below
         int n = 0;
         std::ifstream mapFile;
-        mapFile.open(fileName, std::ifstream::in);
+        mapFile.open("TutorialMap.txt", std::ifstream::in);
         for (int y = 0; y < 26; y++)
         {
             for (int x = 0; x < 81; x++)
@@ -971,11 +1373,11 @@ void renderMap()
                 {
                     if (c == '1')
                     {
-                        g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                        g_Console.writeToBuffer(x, y, " °±²Û", wall);
                     }
                     else if (c == '0' || c == '2')
                     {
-                        g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                        g_Console.writeToBuffer(x, y, " °±²Û", ground);
                     }
                 }
 
@@ -990,17 +1392,21 @@ void renderMap()
                     {
                         if (c == '1')
                         {
-                            g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                            g_Console.writeToBuffer(x, y, " °±²Û", wall);
                         }
                         else if (c == '0' || c == '2')
                         {
-                            g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                            g_Console.writeToBuffer(x, y, " °±²Û", ground);
                         }
                     }
                 }
             }
         }
-
+        
+        g_Console.writeToBuffer(20, 0, "Fireboy lives:" + std::to_string(FBLives), 0x07);
+        g_Console.writeToBuffer(38, 0, "Number of NPCs left:" + std::to_string(5 - dead), 0x07);
+            
+        
         // Win conditions
         if (fbwin == true)
         {
@@ -1008,27 +1414,65 @@ void renderMap()
         }
         if (FBLives == 0)
         {
-            g_Console.writeToBuffer(3, 10, "WATER BOY WINS", 0x1A);
+            g_Console.writeToBuffer(62, 10, "WATER BOY WINS", 0x1A);
         }
     }
-
+        
     // Settings
     else if (mapNum == 2 && mapSel == true)
     {
-        g_Console.writeToBuffer(3, 3, "Map Selection: " + std::to_string(whichMap), 0xB0);
-        if (g_skKeyEvent[K_LEFT].keyReleased)
+        int maxSettings = 2;
+        int maxCOption = 3;
+        std::string colourTxt = "Map colour (Wall: " + wallTxt + ", Ground:" + groundTxt + " )";
+        // Settings option
+        g_Console.writeToBuffer(3, 3, "Up/Down arrow to choose which option and", 0xB0);
+        g_Console.writeToBuffer(3, 4, "Left/Right arrows to change the option.", 0xB0);
+        if (g_skKeyEvent[K_UP].keyReleased && settingsOption > 1)
         {
-            if (whichMap > 1)
+            settingsOption--;
+        }
+        if (g_skKeyEvent[K_DOWN].keyReleased && settingsOption < maxSettings)
+        {
+            settingsOption++;
+        }
+        if (settingsOption == 1)
+        {
+            g_Console.writeToBuffer(3, 6, "Map Selection: " + std::to_string(whichMap), 0x90);
+            g_Console.writeToBuffer(3, 9, colourTxt, 0xB0);
+            if (g_skKeyEvent[K_LEFT].keyReleased)
             {
-                whichMap--;
+                if (whichMap > 1)
+                {
+                    whichMap--;
+                }
+            }
+            if (g_skKeyEvent[K_RIGHT].keyReleased)
+            {
+                if (whichMap < totalMaps)
+                {
+                    whichMap++;
+                }
             }
         }
-        g_Console.writeToBuffer(3, 4, "Press 2 for Colour Customisation options", 0xB0);
-        if (g_skKeyEvent[K_RIGHT].keyReleased)
+        if ( settingsOption == 2)
         {
-            if (whichMap == 2)
+            g_Console.writeToBuffer(3, 6, "Map Selection: " + std::to_string(whichMap), 0xB0);
+            g_Console.writeToBuffer(3, 9, colourTxt, 0x90);
+            if (g_skKeyEvent[K_LEFT].keyReleased)
             {
-                
+                if (colourOption > 1)
+                {
+                    colourOption--;
+                }
+                renderMapColour();
+            }
+            if (g_skKeyEvent[K_RIGHT].keyReleased)
+            {
+                if (colourOption < maxCOption)
+                {
+                    colourOption++;
+                }
+                renderMapColour();
             }
         }
     }
@@ -1038,7 +1482,7 @@ void renderMap()
     {
         g_Console.clearBuffer();
         std::ifstream mapFile;
-        mapFile.open(fileName, std::ifstream::in);
+        mapFile.open("TutorialMap.txt", std::ifstream::in);
 
         for (int y = 0; y < 26; y++)
         {
@@ -1051,11 +1495,11 @@ void renderMap()
                 {
                     if (c == '1')
                     {
-                        g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                        g_Console.writeToBuffer(x, y, " °±²Û", wall);
                     }
                     else if (c == '0' || c == '2')
                     {
-                        g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                        g_Console.writeToBuffer(x, y, " °±²Û", ground);
                     }
                 }
 
@@ -1070,11 +1514,11 @@ void renderMap()
                     {
                         if (c == '1')
                         {
-                            g_Console.writeToBuffer(x, y, " °±²Û", 0xF6);
+                            g_Console.writeToBuffer(x, y, " °±²Û", wall);
                         }
                         else if (c == '0' || c == '2')
                         {
-                            g_Console.writeToBuffer(x, y, " °±²Û", 0x1B);
+                            g_Console.writeToBuffer(x, y, " °±²Û", ground);
                         }
                     }
                 }
@@ -1187,6 +1631,31 @@ void renderMap()
     }
 }
 
+void renderMapColour()
+{
+    if (colourOption == 1)
+    {
+        wallTxt = "White";
+        wall = 0xF6;
+        groundTxt = "Blue";
+        ground = 0x1B;
+    }
+    else if (colourOption == 2)
+    {
+        wallTxt = "White";
+        wall = 0xFF;
+        groundTxt = "White";
+        ground = 0xFF;
+    }
+    else if (colourOption == 3)
+    {
+        wallTxt = "Black";
+        wall = 0x00;
+        groundTxt = "Black";
+        ground = 0x00;
+    }
+}
+
 // Changing the colours of Fire boy and Water boy
 void renderCharacter()
 {
@@ -1195,6 +1664,22 @@ void renderCharacter()
     g_Console.writeToBuffer(g_sPjtl2.m_cLocation, ' ', 0x90);
     g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0x4F);
     g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
+    for (int t = 0; t < 3; t++)
+    {
+        if (WBTraps[t]->getAlive() == true && (pow(WBTraps[t]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(WBTraps[t]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(WBTraps[t]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(WBTraps[t]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36))
+        {
+            g_Console.writeToBuffer(WBTraps[t]->getCoords(), 'T', 0x1B);
+        }
+    }
+
+    // Draw the location of FTrap
+    for (int t = 0; t < 3; t++)
+    {
+        if (FtrapPtr[t]->getAlive() == true && (pow(FtrapPtr[t]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(FtrapPtr[t]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(FtrapPtr[t]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(FtrapPtr[t]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36))
+        {
+            g_Console.writeToBuffer(FtrapPtr[t]->getCoords(), 'T', 0x14);
+        }
+    }
 
     if (fA == false)
     {
@@ -1244,17 +1729,17 @@ void renderNPC()
 
 void renderFramerate()
 {
-    // COORD c;
-    // displays the framerate
-    /*std::ostringstream ss;
-    ss << std::fixed << std::setprecision(3);
-    ss << 1.0 / g_dDeltaTime << "fps";
-    c.X = g_Console.getConsoleSize().X - 9;
-    c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str());*/
+    //COORD c;
+    //// displays the framerate
+    //std::ostringstream ss;
+    //ss << std::fixed << std::setprecision(3);
+    //ss << 1.0 / g_dDeltaTime << "fps";
+    //c.X = g_Console.getConsoleSize().X - 9;
+    //c.Y = 0;
+    //g_Console.writeToBuffer(c, ss.str());
 
     // displays the elapsed time
-    /*ss.str("");
+   /* ss.str("");
     ss << g_dElapsedTime << "secs";
     c.X = 0;
     c.Y = 0;
@@ -1265,10 +1750,10 @@ void renderFramerate()
 void renderInputEvents()
 {
     // keyboard events
-    COORD startPos = { 50, 2 };
+    /*COORD startPos = { 50, 2 };
     std::ostringstream ss;
     std::string key;
-    /*for (int i = 0; i < K_COUNT; ++i)
+    for (int i = 0; i < K_COUNT; ++i)
     {
         ss.str("");
         switch (i)
@@ -1285,6 +1770,8 @@ void renderInputEvents()
             break;
         case K_T: key = "T";
             break;
+        case K_F: key = "F";
+            break;
         case K_UP: key = "UP";
             break;
         case K_DOWN: key = "DOWN";
@@ -1296,6 +1783,8 @@ void renderInputEvents()
         case K_COMMA: key = ",";
             break;
         case K_PERIOD: key = ".";
+            break;
+        case K_DIVIDE: key = "/";
             break;
         case K_SPACE: key = "SPACE";
             break;
@@ -1313,44 +1802,43 @@ void renderInputEvents()
     }*/
 
     // mouse events    
-    ss.str("");
-    /*ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";*/
+    /*ss.str("");
+    ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
     g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
     ss.str("");
-    /* switch (g_mouseEvent.eventFlags)
-     {
-     case 0:
-         if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-         {
-             ss.str("Left Button Pressed");
-             g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
-         }
-         else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
-         {
-             ss.str("Right Button Pressed");
-             g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
-         }
-         else
-         {
-             ss.str("Some Button Pressed");
-             g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
-         }
-         break;
-     case DOUBLE_CLICK:
-         ss.str("Double Clicked");
-         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
-         break;
-     case MOUSE_WHEELED:
-         if (g_mouseEvent.buttonState & 0xFF000000)
-             ss.str("Mouse wheeled down");
-         else
-             ss.str("Mouse wheeled up");
-         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
-         break;*/
-         /* default:
-              break;
-          }*/
-
+    switch (g_mouseEvent.eventFlags)
+    {
+    case 0:
+        if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+        {
+            ss.str("Left Button Pressed");
+            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
+        }
+        else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
+        {
+            ss.str("Right Button Pressed");
+            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
+        }
+        else
+        {
+            ss.str("Some Button Pressed");
+            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
+        }
+        break;
+    case DOUBLE_CLICK:
+        ss.str("Double Clicked");
+        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
+        break;
+    case MOUSE_WHEELED:
+        if (g_mouseEvent.buttonState & 0xFF000000)
+            ss.str("Mouse wheeled down");
+        else
+            ss.str("Mouse wheeled up");
+        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
+        break;
+    default:
+        break;
+    }*/
 }
 
 bool Collision(COORD position, char direction)
@@ -1387,5 +1875,6 @@ bool Collision(COORD position, char direction)
         }
         return false;
     }
+    return false;
 }
 
