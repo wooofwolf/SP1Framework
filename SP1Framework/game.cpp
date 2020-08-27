@@ -1023,11 +1023,12 @@ void renderMap()
                 whichMap--;
             }
         }
+        g_Console.writeToBuffer(3, 4, "Press 2 for Colour Customisation options", 0xB0);
         if (g_skKeyEvent[K_RIGHT].keyReleased)
         {
-            if (whichMap < totalMaps)
+            if (whichMap == 2)
             {
-                whichMap++;
+                
             }
         }
     }
