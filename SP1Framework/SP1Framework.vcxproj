@@ -81,6 +81,7 @@
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="Framework\console.cpp" />
     <ClCompile Include="Framework\timer.cpp" />
+    <ClCompile Include="Ftrap.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="npc.cpp" />
@@ -91,6 +92,7 @@
     <ClInclude Include="entity.h" />
     <ClInclude Include="Framework\console.h" />
     <ClInclude Include="Framework\timer.h" />
+    <ClInclude Include="Ftrap.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="npc.h" />
     <ClInclude Include="trap.h" />

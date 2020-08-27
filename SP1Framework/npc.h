@@ -1,6 +1,5 @@
 #pragma once
 #include "entity.h"
-#include "Framework/timer.h"
 class npc: public entity
 {
 private:

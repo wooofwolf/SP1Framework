@@ -91,7 +91,6 @@ void npc::setCol(WORD colour)
 	this->colour = colour;
 }
 
-
 void npc::startFTimer(void)
 {
 	fireWatch.startTimer();

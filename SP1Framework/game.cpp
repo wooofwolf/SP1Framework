@@ -5,6 +5,8 @@
 #include "Framework\console.h"
 #include "entity.h"
 #include "npc.h"
+#include "trap.h"
+#include "Ftrap.h"
 #include "WBtrap.h"
 #include <iostream>
 #include <iomanip>
@@ -17,7 +19,6 @@
 // Customizable Options
 std::string fileName = "Zav Map.txt";
 
-
 int FBLives = 3;
 int dead = 0;
 bool fbwin = false;
@@ -26,6 +27,7 @@ double  g_dDeltaTime;
 int lastMove;
 int lastMove2;
 int doneShoot = 0;
+int rOrC;
 int tOrP;
 int whichMap = 1;
 int mapNum = 0;
@@ -33,6 +35,10 @@ int Wbtrap = 0;
 bool mapSel = false;
 bool fA = false;
 bool wA = false;
+int FT = 0;
+int trapID;
+bool FTrapTriggered = false;
+double FTsecs[3] = { 0 };
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 char mapArray[81][26];
@@ -50,6 +56,7 @@ SGameChar   WBTrap;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 entity* npcPtr[10];
 entity* WBTraps[3];
+entity* FtrapPtr[3];
 
 // Console object
 Console g_Console(80, 25, "Arcane Ignition");
@@ -73,6 +80,9 @@ void init(void)
     npcPtr[7] = new npc;
     npcPtr[8] = new npc;
     npcPtr[9] = new npc;
+    FtrapPtr[0] = new Ftrap;
+    FtrapPtr[1] = new Ftrap;
+    FtrapPtr[2] = new Ftrap;
     WBTraps[0] = new WBtrap;
     WBTraps[1] = new WBtrap;
     WBTraps[2] = new WBtrap;
@@ -297,6 +307,59 @@ void updateGame()       // gameplay logic
 
 void moveCharacter()
 {
+    // Updating the location of the character based on the key release
+    // Fire Boy moving up
+    if (g_skKeyEvent[K_W].keyReleased && Collision(g_sChar.m_cLocation, 'U') == false)
+    {
+        g_sChar.m_cLocation.Y--;
+        if (doneShoot == 0)
+        {
+            tpProj1();
+            lastMove = 1;
+        }
+    }
+    // Fire Boy moving left
+    if (g_skKeyEvent[K_A].keyReleased && g_sChar.m_cLocation.X > 0 && Collision(g_sChar.m_cLocation, 'L') == false)
+    {
+        g_sChar.m_cLocation.X--;
+        if (doneShoot == 0)
+        {
+            tpProj1();
+            lastMove = 2;
+        }
+    }
+    // Fire Boy moving down
+    if (g_skKeyEvent[K_S].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar.m_cLocation, 'D') == false)
+    {
+        g_sChar.m_cLocation.Y++;
+        if (doneShoot == 0)
+        {
+            tpProj1();
+            lastMove = 3;
+        }
+    }
+    // Fire Boy moving right
+    if (g_skKeyEvent[K_D].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar.m_cLocation, 'R') == false)
+    {
+        g_sChar.m_cLocation.X++;
+        if (doneShoot == 0)
+        {
+            tpProj1();
+            lastMove = 4;
+        }
+    }
+
+    if (FTrapTriggered == true)
+    {
+        FTsecs[trapID] += static_cast<Ftrap*>(FtrapPtr[trapID])->getFTSecsPassed();
+        if (FTsecs[trapID] >= 3)
+        {
+            FTrapTriggered = false;
+            FtrapPtr[trapID]->setAlive(false);
+            FTsecs[trapID] = 0;
+        }
+    }
+
     bool WBTraptriggered = false;
     if (WBTraptriggered == false) {
         // Updating the location of the character based on the key release
@@ -342,7 +405,7 @@ void moveCharacter()
         }
     }
     // Water Boy moving up
-    if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false)
+    if (g_skKeyEvent[K_UP].keyReleased && g_sChar2.m_cLocation.Y > 0 && Collision(g_sChar2.m_cLocation, 'U') == false && FTrapTriggered == false)
     {
         g_sChar2.m_cLocation.Y--;
         if (doneShoot == 0)
@@ -350,9 +413,18 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 1;
         }
+        for (int t = 0; t < 3; t++)
+        {
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
+        }
     }
     // Water Boy moving left
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0 && Collision(g_sChar2.m_cLocation, 'L') == false)
+    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar2.m_cLocation.X > 0 && Collision(g_sChar2.m_cLocation, 'L') == false && FTrapTriggered == false)
     {
         g_sChar2.m_cLocation.X--;
         if (doneShoot == 0)
@@ -360,9 +432,18 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 2;
         }
+        for (int t = 0; t < 3; t++)
+        {
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
+        }
     }
     // Water Boy moving down
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar2.m_cLocation, 'D') == false)
+    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar2.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && Collision(g_sChar2.m_cLocation, 'D') == false && FTrapTriggered == false)
     {
         g_sChar2.m_cLocation.Y++;
         if (doneShoot == 0)
@@ -370,9 +451,18 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 3;
         }
+        for (int t = 0; t < 3; t++)
+        {
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
+        }
     }
     // Water Boy moving right
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar2.m_cLocation, 'R') == false)
+    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar2.m_cLocation.X < g_Console.getConsoleSize().X - 1 && Collision(g_sChar2.m_cLocation, 'R') == false && FTrapTriggered == false)
     {
         g_sChar2.m_cLocation.X++;
         if (doneShoot == 0)
@@ -380,6 +470,17 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 4;
         }
+        for (int t = 0; t < 3; t++)
+        {
+            if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
+            {
+                FTrapTriggered = true;
+                static_cast<Ftrap*>(FtrapPtr[t])->startFTWatch();
+                trapID = t;
+            }
+        }
+    }
+}
     }
     for(int t = 0; t < 3; t++) 
     {
@@ -408,7 +509,6 @@ void tpProj2()
 // Keys for their projectile and skill and projectile animation 
 void charAbility()
 {
-    int rOrC;
     int pjtlRange = 6;
     double pjtlSpeed = 0.05;
     // Projectile timer
@@ -433,7 +533,12 @@ void charAbility()
         // Fire boy Trap
         if (g_skKeyEvent[K_F].keyReleased)
         {
-
+            if (FT <= 2)
+            {
+                FtrapPtr[FT]->setAlive(true);
+                FtrapPtr[FT]->setCoords(g_sChar.m_cLocation);
+                FT++;
+            }
         }
 
         // Water boy projectile
@@ -1477,6 +1582,15 @@ void renderCharacter()
         if (WBTraps[t]->getAlive() == true && (pow(WBTraps[t]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(WBTraps[t]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(WBTraps[t]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(WBTraps[t]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36))
         {
             g_Console.writeToBuffer(WBTraps[t]->getCoords(), 'T', 0x1B);
+        }
+    }
+
+    // Draw the location of FTrap
+    for (int t = 0; t < 3; t++)
+    {
+        if (FtrapPtr[t]->getAlive() == true && (pow(FtrapPtr[t]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(FtrapPtr[t]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(FtrapPtr[t]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(FtrapPtr[t]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36))
+        {
+            g_Console.writeToBuffer(FtrapPtr[t]->getCoords(), 'T', 0x14);
         }
     }
 
