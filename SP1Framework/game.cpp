@@ -1526,7 +1526,7 @@ void renderMap()
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
                 }
 
-                for (int n = 0; n < 9; n++)
+                for (int n = 0; n < 10; n++)
                 {
                     if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
                     {
@@ -1606,6 +1606,7 @@ void renderMap()
         {
             g_Console.writeToBuffer(15, 4, "As Fireboy, You can place traps by pressing F", 0x0F);
             g_Console.writeToBuffer(5, 5, "If Waterboy runs into it, they'll be frozen in place for a few seconds", 0x0F);
+            g_Console.writeToBuffer(23, 6, "(Max of 3 traps can be placed)", 0x0F);
         }
         if (showFability == true)
         {
@@ -1643,9 +1644,11 @@ void renderMap()
             g_Console.writeToBuffer(24, 20, "Press . to activate your ability", 0x0F);
             g_Console.writeToBuffer(18, 21, "then press , to drench multiple NPCs at once!", 0x0F);
             g_Console.writeToBuffer(5, 22, "It drenches other NPCs that are in a small range around the first NPC", 0x0F);
-            g_Console.writeToBuffer(12, 15, "Waterboy can also place traps by pressing /", 0x0F);
+            g_Console.writeToBuffer(12, 14, "Waterboy can also place traps by pressing /", 0x0F);
+            g_Console.writeToBuffer(12, 15, "(Max of 3 traps be placed)", 0x0F);
             g_Console.writeToBuffer(12, 16, "These traps decreases Fireboy's", 0x0F);
-            g_Console.writeToBuffer(12, 17, "total lives by 1 if they step on it", 0x0F);
+            g_Console.writeToBuffer(12, 17, "total lives by 1 if they step on it and", 0x0F);
+            g_Console.writeToBuffer(12, 18, "drench any nearby NPCs", 0x0F);
         }
         if (showWobjective == true && shownWability == true)
         {
