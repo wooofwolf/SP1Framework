@@ -8,7 +8,7 @@ npc::npc()
 	setCoords(0, 0);
 	setAlive(true);
 
-	colour = 0xB0;
+	colour = 0xA0;
 	drenched = false;
 	secsOnFire = 0;
 	noOfNPCs++;
@@ -19,7 +19,7 @@ npc::npc(int x, int y)
 	setCoords(x, y);
 	setAlive(true);
 
-	colour = 0xB0;
+	colour = 0xA0;
 	drenched = false;
 	secsOnFire = 0;
 	noOfNPCs++;
@@ -30,7 +30,7 @@ npc::npc(COORD location)
 	setCoords(location);
 	setAlive(true);
 
-	colour = 0xB0;
+	colour = 0xA0;
 	drenched = false;
 	secsOnFire = 0;
 	noOfNPCs++;
