@@ -331,8 +331,6 @@ void updateGame()       // gameplay logic
 
 void moveCharacter()
 {
-
-
     if (FTrapTriggered == true)
     {
         FTsecs[trapID] += static_cast<Ftrap*>(FtrapPtr[trapID])->getFTSecsPassed();
@@ -343,7 +341,6 @@ void moveCharacter()
             FTsecs[trapID] = 0;
         }
     }
-
    
     // Updating the location of the character based on the key release
     // Fire Boy moving up
@@ -1226,15 +1223,13 @@ void renderGame()
     {
         renderCharacter(); // renders the character into the buffer
         renderNPC();
-        
     }
 }
-
 
 // Pressing keys to choose a option in menu
 void renderMap()
 {
-    int totalMaps = 2;
+    int totalMaps = 3;
 
     if (whichMap == 1)
     {
@@ -1243,6 +1238,10 @@ void renderMap()
     else if (whichMap == 2)
     {
         fileName = "Map 2.txt";
+    }
+    else if (whichMap == 3)
+    {
+        fileName = "Map 3.txt";
     }
 
     /* SET SPAWN */
@@ -1355,7 +1354,7 @@ void renderMap()
         g_Console.writeToBuffer(25, 17, "Press Esc to quit the game", 0xB4);
     }
 
-    // Map 1
+    // Load Selected Map
     else if (mapNum == 1 && mapSel == true)
     {
         g_Console.clearBuffer();
@@ -1368,6 +1367,10 @@ void renderMap()
         else if (whichMap == 2)
         {
             fileName = "Map 2.txt";
+        }
+        else if (whichMap == 3)
+        {
+            fileName = "Map 3.txt";
         }
 
         mapFile.open(fileName, std::ifstream::in);
@@ -1905,4 +1908,3 @@ bool Collision(COORD position, char direction)
     }
     return false;
 }
-
