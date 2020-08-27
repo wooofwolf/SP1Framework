@@ -837,7 +837,7 @@ void moveNPC()
                 if (wsecsPassed[n] >= 5)
                 {
                     static_cast<npc*>(npcPtr[n])->setDrenched(false);
-                    static_cast<npc*>(npcPtr[n])->setCol(0xB0);
+                    static_cast<npc*>(npcPtr[n])->setCol(0xA0);
                     wsecsPassed[n] = 0;
                 }
             }
@@ -1073,6 +1073,16 @@ void processUserInput()
             fbwin = false;
             FBLives = 3;
             dead = 0;
+            for (int t = 0; t < 3; t++)
+            {
+                WBTraps[t]->setAlive(false);
+                Wbtrap = 0;
+            }
+            for (int t = 0; t < 3; t++)
+            {
+                FtrapPtr[t]->setAlive(false);
+                FT = 0;
+            }
         }
         // If in menu than quit
         else
@@ -1265,7 +1275,7 @@ void renderMap()
                     npcPtr[n]->setCoords(x, y);
                     static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
                     static_cast<npc*>(npcPtr[n])->setDrenched(false);
-                    static_cast<npc*>(npcPtr[n])->setCol(0xB0);
+                    static_cast<npc*>(npcPtr[n])->setCol(0xA0);
                     n++;
                 }
             }
@@ -1316,7 +1326,7 @@ void renderMap()
                     npcPtr[n]->setCoords(x, y);
                     static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
                     static_cast<npc*>(npcPtr[n])->setDrenched(false);
-                    static_cast<npc*>(npcPtr[n])->setCol(0xB0);
+                    static_cast<npc*>(npcPtr[n])->setCol(0xA0);
                     n++;
                 }
             }
@@ -1422,11 +1432,15 @@ void renderMap()
     else if (mapNum == 2 && mapSel == true)
     {
         int maxSettings = 2;
-        int maxCOption = 3;
-        std::string colourTxt = "Map colour (Wall: " + wallTxt + ", Ground:" + groundTxt + " )";
+        int maxCOption = 5;
+        std::string colourTxt = " Map colour (Wall: " + wallTxt + ", Ground: " + groundTxt + ") ";
         // Settings option
-        g_Console.writeToBuffer(3, 3, "Up/Down arrow to choose which option and", 0xB0);
-        g_Console.writeToBuffer(3, 4, "Left/Right arrows to change the option.", 0xB0);
+        g_Console.writeToBuffer(20, 1, "  __   __ ___ ___ ___       ___   __  ", 0XB0);
+        g_Console.writeToBuffer(20, 2, " |__  |__  |   |   |  |\\ | |  _  |__  ", 0XB8);
+        g_Console.writeToBuffer(20, 3, "  __| |__  |   |  _|_ | \\| |___|  __| ", 0XBF);
+        g_Console.writeToBuffer(21, 5, "Up/Down arrow to choose which option", 0xB0);
+        g_Console.writeToBuffer(20, 6, "Left/Right arrows to change the option", 0xB0);
+        g_Console.writeToBuffer(25, 7, "Press esc for Main Menu", 0xB0);
         if (g_skKeyEvent[K_UP].keyReleased && settingsOption > 1)
         {
             settingsOption--;
@@ -1437,8 +1451,8 @@ void renderMap()
         }
         if (settingsOption == 1)
         {
-            g_Console.writeToBuffer(3, 6, "Map Selection: " + std::to_string(whichMap), 0x90);
-            g_Console.writeToBuffer(3, 9, colourTxt, 0xB0);
+            g_Console.writeToBuffer(31, 12, " Map Selection: " + std::to_string(whichMap) + " ", 0xF0);
+            g_Console.writeToBuffer(20, 14, colourTxt, 0xB0);
             if (g_skKeyEvent[K_LEFT].keyReleased)
             {
                 if (whichMap > 1)
@@ -1456,8 +1470,8 @@ void renderMap()
         }
         if ( settingsOption == 2)
         {
-            g_Console.writeToBuffer(3, 6, "Map Selection: " + std::to_string(whichMap), 0xB0);
-            g_Console.writeToBuffer(3, 9, colourTxt, 0x90);
+            g_Console.writeToBuffer(31, 12, " Map Selection: " + std::to_string(whichMap) + " ", 0xB0);
+            g_Console.writeToBuffer(20, 14, colourTxt, 0xF0);
             if (g_skKeyEvent[K_LEFT].keyReleased)
             {
                 if (colourOption > 1)
@@ -1642,17 +1656,31 @@ void renderMapColour()
     }
     else if (colourOption == 2)
     {
-        wallTxt = "White";
-        wall = 0xFF;
-        groundTxt = "White";
-        ground = 0xFF;
+        wallTxt = "Green";
+        wall = 0x20;
+        groundTxt = "Gray";
+        ground = 0x8B;
     }
     else if (colourOption == 3)
     {
         wallTxt = "Black";
         wall = 0x00;
+        groundTxt = "White";
+        ground = 0xFB;
+    }
+    else if (colourOption == 4)
+    {
+        wallTxt = "White";
+        wall = 0xFF;
+        groundTxt = "White";
+        ground = 0xFB;
+    }
+    else if (colourOption == 5)
+    {
+        wallTxt = "Black";
+        wall = 0x00;
         groundTxt = "Black";
-        ground = 0x00;
+        ground = 0x0B;
     }
 }
 
@@ -1668,7 +1696,7 @@ void renderCharacter()
     {
         if (WBTraps[t]->getAlive() == true && (pow(WBTraps[t]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(WBTraps[t]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(WBTraps[t]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(WBTraps[t]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36))
         {
-            g_Console.writeToBuffer(WBTraps[t]->getCoords(), 'T', 0x1B);
+            g_Console.writeToBuffer(WBTraps[t]->getCoords(), 'T', ground);
         }
     }
 
@@ -1677,7 +1705,7 @@ void renderCharacter()
     {
         if (FtrapPtr[t]->getAlive() == true && (pow(FtrapPtr[t]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(FtrapPtr[t]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(FtrapPtr[t]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(FtrapPtr[t]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36))
         {
-            g_Console.writeToBuffer(FtrapPtr[t]->getCoords(), 'T', 0x14);
+            g_Console.writeToBuffer(FtrapPtr[t]->getCoords(), 'T', ground);
         }
     }
 
