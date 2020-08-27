@@ -5,7 +5,7 @@ int WBtrap::noOfWBTraps = 0;
 
 WBtrap::WBtrap()
 {
-	
+	setAlive(false);
 }
 
 WBtrap::WBtrap(int x, int y)
