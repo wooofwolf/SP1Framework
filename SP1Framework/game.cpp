@@ -1645,14 +1645,14 @@ void renderMapColour()
         wallTxt = "White";
         wall = 0xFF;
         groundTxt = "White";
-        ground = 0xFF;
+        ground = 0xFB;
     }
     else if (colourOption == 3)
     {
         wallTxt = "Black";
         wall = 0x00;
         groundTxt = "Black";
-        ground = 0x00;
+        ground = 0x0B;
     }
 }
 
@@ -1668,7 +1668,7 @@ void renderCharacter()
     {
         if (WBTraps[t]->getAlive() == true && (pow(WBTraps[t]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(WBTraps[t]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(WBTraps[t]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(WBTraps[t]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36))
         {
-            g_Console.writeToBuffer(WBTraps[t]->getCoords(), 'T', 0x1B);
+            g_Console.writeToBuffer(WBTraps[t]->getCoords(), 'T', ground);
         }
     }
 
@@ -1677,7 +1677,7 @@ void renderCharacter()
     {
         if (FtrapPtr[t]->getAlive() == true && (pow(FtrapPtr[t]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(FtrapPtr[t]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(FtrapPtr[t]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(FtrapPtr[t]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36))
         {
-            g_Console.writeToBuffer(FtrapPtr[t]->getCoords(), 'T', 0x14);
+            g_Console.writeToBuffer(FtrapPtr[t]->getCoords(), 'T', ground);
         }
     }
 
