@@ -1130,7 +1130,7 @@ void updateNPC(int n)
         for (int n1 = 0; n1 < 10; n1++)
         {   //Using a circle of radius of 3 to check if a burning NPC is near a non-burning NPC
             if ((pow(npcPtr[n1]->getCoords().X - npcPtr[n]->getCoords().X, 2) + pow(npcPtr[n1]->getCoords().Y - npcPtr[n]->getCoords().Y, 2) * 2 <= 9) && npcPtr[n1]->getAlive() == true && static_cast<npc*>(npcPtr[n1])->getDrenched() == false && static_cast<npc*>(npcPtr[n1])->getSecsOnFire() <= 0)
-            {//Setting how long NPCs stay burning for and the colour they change to when on fire
+            {   //Setting how long NPCs stay burning for and the colour they change to when on fire
                 static_cast<npc*>(npcPtr[n1])->setSecsOnFire(2);
                 static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
                 //Starts the timer for burning NPCs
@@ -1329,6 +1329,7 @@ void renderMap()
                     static_cast<npc*>(npcPtr[n])->setCol(0xA0);
                     n++;
                 }
+
             }
         }
         for (int n = 5; n < 10; n++)
@@ -1596,21 +1597,22 @@ void renderMap()
         {
             g_Console.writeToBuffer(35, 3, "This is an NPC", 0x0F);
             g_Console.writeToBuffer(25, 4, "The NPC will run away from Fireboy", 0x0F);
-            g_Console.writeToBuffer(30, 5, "Press r to shoot the NPC", 0x0F);
+            g_Console.writeToBuffer(30, 5, "Press R to shoot the NPC", 0x0F);
         }
         if (showFnpc2 == true)
         {
-            g_Console.writeToBuffer(27, 4, "You can also walk into the NPC to set it ablaze", 0x0F);
+            g_Console.writeToBuffer(15, 4, "As Fireboy, You can place traps by pressing F", 0x0F);
+            g_Console.writeToBuffer(5, 5, "If Waterboy runs into it, they'll be frozen in place for a few seconds", 0x0F);
         }
         if (showFability == true)
         {
-            g_Console.writeToBuffer(27, 3, "Press t to use your ability", 0x0F);
-            g_Console.writeToBuffer(22, 4, "then press r to burn multiple NPCs at once!", 0x0F);
+            g_Console.writeToBuffer(27, 3, "Press T to activate your ability", 0x0F);
+            g_Console.writeToBuffer(22, 4, "then press R to burn multiple NPCs at once!", 0x0F);
             g_Console.writeToBuffer(16, 5, "It burns NPCs in a small circle around the first NPC shot", 0x0F);
         }
         if (showFobjective == true)
         {
-            g_Console.writeToBuffer(5, 4, "Your mission is to kill every NPC without getting caught by waterboy", 0x0F);
+            g_Console.writeToBuffer(5, 4, "Your mission is to kill every NPC without getting caught by Waterboy", 0x0F);
         }
         // Waterboy tutorial
         if (showWcontrols == true && shownWcontrols == false)
@@ -1621,7 +1623,7 @@ void renderMap()
         if (showWnpc == true)
         {
             g_Console.writeToBuffer(35, 20, "This is an NPC", 0x0F);
-            g_Console.writeToBuffer(23, 21, "The NPC does not run away from Waterboy", 0x0F);
+            g_Console.writeToBuffer(23, 21, "NPCs do not run away from Waterboy", 0x0F);
             g_Console.writeToBuffer(30, 22, "Press , to drench the NPC", 0x0F);
             g_Console.writeToBuffer(21, 23, "Drenching an NPC puts out a burning NPC and", 0x0F);
             g_Console.writeToBuffer(19, 24, "prevents it from catching fire for a few seconds", 0x0F);
@@ -1630,16 +1632,21 @@ void renderMap()
         {
             g_Console.writeToBuffer(15, 21, "You can also walk into the NPC to drench it or put it out", 0x0F);
             g_Console.writeToBuffer(0, 22, "Note: NPCs will move and light up their surroundings when on fire in actual game", 0x0F);
-        }
+            
+        }   
+            
         if (showWability == true)
         {
-            g_Console.writeToBuffer(24, 20, "Press . to use your ability", 0x0F);
+            g_Console.writeToBuffer(24, 20, "Press . to activate your ability", 0x0F);
             g_Console.writeToBuffer(18, 21, "then press , to drench multiple NPCs at once!", 0x0F);
             g_Console.writeToBuffer(5, 22, "It drenches other NPCs that are in a small range around the first NPC", 0x0F);
+            g_Console.writeToBuffer(12, 15, "Waterboy can also place traps by pressing /", 0x0F);
+            g_Console.writeToBuffer(12, 16, "These traps decreases Fireboy's", 0x0F);
+            g_Console.writeToBuffer(12, 17, "total lives by 1 if they step on it", 0x0F);
         }
         if (showWobjective == true && shownWability == true)
         {
-            g_Console.writeToBuffer(3, 20, "Your mission is to put out fireboy and prevent him from killing every NPC", 0x0F);
+            g_Console.writeToBuffer(3, 20, "Your mission is to put out Fireboy and prevent him from killing every NPC", 0x0F);
             g_Console.writeToBuffer(20, 21, "Press esc to go back to the main menu", 0x0F);
         }
     }
