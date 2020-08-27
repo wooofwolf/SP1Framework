@@ -17,6 +17,20 @@
 // Customizable Options
 std::string fileName = "Zav Map.txt";
 
+// Tutorial Related
+bool showFcontrols = true;
+bool showFnpc = false;
+bool showFnpc2 = false;
+bool showFability = false;
+bool showFobjective = false;
+bool showWcontrols = false;
+bool shownWcontrols = false;
+bool showWnpc = false;
+bool showWnpc2 = false;
+bool showWability = false;
+bool shownWability = false;
+bool showWobjective = false;
+
 int FBLives = 3;
 int dead = 0;
 bool fbwin = false;
@@ -1098,18 +1112,6 @@ void renderGame()
 void renderMap()
 {
     int totalMaps = 2;
-    bool showFcontrols = true;
-    bool showFnpc = false;
-    bool showFnpc2 = false;
-    bool showFability = false;
-    bool showFobjective = false;
-    bool showWcontrols = false;
-    bool shownWcontrols = false;
-    bool showWnpc = false;
-    bool showWnpc2 = false;
-    bool showWability = false;
-    bool shownWability = false;
-    bool showWobjective = false;
 
     if (whichMap == 1)
     {
