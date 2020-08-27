@@ -19,6 +19,20 @@
 // Customizable Options
 std::string fileName = "Zav Map.txt";
 
+// Tutorial Related
+bool showFcontrols = true;
+bool showFnpc = false;
+bool showFnpc2 = false;
+bool showFability = false;
+bool showFobjective = false;
+bool showWcontrols = false;
+bool shownWcontrols = false;
+bool showWnpc = false;
+bool showWnpc2 = false;
+bool showWability = false;
+bool shownWability = false;
+bool showWobjective = false;
+
 int FBLives = 3;
 int dead = 0;
 bool fbwin = false;
@@ -1242,18 +1256,6 @@ void renderGame()
 void renderMap()
 {
     int totalMaps = 2;
-    bool showFcontrols = true;
-    bool showFnpc = false;
-    bool showFnpc2 = false;
-    bool showFability = false;
-    bool showFobjective = false;
-    bool showWcontrols = false;
-    bool shownWcontrols = false;
-    bool showWnpc = false;
-    bool showWnpc2 = false;
-    bool showWability = false;
-    bool shownWability = false;
-    bool showWobjective = false;
 
     if (whichMap == 1)
     {
@@ -1450,20 +1452,39 @@ void renderMap()
     // Settings
     else if (mapNum == 2 && mapSel == true)
     {
-        g_Console.writeToBuffer(3, 3, "Map Selection: " + std::to_string(whichMap), 0xB0);
-        if (g_skKeyEvent[K_LEFT].keyReleased)
+        int settingsOption = 1;
+        int maxSettings = 2;
+        if (g_skKeyEvent[K_UP].keyReleased && settingsOption > 1)
         {
-            if (whichMap > 1)
+            settingsOption--;
+        }
+        if (g_skKeyEvent[K_DOWN].keyReleased && settingsOption < maxSettings)
+        {
+            settingsOption++;
+        }
+        if (settingsOption == 1)
+        {
+            g_Console.writeToBuffer(3, 3, "Map Selection: " + std::to_string(whichMap), 0x90);
+            g_Console.writeToBuffer(3, 9, "Map Colour( Wall: " , ", Ground: " , " )", 0xB0);
+            if (g_skKeyEvent[K_LEFT].keyReleased)
             {
-                whichMap--;
+                if (whichMap > 1)
+                {
+                    whichMap--;
+                }
+            }
+            if (g_skKeyEvent[K_RIGHT].keyReleased)
+            {
+                if (whichMap < totalMaps)
+                {
+                    whichMap++;
+                }
             }
         }
-        if (g_skKeyEvent[K_RIGHT].keyReleased)
+        if ( settingsOption == 2)
         {
-            if (whichMap < totalMaps)
-            {
-                whichMap++;
-            }
+            g_Console.writeToBuffer(3, 3, "Map Selection: " + std::to_string(whichMap), 0xB0);
+            g_Console.writeToBuffer(3, 9, "Map Colour( Wall: " , ", Ground: " , " )", 0x90);
         }
     }
 
