@@ -5,7 +5,7 @@ int WBtrap::noOfWBTraps = 0;
 
 WBtrap::WBtrap()
 {
-	setCoords(0, 0);
+	
 }
 
 WBtrap::WBtrap(int x, int y)
