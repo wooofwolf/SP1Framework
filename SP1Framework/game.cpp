@@ -1073,6 +1073,11 @@ void processUserInput()
             fbwin = false;
             FBLives = 3;
             dead = 0;
+            for (int t = 0; t < 3; t++)
+            {
+                FtrapPtr[t]->setAlive(false);
+                FT = 0;
+            }
         }
         // If in menu than quit
         else
