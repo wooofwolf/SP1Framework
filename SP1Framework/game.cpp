@@ -135,6 +135,21 @@ void init(void)
 //--------------------------------------------------------------
 void shutdown(void)
 {
+    // Deletes all used pointers
+    for (int n = 0; n < 10; n++)
+    {
+        delete npcPtr[n];
+    }
+
+    for (int t = 0; t < 3; t++)
+    {
+        delete FtrapPtr[t];
+    }
+    for (int t = 0; t < 3; t++)
+    {
+        delete WBTraps[t];
+    }
+
     // Reset to white text on black background
     colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 
