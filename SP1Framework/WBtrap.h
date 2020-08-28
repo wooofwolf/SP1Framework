@@ -3,9 +3,6 @@
 #include "entity.h"
 class WBtrap :public entity
 {
-private:
-	static int noOfWBTraps;
-
 public:
 	// Constructors
 	WBtrap();

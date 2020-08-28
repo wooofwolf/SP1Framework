@@ -1,30 +1,25 @@
 #include "WBtrap.h"
 #include <math.h>
 
-int WBtrap::noOfWBTraps = 0;
 
 WBtrap::WBtrap()
 {
-	setAlive(false);
+	setAlive(false); //make the trap dead at first before spawning
 }
 
 WBtrap::WBtrap(int x, int y)
 {
-	setCoords(x, y);
+	setCoords(x, y);//set its coordinates using x,y
 }
 
 WBtrap::WBtrap(COORD location)
 {
-	setCoords(location);
+	setCoords(location); //sets its coordinates using other entity locations
 }
 
 WBtrap::~WBtrap()
-{
+{// intentionally left blank
 }
 
-int WBtrap::getNoOfWBtraps(void)
-{
-	return noOfWBTraps;
-}
 
 

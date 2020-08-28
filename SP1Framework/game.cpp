@@ -17,7 +17,7 @@
 
 
 // Customizable Options
-std::string fileName = "Zav Map.txt";
+std::string fileName = "Map 1.txt";
 
 // Map Colours
 int settingsOption = 1;
@@ -602,12 +602,13 @@ void charAbility()
         {
             wA = true;
         }
-        if (g_skKeyEvent[K_DIVIDE].keyReleased)
+        //Waterboy trap
+        if (g_skKeyEvent[K_DIVIDE].keyReleased)//if / is pressed
         {
-            if (Wbtrap <= 2) {
-                WBTraps[Wbtrap]->setAlive(true);
-                WBTraps[Wbtrap]->setCoords(g_sChar2.m_cLocation);
-                Wbtrap++;
+            if (Wbtrap <= 2) {//if number of traps is lessthan or = 2
+                WBTraps[Wbtrap]->setAlive(true);//make the trap alive so its steppable 
+                WBTraps[Wbtrap]->setCoords(g_sChar2.m_cLocation);//sets the coordinates at wherever waterboy was at when setting the trap
+                Wbtrap++;//int waterboy trap + 1
             }
         }
     }
@@ -1181,13 +1182,9 @@ void render()
     clearScreen();      // clears the current screen and draw from scratch 
     switch (g_eGameState)
     {
-    case S_SPLASHSCREEN: renderSplashScreen();
-        break;
     case S_GAME: renderGame();
         break;
     }
-    renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
@@ -1201,18 +1198,6 @@ void renderToScreen()
 {
     // Writes the buffer to the console, hence you will see what you have written
     g_Console.flushBufferToConsole();
-}
-
-void renderSplashScreen()  // renders the splash screen
-{
-    // Main Menu
-    /*COORD c = g_Console.getConsoleSize();
-    c.Y /= 3;
-    c.X = c.X / 2 - 3;
-    g_Console.writeToBuffer(c, "Start", 0x03);
-    c.Y += 7;
-    c.X = g_Console.getConsoleSize().X / 2 - 6;
-    g_Console.writeToBuffer(c, "Instructions", 0x09);*/
 }
 
 // Loading the choosen map, Fire Boy, Water boy and NPCs
@@ -1233,15 +1218,15 @@ void renderMap()
 
     if (whichMap == 1)
     {
-        fileName = "Zav Map.txt";
+        fileName = "Map 1.txt"; //Map 1 textfile to be opened if selected
     }
     else if (whichMap == 2)
     {
-        fileName = "Map 2.txt";
+        fileName = "Map 2.txt";//Map 2 textfile to be opened if selected
     }
     else if (whichMap == 3)
     {
-        fileName = "Map 3.txt";
+        fileName = "Map 3.txt"; // map 3 textfile to be opened if selected
     }
 
     /* SET SPAWN */
@@ -1252,29 +1237,29 @@ void renderMap()
         mapSel = true;
 
         // Set players spawn below
-        g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 44;
-        g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.05;
+        g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 44;//sets fireboy X spawning location
+        g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 1.05;//sets fireboy Y spwawning location
         tpProj1();
-        g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;
-        g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;
+        g_sChar2.m_cLocation.X = g_Console.getConsoleSize().X / 1.025;//sets waterboy X spawning location
+        g_sChar2.m_cLocation.Y = g_Console.getConsoleSize().Y / 15;//sets waterboy X spawning location
         tpProj2();
 
         // Set npcs spawn below
-        int n = 0;
-        std::ifstream mapFile;
-        mapFile.open(fileName, std::ifstream::in);
-        for (int y = 0; y < 26; y++)
+        int n = 0;//declaration of n = 0;
+        std::ifstream mapFile; //decalre var mapfile using ifstream 
+        mapFile.open(fileName, std::ifstream::in);//opens a file 
+        for (int y = 0; y < 26; y++)//for loop for the Y axis of the map
         {
-            for (int x = 0; x < 81; x++)
+            for (int x = 0; x < 81; x++)//for loop for the X axis of the map
             {
-                char c = mapFile.get();
-                if (c == '2')
+                char c = mapFile.get(); //reads each line to find a char
+                if (c == '2')//if char = '2'
                 {
-                    npcPtr[n]->setAlive(true);
-                    npcPtr[n]->setCoords(x, y);
-                    static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
-                    static_cast<npc*>(npcPtr[n])->setDrenched(false);
-                    static_cast<npc*>(npcPtr[n])->setCol(0xA0);
+                    npcPtr[n]->setAlive(true);//sets the npcs alive
+                    npcPtr[n]->setCoords(x, y);//at the position of '2'
+                    static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);//makes them not on fire
+                    static_cast<npc*>(npcPtr[n])->setDrenched(false);//and makes them dry
+                    static_cast<npc*>(npcPtr[n])->setCol(0xA0); // makes their color green
                     n++;
                 }
             }
@@ -1321,11 +1306,11 @@ void renderMap()
                 char c = mapFile.get();
                 if (c == '2')
                 {
-                    npcPtr[n]->setAlive(true);
-                    npcPtr[n]->setCoords(x, y);
-                    static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);
-                    static_cast<npc*>(npcPtr[n])->setDrenched(false);
-                    static_cast<npc*>(npcPtr[n])->setCol(0xA0);
+                    npcPtr[n]->setAlive(true);//sets the npcs alive
+                    npcPtr[n]->setCoords(x, y);//at the position of '2'
+                    static_cast<npc*>(npcPtr[n])->setSecsOnFire(0);//makes them not on fire
+                    static_cast<npc*>(npcPtr[n])->setDrenched(false);//and makes them dry
+                    static_cast<npc*>(npcPtr[n])->setCol(0xA0); // makes their color green
                     n++;
                 }
 
@@ -1363,7 +1348,7 @@ void renderMap()
 
         if (whichMap == 1)
         {
-            fileName = "Zav Map.txt";
+            fileName = "Map 1.txt";
         }
         else if (whichMap == 2)
         {
@@ -1417,18 +1402,18 @@ void renderMap()
             }
         }
         
-        g_Console.writeToBuffer(20, 0, "Fireboy lives:" + std::to_string(FBLives), 0x07);
-        g_Console.writeToBuffer(38, 0, "Number of NPCs left:" + std::to_string(5 - dead), 0x07);
+        g_Console.writeToBuffer(20, 0, "Fireboy lives:" + std::to_string(FBLives), 0x07); // print number of fireboy lives UI
+        g_Console.writeToBuffer(38, 0, "Number of NPCs left:" + std::to_string(5 - dead), 0x07);//print number of NPCs left UI
             
         
         // Win conditions
-        if (fbwin == true)
+        if (fbwin == true)// if fireboy's win condition are met 
         {
-            g_Console.writeToBuffer(3, 10, "FiRE BOY WINS", 0x1A);
+            g_Console.writeToBuffer(3, 10, "FiRE BOY WINS!", 0x1A);//stop the game and print "Fireboy wins!"
         }
-        if (FBLives == 0)
+        if (FBLives == 0)//if Fireboy's number of lives == 0,
         {
-            g_Console.writeToBuffer(62, 10, "WATER BOY WINS", 0x1A);
+            g_Console.writeToBuffer(62, 10, "WATER BOY WINS!", 0x1A);//stop the game and print "Waterboy wins!"
         }
     }
         
@@ -1705,6 +1690,7 @@ void renderCharacter()
     g_Console.writeToBuffer(g_sPjtl2.m_cLocation, ' ', 0x90);
     g_Console.writeToBuffer(g_sChar.m_cLocation, 'F', 0x4F);
     g_Console.writeToBuffer(g_sChar2.m_cLocation, 'W', 0x90);
+    //Draw the location of Waterboy traps
     for (int t = 0; t < 3; t++)
     {
         if (WBTraps[t]->getAlive() == true && (pow(WBTraps[t]->getCoords().X - g_sChar.m_cLocation.X, 2) + pow(WBTraps[t]->getCoords().Y - g_sChar.m_cLocation.Y, 2) * 2 <= 36 || pow(WBTraps[t]->getCoords().X - g_sChar2.m_cLocation.X, 2) + pow(WBTraps[t]->getCoords().Y - g_sChar2.m_cLocation.Y, 2) * 2 <= 36))
@@ -1768,153 +1754,39 @@ void renderNPC()
     }
 }
 
-void renderFramerate()
+bool Collision(COORD position, char direction)//function for collision
 {
-    //COORD c;
-    //// displays the framerate
-    //std::ostringstream ss;
-    //ss << std::fixed << std::setprecision(3);
-    //ss << 1.0 / g_dDeltaTime << "fps";
-    //c.X = g_Console.getConsoleSize().X - 9;
-    //c.Y = 0;
-    //g_Console.writeToBuffer(c, ss.str());
-
-    // displays the elapsed time
-   /* ss.str("");
-    ss << g_dElapsedTime << "secs";
-    c.X = 0;
-    c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str(), 0x59);*/
-}
-
-// this is an example of how you would use the input events
-void renderInputEvents()
-{
-    // keyboard events
-    /*COORD startPos = { 50, 2 };
-    std::ostringstream ss;
-    std::string key;
-    for (int i = 0; i < K_COUNT; ++i)
+    if (direction == 'U') // direction given is U 
     {
-        ss.str("");
-        switch (i)
+        if (mapArray[position.X][position.Y - 1] == '1')//if Position of entity Y - 1 on map = '1' 
         {
-        case K_W: key = "W";
-            break;
-        case K_A: key = "A";
-            break;
-        case K_S: key = "S";
-            break;
-        case K_D: key = "D";
-            break;
-        case K_R: key = "R";
-            break;
-        case K_T: key = "T";
-            break;
-        case K_F: key = "F";
-            break;
-        case K_UP: key = "UP";
-            break;
-        case K_DOWN: key = "DOWN";
-            break;
-        case K_LEFT: key = "LEFT";
-            break;
-        case K_RIGHT: key = "RIGHT";
-            break;
-        case K_COMMA: key = ",";
-            break;
-        case K_PERIOD: key = ".";
-            break;
-        case K_DIVIDE: key = "/";
-            break;
-        case K_SPACE: key = "SPACE";
-            break;
-        default: continue;
+            return true;//return true to say that its a wall and cannot go through
         }
-        if (g_skKeyEvent[i].keyDown)
-            ss << key << " pressed";
-        else if (g_skKeyEvent[i].keyReleased)
-            ss << key << " released";
-        else
-            ss << key << " not pressed";
-
-        COORD c = { startPos.X, startPos.Y + i };
-        g_Console.writeToBuffer(c, ss.str(), 0x17);
-    }*/
-
-    // mouse events    
-    /*ss.str("");
-    ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
-    g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
-    ss.str("");
-    switch (g_mouseEvent.eventFlags)
-    {
-    case 0:
-        if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-        {
-            ss.str("Left Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
-        }
-        else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
-        {
-            ss.str("Right Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
-        }
-        else
-        {
-            ss.str("Some Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
-        }
-        break;
-    case DOUBLE_CLICK:
-        ss.str("Double Clicked");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
-        break;
-    case MOUSE_WHEELED:
-        if (g_mouseEvent.buttonState & 0xFF000000)
-            ss.str("Mouse wheeled down");
-        else
-            ss.str("Mouse wheeled up");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
-        break;
-    default:
-        break;
-    }*/
-}
-
-bool Collision(COORD position, char direction)
-{
-    if (direction == 'U')
-    {
-        if (mapArray[position.X][position.Y - 1] == '1')
-        {
-            return true;
-        }
-        return false;
+        return false;//else return false
     }
-    if (direction == 'D')
+    if (direction == 'D')// direction given is D
     {
         if (mapArray[position.X][position.Y + 1] == '1')
         {
-            return true;
+            return true;//return true to say that its a wall and cannot go through
         }
-        return false;
+        return false;//else return false
     }
-    if (direction == 'L')
+    if (direction == 'L')// direction given is L
     {
-        if (mapArray[position.X - 1][position.Y] == '1')
+        if (mapArray[position.X - 1][position.Y] == '1')//if Position of entity Y - 1 on map = '1' 
         {
-            return true;
+            return true;//return true to say that its a wall and cannot go through
         }
-        return false;
+        return false;//else return false
     }
-    if (direction == 'R')
+    if (direction == 'R')// direction given is R
     {
-        if (mapArray[position.X + 1][position.Y] == '1')
+        if (mapArray[position.X + 1][position.Y] == '1')//if Position of entity Y - 1 on map = '1' 
         {
-            return true;
+            return true;//return true to say that its a wall and cannot go through
         }
-        return false;
+        return false;//else return false
     }
-    return false;
+    return false;//else return false
 }
