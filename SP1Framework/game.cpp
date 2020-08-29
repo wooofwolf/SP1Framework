@@ -1097,6 +1097,11 @@ void processUserInput()
                 FtrapPtr[t]->setAlive(false);
                 FT = 0;
             }
+            for (int n = 0; n < 10; n++)
+            {
+                npcPtr[n]->setAlive(false);
+                npcPtr[n]->setCoords(-1, -1);
+            }
         }
         // If in menu than quit
         else
@@ -1149,6 +1154,7 @@ void updateNPC(int n)
                 static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
                 //Starts the timer for burning NPCs
                 static_cast<npc*>(npcPtr[n])->startFTimer();
+                static_cast<npc*>(npcPtr[n1])->startFTimer();
             }
         }
     }
@@ -1332,7 +1338,7 @@ void renderMap()
 
             }
         }
-        for (int n = 5; n < 10; n++)
+        for (int n = 4; n < 9; n++)
         {
             static_cast<npc*>(npcPtr[n])->setCol(0x4C);
         }
