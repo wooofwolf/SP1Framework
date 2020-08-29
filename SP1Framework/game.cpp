@@ -1336,6 +1336,7 @@ void renderMap()
         {
             static_cast<npc*>(npcPtr[n])->setCol(0x4C);
         }
+
     }
 
     /* SET MAP */
