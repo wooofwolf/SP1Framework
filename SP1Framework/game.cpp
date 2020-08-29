@@ -1097,6 +1097,11 @@ void processUserInput()
                 FtrapPtr[t]->setAlive(false);
                 FT = 0;
             }
+            for (int n = 0; n < 10; n++)
+            {
+                npcPtr[n]->setAlive(false);
+                npcPtr[n]->setCoords(-1, -1);
+            }
         }
         // If in menu than quit
         else
