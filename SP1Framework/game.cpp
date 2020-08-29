@@ -1149,6 +1149,7 @@ void updateNPC(int n)
                 static_cast<npc*>(npcPtr[n1])->setCol(0x4C);
                 //Starts the timer for burning NPCs
                 static_cast<npc*>(npcPtr[n])->startFTimer();
+                static_cast<npc*>(npcPtr[n1])->startFTimer();
             }
         }
     }
@@ -1332,7 +1333,7 @@ void renderMap()
 
             }
         }
-        for (int n = 5; n < 10; n++)
+        for (int n = 4; n < 9; n++)
         {
             static_cast<npc*>(npcPtr[n])->setCol(0x4C);
         }
