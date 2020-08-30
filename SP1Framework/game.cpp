@@ -347,9 +347,11 @@ void updateGame()       // gameplay logic
 
 void moveCharacter()
 {
+    // Check how long Fireboy's Trap has been triggered, if already triggered
     if (FTrapTriggered == true)
     {
         FTsecs[trapID] += static_cast<Ftrap*>(FtrapPtr[trapID])->getFTSecsPassed();
+        // Breaks trap if already triggered for 3 seconds
         if (FTsecs[trapID] >= 3)
         {
             FTrapTriggered = false;
@@ -370,12 +372,12 @@ void moveCharacter()
 
         }
 
-        for (int t = 0; t < 3; t++)
+        for (int t = 0; t < 3; t++)//for number of traps
         {
-            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)//if fireboyy steps on waterboy trap and the trap is active
             {
-                WBTraptriggered = true;
-                TrappedID = t;
+                WBTraptriggered = true;//trigger the trap
+                TrappedID = t;//that traps id = t
             }
 
         }
@@ -390,12 +392,12 @@ void moveCharacter()
             lastMove = 2;
         }
 
-        for (int t = 0; t < 3; t++)
+        for (int t = 0; t < 3; t++)//for loop for the number of traps
         {
-            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)//if fireboyy steps on waterboy trap and the trap is active
             {
-                WBTraptriggered = true;
-                TrappedID = t;
+                WBTraptriggered = true;//trigger the trap
+                TrappedID = t;//that traps id = t
                 
             }
 
@@ -411,12 +413,12 @@ void moveCharacter()
             lastMove = 3;
         }
 
-        for (int t = 0; t < 3; t++)
+        for (int t = 0; t < 3; t++)//for loop for the number of traps
         {
-            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)//if fireboyy steps on waterboy trap and the trap is active
             {
-                WBTraptriggered = true;
-                TrappedID = t;
+                WBTraptriggered = true;//trigger the trap
+                TrappedID = t;//that traps id = t
             }
 
         }
@@ -432,50 +434,50 @@ void moveCharacter()
 
         }
 
-        for (int t = 0; t < 3; t++)
+        for (int t = 0; t < 3; t++)//for loop for the number of traps
         {
-            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)//if fireboyy steps on waterboy trap and the trap is active
             {
-                WBTraptriggered = true;
-                TrappedID = t;
+                WBTraptriggered = true;//trigger the trap
+                TrappedID = t;//that traps id = t
             }
 
         }
     }
-    if (WBTraptriggered == true)
+    if (WBTraptriggered == true)//if the trap is triggered
     {
-        FBLives--;
+        FBLives--;//fireboy loses a life
         
-        for (int t = 0; t < 3; t++) {
-            for (int n = 0; n < 10; n++)
+        for (int t = 0; t < 3; t++) {//for loop for the traps
+            for (int n = 0; n < 10; n++)//for loop for the NPCs
             {
-                if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25)
+                if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25)//if npc is withing a radius of 5 of the trap
                 {
-                    for (int y = 0; y < 26; y++)
+                    for (int y = 0; y < 26; y++)//for loop for the y axis of the map
                     {
-                        for (int x = 0; x < 81; x++)
+                        for (int x = 0; x < 81; x++)//for loop for the x axis of the map
                         {
-                            if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[n]->getAlive() == true)
+                            if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[n]->getAlive() == true)//if NPC is within the circle and its alive
                             {
-                                for (int w = 0; w < 10; w++)
+                                for (int w = 0; w < 10; w++)//number of npcs that can be drenched
                                 {
-                                    g_Console.writeToBuffer(x, y, ' ', 0x90);
+                                    g_Console.writeToBuffer(x, y, ' ', 0x90);//explosion animation
                                 }
                             }
                         }   
                     }
-                    for (int nw = 0; nw < 10; nw++)
+                    for (int nw = 0; nw < 10; nw++)//npcs
                     {
-                        if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)
+                        if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)//if NPCS on fire and within range
                         {
-                            drenchNpc(nw);
+                            drenchNpc(nw);//drench them
                         }
                     }
                 }
             }
         }
-        WBTraptriggered = false;
-        WBTraps[TrappedID]->setAlive(false);
+        WBTraptriggered = false;//then set that trap to triggered = false
+        WBTraps[TrappedID]->setAlive(false);//and set it so that its not alive.
     }
     
     // Water Boy moving up
@@ -487,8 +489,10 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 1;
         }
+        // Check if Fireboy's trap will be triggered
         for (int t = 0; t < 3; t++)
         {
+            // Triggers trap
             if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
             {
                 FTrapTriggered = true;
@@ -506,8 +510,10 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 2;
         }
+        // Check if Fireboy's trap will be triggered
         for (int t = 0; t < 3; t++)
         {
+            // Triggers trap
             if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
             {
                 FTrapTriggered = true;
@@ -525,8 +531,10 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 3;
         }
+        // Check if Fireboy's trap will be triggered
         for (int t = 0; t < 3; t++)
         {
+            // Triggers trap
             if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
             {
                 FTrapTriggered = true;
@@ -544,8 +552,10 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 4;
         }
+        // Check if Fireboy's trap will be triggered
         for (int t = 0; t < 3; t++)
         {
+            // Triggers trap
             if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
             {
                 FTrapTriggered = true;
@@ -793,17 +803,19 @@ void drenchNpc(int sd)
     static_cast<npc*>(npcPtr[sd])->startWTimer();
 }
 
+// Moves every NPC
 void moveNPC()
 {
     for (int n = 0; n < 10; n++)
     {
+        // NPC on fire
         if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
         {
             fsecsPassed[n] += static_cast<npc*>(npcPtr[n])->getFsecsPassed();
 
             if (fsecsPassed[n] > 0.33)
             {
-                // Randomly runs
+                // Chooses a random direction to move
                 int randomInt = rand() % 4 + 1;
                 if (randomInt == 1) // Up
                 {
@@ -834,6 +846,7 @@ void moveNPC()
                     }
                 }
                 static_cast<npc*>(npcPtr[n])->setSecsOnFire(static_cast<npc*>(npcPtr[n])->getSecsOnFire() - 0.33);
+                // Kills NPC if it burned for 3 secs or more
                 if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0)
                 {
                     npcPtr[n]->setAlive(false);
@@ -843,6 +856,7 @@ void moveNPC()
             }
         }
 
+        // NPC is alive
         else if (npcPtr[n]->getAlive() == true)
         {
             if (static_cast<npc*>(npcPtr[n])->getDrenched() == true)
@@ -1391,6 +1405,7 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
+                // Renders the wall and ground near players
                 if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
                     if (c == '1')
@@ -1403,6 +1418,7 @@ void renderMap()
                     }
                 }
 
+                // Turns other areas of the map dark
                 else
                 {
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
@@ -1410,6 +1426,7 @@ void renderMap()
 
                 for (int n = 0; n < 10; n++)
                 {
+                    // Renders the wall and ground near burning NPCs
                     if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
                     {
                         if (c == '1')
@@ -1523,6 +1540,7 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
+                // Renders the wall and ground near players
                 if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
                     if (c == '1')
@@ -1535,6 +1553,7 @@ void renderMap()
                     }
                 }
 
+                // Turns everything else dark
                 else
                 {
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
@@ -1542,6 +1561,7 @@ void renderMap()
 
                 for (int n = 0; n < 10; n++)
                 {
+                    // // Renders the wall and ground near burning NPCs
                     if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
                     {
                         if (c == '1')
