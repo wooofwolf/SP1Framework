@@ -347,9 +347,11 @@ void updateGame()       // gameplay logic
 
 void moveCharacter()
 {
+    // Check how long Fireboy's Trap has been triggered, if already triggered
     if (FTrapTriggered == true)
     {
         FTsecs[trapID] += static_cast<Ftrap*>(FtrapPtr[trapID])->getFTSecsPassed();
+        // Breaks trap if already triggered for 3 seconds
         if (FTsecs[trapID] >= 3)
         {
             FTrapTriggered = false;
@@ -487,8 +489,10 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 1;
         }
+        // Check if Fireboy's trap will be triggered
         for (int t = 0; t < 3; t++)
         {
+            // Triggers trap
             if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
             {
                 FTrapTriggered = true;
@@ -506,8 +510,10 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 2;
         }
+        // Check if Fireboy's trap will be triggered
         for (int t = 0; t < 3; t++)
         {
+            // Triggers trap
             if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
             {
                 FTrapTriggered = true;
@@ -525,8 +531,10 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 3;
         }
+        // Check if Fireboy's trap will be triggered
         for (int t = 0; t < 3; t++)
         {
+            // Triggers trap
             if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
             {
                 FTrapTriggered = true;
@@ -544,8 +552,10 @@ void moveCharacter()
             tpProj2();
             lastMove2 = 4;
         }
+        // Check if Fireboy's trap will be triggered
         for (int t = 0; t < 3; t++)
         {
+            // Triggers trap
             if (g_sChar2.m_cLocation.X == FtrapPtr[t]->getCoords().X && g_sChar2.m_cLocation.Y == FtrapPtr[t]->getCoords().Y && FtrapPtr[t]->getAlive() == true)
             {
                 FTrapTriggered = true;
