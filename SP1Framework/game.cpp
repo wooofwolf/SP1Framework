@@ -793,17 +793,19 @@ void drenchNpc(int sd)
     static_cast<npc*>(npcPtr[sd])->startWTimer();
 }
 
+// Moves every NPC
 void moveNPC()
 {
     for (int n = 0; n < 10; n++)
     {
+        // NPC on fire
         if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
         {
             fsecsPassed[n] += static_cast<npc*>(npcPtr[n])->getFsecsPassed();
 
             if (fsecsPassed[n] > 0.33)
             {
-                // Randomly runs
+                // Chooses a random direction to move
                 int randomInt = rand() % 4 + 1;
                 if (randomInt == 1) // Up
                 {
@@ -834,6 +836,7 @@ void moveNPC()
                     }
                 }
                 static_cast<npc*>(npcPtr[n])->setSecsOnFire(static_cast<npc*>(npcPtr[n])->getSecsOnFire() - 0.33);
+                // Kills NPC if it burned for 3 secs or more
                 if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0)
                 {
                     npcPtr[n]->setAlive(false);
@@ -843,6 +846,7 @@ void moveNPC()
             }
         }
 
+        // NPC is alive
         else if (npcPtr[n]->getAlive() == true)
         {
             if (static_cast<npc*>(npcPtr[n])->getDrenched() == true)

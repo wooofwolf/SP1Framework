@@ -1,0 +1,379 @@
+Author: TAI YANG TAT BRYSON Commit: sets all npcs to not alive when esc is pressed
+Author: TAI YANG TAT BRYSON Commit: Fixed last bug, changed to release mode
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Moved press 1 to play words
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: press 1 to play
+Author: TAI YANG TAT BRYSON Commit: plAy StaRt
+Author: Zavier Commit: changed smol things
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: Changed name  and code regarding Zav Map to Map 1 and added comments for my parts of the code
+Author: TAI YANG TAT BRYSON Commit: Deleted Pointers after game finishes
+Author: AHNAF TAHMID KHAN Commit: more updates on tutorial map
+Author: TAI YANG TAT BRYSON Commit: Edited some Tutorial
+Author: AHNAF TAHMID KHAN Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: AHNAF TAHMID KHAN Commit: updated tutorial (for traps)
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: Map 3
+Author: AHNAF TAHMID KHAN Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: changed some stuff
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: Settings
+Author: TAI YANG TAT BRYSON Commit: WB Trap Visible Bug Fixed
+Author: Zavier Commit: merge
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: Fixed waterboy trap bug
+Author: TAI YANG TAT BRYSON Commit: FTrap bug fixed
+Author: AHNAF TAHMID KHAN Commit: merge
+Author: Chua Kee Suan Commit: trap tp ground colour
+Author: AHNAF TAHMID KHAN Commit: merge
+Author: Chua Kee Suan Commit: Colour change
+Author: Chua Kee Suan Commit: Settings
+Author: Zavier Commit: Fixed fireboy movement bug
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: WB traps Done
+Author: Zavier Commit: merge
+Author: Chua Kee Suan Commit: starting settings
+Author: TAI YANG TAT BRYSON Commit: Tutorial Bug Fixed
+Author: Zavier Commit: Attempt at waterboy traps
+Author: Zavier Commit: Comming staged or smth
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: nothing
+Author: TAI YANG TAT BRYSON Commit: Completed FB Trap
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Trap Class added,  Waterboy freezes forever when step on Ftrap
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: working with lesser global var
+Author: Zavier Commit: starting WTrap
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Added Trap class
+Author: Chua Kee Suan Commit: even lesser var
+Author: Chua Kee Suan Commit: lowering the global variables
+Author: Chua Kee Suan Commit: comments
+Author: Chua Kee Suan Commit: added the keys
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: var wbA
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: Revert
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: working pjtl, i guess
+Author: TAI YANG TAT BRYSON Commit: Moved fireboy lives and changed its colour
+Author: TAI YANG TAT BRYSON Commit: Fixed NPC spasm
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: NPC AI enchanced
+Author: Chua Kee Suan Commit: btr pjtl
+Author: Zavier Commit: made Main Menu textfile
+Author: Zavier Commit: Made a map 2 , can be improved
+Author: Zavier Commit: merge
+Author: Zavier Commit: bug fixes
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: idk
+Author: AHNAF TAHMID KHAN Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: AHNAF TAHMID KHAN Commit: comments on fireboy ability
+Author: TAI YANG TAT BRYSON Commit: NPC Spawning Bug FIx
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Fixed missing NPC
+Author: Zavier Commit: commit merge
+Author: Zavier Commit: improved efficiency for code
+Author: TAI YANG TAT BRYSON Commit: Added Map 2 txt file
+Author: Chua Kee Suan Commit: choosing which map and deisplaying in settings
+Author: Zavier Commit: Commit mergerrrrrr
+Author: Zavier Commit: Fireboy lives and NPC lives UI
+Author: Chua Kee Suan Commit: select map
+Author: Chua Kee Suan Commit: arrows to change maps
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Added Map Selection Screen
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: comment out sec and fps
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: Comments for FB&WB shooting
+Author: Chua Kee Suan Commit: fireboy.h remove
+Author: Chua Kee Suan Commit: remove fb and wb class
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Added customizable file name for map
+Author: Chua Kee Suan Commit: Comments
+Author: Chua Kee Suan Commit: Alot of comments
+Author: TAI YANG TAT BRYSON Commit: Fixed NPC change map bug, added comments in renderMap()
+Author: Chua Kee Suan Commit: working retry
+Author: Chua Kee Suan Commit: wb ability for loop
+Author: TAI YANG TAT BRYSON Commit: Deleted Testing.txt
+Author: TAI YANG TAT BRYSON Commit: NPC Drench at the same time
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: NPCS MOVE SEPERATLEKY WHEN ON FIRE
+Author: Chua Kee Suan Commit: working
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: remove useless var
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: working win con
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: working
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Removed unnecessary for loops
+Author: Zavier Commit: again
+Author: Zavier Commit: Another attempt at FB lives
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: idk
+Author: TAI YANG TAT BRYSON Commit: Merged
+Author: TAI YANG TAT BRYSON Commit: Edited some NPC code structure
+Author: Zavier Commit: Attempt at FB HP
+Author: Chua Kee Suan Commit: correct wc
+Author: Chua Kee Suan Commit: making it able to replay
+Author: Chua Kee Suan Commit: remove char on pjtl
+Author: Chua Kee Suan Commit: fixing wb pjtl over 1 range
+Author: Chua Kee Suan Commit: can replay but idk how clear txt
+Author: Chua Kee Suan Commit: rendermap
+Author: Zavier Commit: heellsppp saasadadw
+Author: Zavier Commit: AHHHHHHHH
+Author: Zavier Commit: Attempt at wincon
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Fixed some warnings
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: wb same ability 4 now
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Fixed explosion time
+Author: Chua Kee Suan Commit: merging
+Author: Chua Kee Suan Commit: doing wb ability
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Fixed FB Ability Bug
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: range 1 for now
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Ability Animation Added
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: doing wb ability
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Taught Ahnaf
+Author: AHNAF TAHMID KHAN Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: AHNAF TAHMID KHAN Commit: Fire Boy Ability
+Author: Chua Kee Suan Commit: doing wb ability
+Author: Chua Kee Suan Commit: working
+Author: Chua Kee Suan Commit: wrong shit
+Author: Chua Kee Suan Commit: actually working
+Author: Zavier Commit: fixed the code for the waterboy pjtl
+Author: Chua Kee Suan Commit: pjtl can drench npc
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: c o m m i t
+Author: TAI YANG TAT BRYSON Commit: Merged
+Author: TAI YANG TAT BRYSON Commit: Tutorial completed
+Author: Chua Kee Suan Commit: wb touch npc, get drench
+Author: Zavier Commit: cahnge shit
+Author: Chua Kee Suan Commit: pjtl changes
+Author: Zavier Commit: fixed WB pjtl colllision with NPC
+Author: Chua Kee Suan Commit: for loop inside
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: Attempt at waterboy collision with npc
+Author: TAI YANG TAT BRYSON Commit: Tutorial partially commplete, waiting for fireboy ability, waterboy tutorial incomplete
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: changed the tutorial map a lil
+Author: TAI YANG TAT BRYSON Commit: NPC gets drenched for 5 secs added
+Author: Chua Kee Suan Commit: independent ability
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: boo
+Author: Zavier Commit: Fixed the stupid problem with waterboy not  being able to shoot past fire boy x/y axis
+Author: Chua Kee Suan Commit: Power P Update
+Author: Chua Kee Suan Commit: Empowered P
+Author: Zavier Commit: AHHHHHHHHH
+Author: TAI YANG TAT BRYSON Commit: Made waterboy able to drench burning enemies (zavier says hi) Found bug for projectile
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: some letters
+Author: Zavier Commit: Fixed waterboy shooting collision with NPC
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: Waterboy and fire boy Projectile collision with NPC
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: nothing
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: Projectile collision regarding Fireboys shooting waterboy and vice versa
+Author: TAI YANG TAT BRYSON Commit: Fixed Burning NPCs Movement
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Revert
+Author: Chua Kee Suan Commit: idk anymore
+Author: TAI YANG TAT BRYSON Commit: Revert "Fixed smth"
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: added the menu things
+Author: Zavier Commit: WHAT IS HAPPENINGGGG
+Author: Zavier Commit: ahhh
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Fixed Map
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: previous
+Author: TAI YANG TAT BRYSON Commit: Fixed smth
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Set NPCs position in ZavMap
+Author: Chua Kee Suan Commit: looks wrong ..
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: fixed something
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: idk
+Author: Zavier Commit: Broke code for collision damn
+Author: TAI YANG TAT BRYSON Commit: Fixed NPC not dying, redo NPC spawn when changing maps
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Partially fixed npc spawning when changing maps
+Author: Chua Kee Suan Commit: trying to change colour
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: changing colour
+Author: TAI YANG TAT BRYSON Commit: Merged
+Author: TAI YANG TAT BRYSON Commit: Multiple NPC Spawning, need fix multiple npcs on fire at once
+Author: Zavier Commit: Projectile collision for walls
+Author: Chua Kee Suan Commit: nothing
+Author: Chua Kee Suan Commit: comments
+Author: Chua Kee Suan Commit: move shooting
+Author: Zavier Commit: Added in main menu options
+Author: Chua Kee Suan Commit: correct spawning
+Author: Zavier Commit: Weeeeee map 1 + spawning
+Author: Chua Kee Suan Commit: idk
+Author: Zavier Commit: Input map 1 and the Spawning for it
+Author: Chua Kee Suan Commit: ESC AND STUFF
+Author: TAI YANG TAT BRYSON Commit: Title Added
+Author: TAI YANG TAT BRYSON Commit: Merge
+Author: TAI YANG TAT BRYSON Commit: Teaching Zavier
+Author: Zavier Commit: NPC Cant go through walls (thks bryson much lubs)
+Author: Zavier Commit: Collision for Fire boy and Water boy + NPC on fire collision
+Author: TAI YANG TAT BRYSON Commit: merge
+Author: TAI YANG TAT BRYSON Commit: Collision attempt
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: Entity Glow
+Author: Chua Kee Suan Commit: idk
+Author: Chua Kee Suan Commit: idk
+Author: Zavier Commit: WE GOT THE GLOWINGS BOIS
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: comm
+Author: Zavier Commit: bruh they say merge operation in progress
+Author: Chua Kee Suan Commit: now u cant switch map in the middle of the gmae
+Author: Zavier Commit: WTF I JUST COMMITED
+Author: Zavier Commit: i think npc cant cross border ?? idk i tried but i gotta pull to change stufff so yeet
+Author: Chua Kee Suan Commit: thigns
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: some stuffs
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Fixed NPC disappearing
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: space bar to load map
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Fireboy and Waterboy changed to 'F' and 'W'
+Author: Chua Kee Suan Commit: change var
+Author: Chua Kee Suan Commit: shooting error fix
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: idk
+Author: Zavier Commit: ok it no comit
+Author: Zavier Commit: comit pls
+Author: TAI YANG TAT BRYSON Commit: NPC only appears if visible by Fireboy, Burning NPCs will be seen even if not visible. NPCs turn black after they get burnt
+Author: Zavier Commit: Made the base map so we can test stuff
+Author: TAI YANG TAT BRYSON Commit: Nerfed NPCs range radius to 5
+Author: TAI YANG TAT BRYSON Commit: Added vision for both fireboy and waterboy, reduced radius to 6
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Fireboy's Vision Added
+Author: Chua Kee Suan Commit: FB is R&T WB is ,&.
+Author: Chua Kee Suan Commit: change some variable names
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: idk
+Author: AHNAF TAHMID KHAN Commit: tutorial level (updated file name in code)
+Author: AHNAF TAHMID KHAN Commit: tutorial level
+Author: AHNAF TAHMID KHAN Commit: tutorial level
+Author: Chua Kee Suan Commit: pull
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: idk
+Author: Zavier Commit: fixed fire boy and water boy spawning positions
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: Removed the stupid mouse and wasde pressed key thing
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: idk
+Author: TAI YANG TAT BRYSON Commit: Fixed issue where npc keeps running if shot multiple times
+Author: TAI YANG TAT BRYSON Commit: Improved NPC movement on fire
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: wut
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: idk
+Author: TAI YANG TAT BRYSON Commit: Added Map, no walls (only colour)
+Author: Chua Kee Suan Commit: Menu
+Author: Zavier Commit: idk
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: Merged
+Author: TAI YANG TAT BRYSON Commit: NPC on fire AI Created and Tweaked
+Author: Chua Kee Suan Commit: sorta menu
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: dont pull
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: idk asking me to commit lol
+Author: Chua Kee Suan Commit: er commit for no reason
+Author: Chua Kee Suan Commit: Both can shoot but not at same time.
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: wtf again
+Author: Zavier Commit: idk what happened lemme commit
+Author: TAI YANG TAT BRYSON Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: TAI YANG TAT BRYSON Commit: NPC gets set on fire. Need code random running and timer
+Author: Zavier Commit: FIXED FIRE BOI
+Author: Chua Kee Suan Commit: corrected locations
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: idk
+Author: Zavier Commit: Fixed fire boy and wota boy move
+Author: TAI YANG TAT BRYSON Commit: NPCs added AI, runs away from FireBoy. No wall collision detection.
+Author: Chua Kee Suan Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Chua Kee Suan Commit: idk
+Author: Chua Kee Suan Commit: Yesterday, final
+Author: TAI YANG TAT BRYSON Commit: Added fireboy, waterboy and npc classes. Coded basic framework for entity class.
+Author: Chua Kee Suan Commit: newest, no real update
+Author: Zavier Commit: Merge branch 'master' of https://github.com/wooofwolf/SP1Framework
+Author: Zavier Commit: managed to broke wall
+Author: TAI YANG TAT BRYSON Commit: Resolved Conflict
+Author: TAI YANG TAT BRYSON Commit: Added NPC Proximity Detection
+Author: Chua Kee Suan Commit: FINALLY the moving bullets
+Author: Chua Kee Suan Commit: change char colour
+Author: Chua Kee Suan Commit: idk anymore ..
+Author: TAI YANG TAT BRYSON Commit: Entity Class Created
+Author: Chua Kee Suan Commit: AI follows p1, teleporting projectile
+Author: Chua Kee Suan Commit: ai follows the p1, shooting(teleporting) projectile
+Author: Chua Kee Suan Commit: P1 and P2 moves and space to change colour
+Author: Chua Kee Suan Commit: WASDE0
+Author: Chua Kee Suan Commit: WASDE0
+Author: Chua Kee Suan Commit: WASDE0
+Author: SIM TZE JAN Commit: added winmm.lib to the dependency in Release mode
+Author: SIM TZE JAN Commit: Updated the framework to show how event input handlers work Added a keyboard input handler Added a mouse input handler Sample code on how to interpret input events.
+Author: SIM TZE JAN Commit: Implemented Event based input for keyboard and mouse If a keyboard or mouse event has triggered in the console, it will call the respective keyboard or mouse handler set by the user.
+Author: Sim Tze Jan Commit: Added in a parameter in writeToBuffer to indicate the length of the string to write. Without this parameter, the function will write until the null character.
+Author: SIM TZE JAN Commit: Optimise the writeToBuffer function so that it does not need to check the length of the string. clearBuffer now access the memory location once, instead of twice. writeToConsole does not need to create temporary variables anymore.
+Author: SIM TZE JAN Commit: Updated project file for Visual Studio 2013
+Author: Sim Tze Jan Commit: Updated some tips
+Author: Sim Tze Jan Commit: Update Readme.md
+Author: unknown Commit: Fixed a bug in resizing the console window size. Now the console size scales beautifully.
+Author: Sim Tze Jan Commit: Merge branch 'master' of https://github.com/tzejan/SP1Framework
+Author: Sim Tze Jan Commit: Bug fix in the calculation of the last index in the screen buffer
+Author: tzejan Commit: Update README.md
+Author: Sim Tze Jan Commit: Added a better example of what is expected in the update and render loops Added a debouncing code. To prevent accidental trigger of actions because of high framerates and slow human reflexes.
+Author: Sim Tze Jan Commit: renamed console variable
+Author: Sim Tze Jan Commit: Merge branch 'writeToBuffer'
+Author: unknown Commit: Added in comments by Victor
+Author: tzejan Commit: Update README.md
+Author: tzejan Commit: Update README.md
+Author: Sim Tze Jan Commit: Added in a function to set the console font
+Author: Sim Tze Jan Commit: Added overload functions for write to buffer so that it does not need to take in a COORD type
+Author: Sim Tze Jan Commit: put the codes into their respective functions added more comments to guide users of this framework
+Author: Sim Tze Jan Commit: Write to buffer functions are now in the console object Added more comments and description to help students with the framework
+Author: Sim Tze Jan Commit: Merge branch 'writeToBuffer' of https://github.com/tzejan/SP1Framework into writeToBuffer
+Author: Sim Tze Jan Commit: Pass the C++ string as a reference instead
+Author: Jan Sim Commit: Reuse code for writing to buffer Fixed a bug in writing buffer to console output
+Author: tzejan Commit: Update README.md
+Author: tzejan Commit: Update README.md
+Author: Jan Sim Commit: Added default parameter for attribute Put in sample code
+Author: Sim Tze Jan Commit: A faster console output No more flickers!
+Author: Sim Tze Jan Commit: test writing to a buffer then displaying it on the console
+Author: tzejan Commit: Update README.md
+Author: tzejan Commit: Updated readme
+Author: Sim Tze Jan Commit: Merge branch 'master' of https://github.com/tzejan/SP1Framework into SetConsoleSize
+Author: Sim Tze Jan Commit: Added a function to set the size of the console
+Author: tzejan Commit: Update README.md
+Author: Sim Tze Jan Commit: Added the output for elapsed time Added a delta time variable
+Author: Sim Tze Jan Commit: Merge branch 'master' of https://github.com/tzejan/SP1Framework
+Author: Sim Tze Jan Commit: Comment about potential bug
+Author: Jan Sim Commit: Update gotoXY function to take in COORD Implemented a function to detect keypress Gets the size of the console for limiting character movement purposes Implement a simple character movement with arrow key presses Renders a test coloured text Reduced frame rate to 5FPS Introduced beep sound Changed game loop to loop with a flag instead of returning from function Removed commented out code
+Author: Jan Sim Commit: Sample of getting the state of keys
+Author: Jan Sim Commit: Merge branch 'master' of https://github.com/tzejan/SP1Framework
+Author: Sim Tze Jan Commit: Added delta time to update function Used FPS to calculate frame time Used proper naming convention for global variables Updated timer class to keep track of elapsed time
+Author: Sim Tze Jan Commit: Added timer windows console stuff game loop update loop render loop
+Author: Jan Sim Commit: Updated ignore files
+Author: Jan Sim Commit: Merge branch 'master' of https://github.com/tzejan/SP1Framework
+Author: Jan Sim Commit: First commit for the SP1 Framework
+Author: tzejan Commit: Initial commit
