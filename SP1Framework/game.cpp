@@ -1448,23 +1448,27 @@ void renderMap()
         std::string colourTxt = " Map colour (Wall: " + wallTxt + ", Ground: " + groundTxt + ") ";
         // Settings option
         g_Console.writeToBuffer(20, 1, "  __   __ ___ ___ ___       ___   __  ", 0XB0);
-        g_Console.writeToBuffer(20, 2, " |__  |__  |   |   |  |\\ | |  _  |__  ", 0XB8);
-        g_Console.writeToBuffer(20, 3, "  __| |__  |   |  _|_ | \\| |___|  __| ", 0XBF);
+        g_Console.writeToBuffer(20, 2, " |__  |__  |   |   |  |\\ | |  _  |__  ", 0XB0);
+        g_Console.writeToBuffer(20, 3, "  __| |__  |   |  _|_ | \\| |___|  __| ", 0XB0);
         g_Console.writeToBuffer(21, 5, "Up/Down arrow to choose which option", 0xB0);
         g_Console.writeToBuffer(20, 6, "Left/Right arrows to change the option", 0xB0);
         g_Console.writeToBuffer(25, 7, "Press esc for Main Menu", 0xB0);
+        // Choosing option
         if (g_skKeyEvent[K_UP].keyReleased && settingsOption > 1)
         {
             settingsOption--;
         }
+        // Choosing option
         if (g_skKeyEvent[K_DOWN].keyReleased && settingsOption < maxSettings)
         {
             settingsOption++;
         }
+        // Change Map Option
         if (settingsOption == 1)
         {
             g_Console.writeToBuffer(31, 12, " Map Selection: " + std::to_string(whichMap) + " ", 0xF0);
             g_Console.writeToBuffer(20, 14, colourTxt, 0xB0);
+            // Choosing Map
             if (g_skKeyEvent[K_LEFT].keyReleased)
             {
                 if (whichMap > 1)
@@ -1480,10 +1484,12 @@ void renderMap()
                 }
             }
         }
+        // Changing Map Colour Option
         if ( settingsOption == 2)
         {
             g_Console.writeToBuffer(31, 12, " Map Selection: " + std::to_string(whichMap) + " ", 0xB0);
             g_Console.writeToBuffer(20, 14, colourTxt, 0xF0);
+            // Choosing Colour
             if (g_skKeyEvent[K_LEFT].keyReleased)
             {
                 if (colourOption > 1)
@@ -1668,6 +1674,7 @@ void renderMap()
 
 void renderMapColour()
 {
+    // Map Colour Scheme 1
     if (colourOption == 1)
     {
         wallTxt = "White";
@@ -1675,6 +1682,7 @@ void renderMapColour()
         groundTxt = "Blue";
         ground = 0x1B;
     }
+    // Map Colour Scheme 2
     else if (colourOption == 2)
     {
         wallTxt = "Green";
@@ -1682,6 +1690,7 @@ void renderMapColour()
         groundTxt = "Gray";
         ground = 0x8B;
     }
+    // Map Colour Scheme 3
     else if (colourOption == 3)
     {
         wallTxt = "Black";
@@ -1689,6 +1698,7 @@ void renderMapColour()
         groundTxt = "White";
         ground = 0xFB;
     }
+    // Map Colour Scheme 4
     else if (colourOption == 4)
     {
         wallTxt = "White";
@@ -1696,6 +1706,7 @@ void renderMapColour()
         groundTxt = "White";
         ground = 0xFB;
     }
+    // Map Colour Scheme 5
     else if (colourOption == 5)
     {
         wallTxt = "Black";
