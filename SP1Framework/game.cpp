@@ -372,12 +372,12 @@ void moveCharacter()
 
         }
 
-        for (int t = 0; t < 3; t++)
+        for (int t = 0; t < 3; t++)//for number of traps
         {
-            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)//if fireboyy steps on waterboy trap and the trap is active
             {
-                WBTraptriggered = true;
-                TrappedID = t;
+                WBTraptriggered = true;//trigger the trap
+                TrappedID = t;//that traps id = t
             }
 
         }
@@ -392,12 +392,12 @@ void moveCharacter()
             lastMove = 2;
         }
 
-        for (int t = 0; t < 3; t++)
+        for (int t = 0; t < 3; t++)//for loop for the number of traps
         {
-            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)//if fireboyy steps on waterboy trap and the trap is active
             {
-                WBTraptriggered = true;
-                TrappedID = t;
+                WBTraptriggered = true;//trigger the trap
+                TrappedID = t;//that traps id = t
                 
             }
 
@@ -413,12 +413,12 @@ void moveCharacter()
             lastMove = 3;
         }
 
-        for (int t = 0; t < 3; t++)
+        for (int t = 0; t < 3; t++)//for loop for the number of traps
         {
-            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)//if fireboyy steps on waterboy trap and the trap is active
             {
-                WBTraptriggered = true;
-                TrappedID = t;
+                WBTraptriggered = true;//trigger the trap
+                TrappedID = t;//that traps id = t
             }
 
         }
@@ -434,50 +434,50 @@ void moveCharacter()
 
         }
 
-        for (int t = 0; t < 3; t++)
+        for (int t = 0; t < 3; t++)//for loop for the number of traps
         {
-            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)
+            if (WBTraps[t]->getCoords().X == g_sChar.m_cLocation.X && WBTraps[t]->getCoords().Y == g_sChar.m_cLocation.Y && WBTraps[t]->getAlive() == true)//if fireboyy steps on waterboy trap and the trap is active
             {
-                WBTraptriggered = true;
-                TrappedID = t;
+                WBTraptriggered = true;//trigger the trap
+                TrappedID = t;//that traps id = t
             }
 
         }
     }
-    if (WBTraptriggered == true)
+    if (WBTraptriggered == true)//if the trap is triggered
     {
-        FBLives--;
+        FBLives--;//fireboy loses a life
         
-        for (int t = 0; t < 3; t++) {
-            for (int n = 0; n < 10; n++)
+        for (int t = 0; t < 3; t++) {//for loop for the traps
+            for (int n = 0; n < 10; n++)//for loop for the NPCs
             {
-                if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25)
+                if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25)//if npc is withing a radius of 5 of the trap
                 {
-                    for (int y = 0; y < 26; y++)
+                    for (int y = 0; y < 26; y++)//for loop for the y axis of the map
                     {
-                        for (int x = 0; x < 81; x++)
+                        for (int x = 0; x < 81; x++)//for loop for the x axis of the map
                         {
-                            if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[n]->getAlive() == true)
+                            if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[n]->getAlive() == true)//if NPC is within the circle and its alive
                             {
-                                for (int w = 0; w < 10; w++)
+                                for (int w = 0; w < 10; w++)//number of npcs that can be drenched
                                 {
-                                    g_Console.writeToBuffer(x, y, ' ', 0x90);
+                                    g_Console.writeToBuffer(x, y, ' ', 0x90);//explosion animation
                                 }
                             }
                         }   
                     }
-                    for (int nw = 0; nw < 10; nw++)
+                    for (int nw = 0; nw < 10; nw++)//npcs
                     {
-                        if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)
+                        if (pow(npcPtr[n]->getCoords().X - WBTraps[t]->getCoords().X, 2) + pow(npcPtr[n]->getCoords().Y - WBTraps[t]->getCoords().Y, 2) * 2 <= 25 && npcPtr[nw]->getAlive() == true && static_cast<npc*>(npcPtr[nw])->getSecsOnFire() >= 0)//if NPCS on fire and within range
                         {
-                            drenchNpc(nw);
+                            drenchNpc(nw);//drench them
                         }
                     }
                 }
             }
         }
-        WBTraptriggered = false;
-        WBTraps[TrappedID]->setAlive(false);
+        WBTraptriggered = false;//then set that trap to triggered = false
+        WBTraps[TrappedID]->setAlive(false);//and set it so that its not alive.
     }
     
     // Water Boy moving up
