@@ -1395,6 +1395,7 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
+                // Renders the wall and ground near players
                 if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
                     if (c == '1')
@@ -1407,6 +1408,7 @@ void renderMap()
                     }
                 }
 
+                // Turns other areas of the map dark
                 else
                 {
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
@@ -1414,6 +1416,7 @@ void renderMap()
 
                 for (int n = 0; n < 10; n++)
                 {
+                    // Renders the wall and ground near burning NPCs
                     if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
                     {
                         if (c == '1')
@@ -1521,6 +1524,7 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
+                // Renders the wall and ground near players
                 if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
                     if (c == '1')
@@ -1533,6 +1537,7 @@ void renderMap()
                     }
                 }
 
+                // Turns everything else dark
                 else
                 {
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
@@ -1540,6 +1545,7 @@ void renderMap()
 
                 for (int n = 0; n < 10; n++)
                 {
+                    // // Renders the wall and ground near burning NPCs
                     if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
                     {
                         if (c == '1')
