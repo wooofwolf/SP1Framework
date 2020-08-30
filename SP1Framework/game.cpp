@@ -793,17 +793,19 @@ void drenchNpc(int sd)
     static_cast<npc*>(npcPtr[sd])->startWTimer();
 }
 
+// Moves every NPC
 void moveNPC()
 {
     for (int n = 0; n < 10; n++)
     {
+        // NPC on fire
         if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0)
         {
             fsecsPassed[n] += static_cast<npc*>(npcPtr[n])->getFsecsPassed();
 
             if (fsecsPassed[n] > 0.33)
             {
-                // Randomly runs
+                // Chooses a random direction to move
                 int randomInt = rand() % 4 + 1;
                 if (randomInt == 1) // Up
                 {
@@ -834,6 +836,7 @@ void moveNPC()
                     }
                 }
                 static_cast<npc*>(npcPtr[n])->setSecsOnFire(static_cast<npc*>(npcPtr[n])->getSecsOnFire() - 0.33);
+                // Kills NPC if it burned for 3 secs or more
                 if (static_cast<npc*>(npcPtr[n])->getSecsOnFire() <= 0)
                 {
                     npcPtr[n]->setAlive(false);
@@ -843,6 +846,7 @@ void moveNPC()
             }
         }
 
+        // NPC is alive
         else if (npcPtr[n]->getAlive() == true)
         {
             if (static_cast<npc*>(npcPtr[n])->getDrenched() == true)
@@ -1391,6 +1395,7 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
+                // Renders the wall and ground near players
                 if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
                     if (c == '1')
@@ -1403,6 +1408,7 @@ void renderMap()
                     }
                 }
 
+                // Turns other areas of the map dark
                 else
                 {
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
@@ -1410,6 +1416,7 @@ void renderMap()
 
                 for (int n = 0; n < 10; n++)
                 {
+                    // Renders the wall and ground near burning NPCs
                     if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
                     {
                         if (c == '1')
@@ -1517,6 +1524,7 @@ void renderMap()
                 char c = mapFile.get();
                 mapArray[x][y] = c;
 
+                // Renders the wall and ground near players
                 if (((pow(x - g_sChar.m_cLocation.X, 2) + pow(y - g_sChar.m_cLocation.Y, 2) * 2) <= 36) || (pow(x - g_sChar2.m_cLocation.X, 2) + pow(y - g_sChar2.m_cLocation.Y, 2) * 2) <= 36)
                 {
                     if (c == '1')
@@ -1529,6 +1537,7 @@ void renderMap()
                     }
                 }
 
+                // Turns everything else dark
                 else
                 {
                     g_Console.writeToBuffer(x, y, " °±²Û", 0x00);
@@ -1536,6 +1545,7 @@ void renderMap()
 
                 for (int n = 0; n < 10; n++)
                 {
+                    // // Renders the wall and ground near burning NPCs
                     if ((static_cast<npc*>(npcPtr[n])->getSecsOnFire() > 0 && (pow(x - (static_cast<npc*>(npcPtr[n])->getCoords()).X, 2) + pow(y - (static_cast<npc*>(npcPtr[n])->getCoords()).Y, 2) * 2 <= 16)))
                     {
                         if (c == '1')
